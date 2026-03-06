@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="robots" content="noindex, nofollow" />
+  <link rel="icon shortcut" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" id="favicon-svg" />
+<link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+<link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link fetchpriority="low" href="/site.webmanifest" rel="manifest" />
+<title>章节二：初探Linux – 系统程序设计基础 (USTC ISP)</title>
+  <meta name="description" content="考虑到很多同学在本次实验之前没有使用过Linux系统，因此提供此部分来速成Linux。
+2.1 Ubuntu GUI的使用打开虚拟机进入到Ubuntu之后，即可看到Ubuntu的GUI界面。默认左侧是Dock（类似Windows的任务栏），里面有若干内置软件。左下角是菜单（类似Windows的开始菜单）。考虑到部分同学首次接触Ubuntu，因此建议各位依次点击所有的软件、按钮，以进一步了解Ubuntu并熟悉其中的软件。
+屏幕最右上角有几个图标，可以调整音量、网络设置、语言、输入法等，还可以关机。在菜单里找到“设置”，里面可以调整系统设置，如分辨率、壁纸等。Dock里有一个文件夹形状的图标，它是文件管理器，可以像windows一样图形化地浏览文件。
+提示：如果在执行某个操作时报错文件/文件夹不存在，可以在UI界面内手动复制粘贴文件到目标位置（文件所有者为root用户的除外）。
+2.2 终端（命令行）的使用2.2.1 打开终端在桌面/文件管理器的空白处右键即可出现“在终端打开”按钮，点击此处即可呼出终端进而在终端中执行相关的Linux指令。注意：终端也是有工作位置的。简单而言，在哪个目录下打开终端，命令就会在哪个目录下执行。终端当前目录一般称为“工作目录”。
+举例：ls指令可以显示工作目录下的文件。在不同的目录下运行此指令的结果显然是不一样的。
+终端会显示工作目录
+2.2.2 目录与路径Linux与Windows不同，Windows一般会分有多个逻辑磁盘，每个逻辑磁盘各有一棵目录树，但Linux只有一个目录树，磁盘可以作为一棵子树挂载到目录树的某个节点。在Linux操作系统中，整个目录树的根节点被称为根目录。每个用户拥有一个主目录，或称家目录，类似windows的C:\Users\用户名。从根目录看，除root用户之外，每个用户的家目录为/home/用户名。
+Linux终端里使用的路径分为绝对路径和相对路径两种。绝对路径指从根目录算起的路径，相对路径指从工作目录算起的路径。其中，以根目录算起的绝对路径以/开头，以家目录算起的绝对路径以~开头，相对路径不需要/或～开头。
+举例：一个名为ustc的用户在他的家目录下创建了一个名为os的目录，在os目录下面又创建了一个名为lab1的目录，则该lab1目录可以表示为：
+/home/ustc/os/lab1 ~/os/lab1 如果工作目录在家目录：os/lab1 如果工作目录在os目录：lab1 一些特殊的目录：
+.代表该目录自身。例：cd .代表原地跳转（cd是切换目录的指令）； ..代表该目录的父目录。特别地，根目录的父目录也是自身。 在Linux里，文件名以.开头的文件是隐藏文件（或目录），如何显示它们请参考2.3.3. .和..都是隐藏的目录。 举例：以下几个路径是等价的：
+/home/ustc/os/lab1 /home/ustc/os/././././././lab1 /home/ustc/os/../os/lab1 2.2.3 运行指令在终端中输入可执行文件的路径即可。终端所在路径是程序运行时的路径。需要注意的是，如果运行的二进制文件就在工作目录下，需要在文件名前加上./。
+提示：与windows可执行文件扩展名为.exe不同，Linux中，可执行文件一般没有扩展名。例外：gcc在不指定输出文件名的情况下，编译出的可执行文件会带有.out的扩展名。但你也不需要管这个.out，直接运行也是一样的。
+例：有一个可执行文件，其路径为~/os/lab1/testprog。它在运行时会读取一个相对路径为a.txt的文件。
+在家目录下运行：需要执行os/lab1/testprog（或~/os/lab1/testprog等绝对路径），程序读取的a.txt在家目录下； 在~/os/lab1下运行：需要执行./testprog(当然你用绝对路径也无所谓)，程序读取的a.txt在~/os/lab1目录下。 相关问题：为什么在运行sudo、man等命令时，只需要输入指令名而不需要输入这些指令对应的二进制文件所在的路径？
+一种情况是，这是因为这些指令所在的路径（一般是/usr/bin）被加入到了该用户的环境变量中。当终端读取到一个不带路径的命令之后，系统只会在环境变量中搜索，从而方便用户使用。当然，默认被加入环境变量里的路径一般只有一些系统路径，除非自行设置，家目录下面没有目录默认在环境变量中。如感兴趣，修改环境变量的方法可自行搜索了解。
+另一种情况是，部分指令是Shell内建指令（如cd），它们的意义直接由Shell解释，没有对应的二进制文件。此情况可能会在下一实验中详细阐述。
+2.2.4 指令及其参数无论是Linux还是Windows，一条完整的命令都由命令及其参数构成。你们可以通过man 指令名来自行了解指令语法。一般来说，指令语法里带有’[ ]‘的是可选参数，其他是必选参数。不同的参数的顺序一般是可以互换的。下面以gcc（一种编译器）为例，介绍实验文档描述指令的方式，以及如何按需构造一条指令。
+本次要用到的gcc指令的一部分语法是：gcc [-static] [-o outfile] infile 。下面是各参数介绍：
+参数 含义 -static 静态编译选项（此处参数仅为示例，参数详细含义请自行上网搜索）。 -o outfile 指定输出的可执行文件的文件名为outfile。如果不指定，会输出为a.out。 infile 要编译的gcc文件名。注意绝对路径/相对路径的问题。 如果我们编译test.c，不指定输出文件名，命令就只是gcc test.c；（这种情况下，gcc会自动命名输出文件为a.out） 如果我们编译test.c，输出二进制文件名为test，命令就是gcc -o test test.c； 一般来说参数的顺序是无所谓的。所以使用gcc test.c -o test也一样能编译。 如果我们编译test.c，输出二进制文件名为test，且要使用静态编译，那么构造出的编译指令就是gcc -static -o test test.c。 2.2.5 终端使用小技巧按键盘的↑↓键可以切换到之前输入过的指令； 按键盘的Tab键可以自动补全。如果按一下Tab之后没反应，说明候选项太多。再按一下Tab可以显示所有候选项。 在shell里，Ctrl&#43;C是终止不是复制。复制的快捷键是Ctrl&#43;Insert或Ctrl&#43;Shift&#43;C，粘贴的快捷键是Shift&#43;Insert或Ctrl&#43;Shift&#43;V。 2.3 Linux常用指令注：一些指令的使用方法详见提供的链接。本部分涉及测验考察，测验方式见文档3.2。" /><link rel="canonical" href="https://ustc-isp.github.io/lab/lab1/part2/" itemprop="url" />
+
+<meta property="og:title" content="章节二：初探Linux">
+<meta
+  property="og:description"
+  content="
+    
+      
+  考虑到很多同学在本次实验之前没有使用过Linux系统，因此提供此部分来速成Linux。
+
+
+2.1 Ubuntu GUI的使用
+    打开虚拟机进入到Ubuntu之后，即可看到Ubuntu的GUI界面。默认左侧是Dock（类似Windows的任务栏），里面有若干内置软件。左下角是菜单（类似Windows的开始菜单）。考虑到部分同学首次接触Ubuntu，因此建议各位依次点击所有的软件、按钮，以进一步了解Ubuntu并熟悉其中的软件。
+屏幕最右上角有几个图标，可以调整音量、网络设置、语言、输入法等，还可以关机。在菜单里找到“设置”，里面可以调整系统设置，如分辨率、壁纸等。Dock里有一个文件夹形状的图标，它是文件管理器，可以像windows一样图形化地浏览文件。
+
+  提示：如果在执行某个操作时报错文件/文件夹不存在，可以在UI界面内手动复制粘贴文件到目标位置（文件所有者为root用户的除外）。
+
+
+
+2.2 终端（命令行）的使用
+    2.2.1 打开终端
+    在桌面/文件管理器的空白处右键即可出现“在终端打开”按钮，点击此处即可呼出终端进而在终端中执行相关的Linux指令。注意：终端也是有工作位置的。简单而言，在哪个目录下打开终端，命令就会在哪个目录下执行。终端当前目录一般称为“工作目录”。
+
+  举例：ls指令可以显示工作目录下的文件。在不同的目录下运行此指令的结果显然是不一样的。
+
+
+终端会显示工作目录
+2.2.2 目录与路径
+    Linux与Windows不同，Windows一般会分有多个逻辑磁盘，每个逻辑磁盘各有一棵目录树，但Linux只有一个目录树，磁盘可以作为一棵子树挂载到目录树的某个节点。在Linux操作系统中，整个目录树的根节点被称为根目录。每个用户拥有一个主目录，或称家目录，类似windows的C:\Users\用户名。从根目录看，除root用户之外，每个用户的家目录为/home/用户名。
+Linux终端里使用的路径分为绝对路径和相对路径两种。绝对路径指从根目录算起的路径，相对路径指从工作目录算起的路径。其中，以根目录算起的绝对路径以/开头，以家目录算起的绝对路径以~开头，相对路径不需要/或～开头。
+
+  举例：一个名为ustc的用户在他的家目录下创建了一个名为os的目录，在os目录下面又创建了一个名为lab1的目录，则该lab1目录可以表示为：
+
+/home/ustc/os/lab1
+~/os/lab1
+如果工作目录在家目录：os/lab1
+如果工作目录在os目录：lab1
+
+
+
+一些特殊的目录：
+
+.代表该目录自身。例：cd .代表原地跳转（cd是切换目录的指令）；
+..代表该目录的父目录。特别地，根目录的父目录也是自身。
+在Linux里，文件名以.开头的文件是隐藏文件（或目录），如何显示它们请参考2.3.3.
+
+.和..都是隐藏的目录。
+
+
+
+
+  举例：以下几个路径是等价的：
+
+/home/ustc/os/lab1
+/home/ustc/os/././././././lab1
+/home/ustc/os/../os/lab1
+
+
+
+2.2.3 运行指令
+    在终端中输入可执行文件的路径即可。终端所在路径是程序运行时的路径。需要注意的是，如果运行的二进制文件就在工作目录下，需要在文件名前加上./。
+
+  提示：与windows可执行文件扩展名为.exe不同，Linux中，可执行文件一般没有扩展名。例外：gcc在不指定输出文件名的情况下，编译出的可执行文件会带有.out的扩展名。但你也不需要管这个.out，直接运行也是一样的。
+
+
+
+  例：有一个可执行文件，其路径为~/os/lab1/testprog。它在运行时会读取一个相对路径为a.txt的文件。
+
+在家目录下运行：需要执行os/lab1/testprog（或~/os/lab1/testprog等绝对路径），程序读取的a.txt在家目录下；
+在~/os/lab1下运行：需要执行./testprog(当然你用绝对路径也无所谓)，程序读取的a.txt在~/os/lab1目录下。
+
+
+
+相关问题：为什么在运行sudo、man等命令时，只需要输入指令名而不需要输入这些指令对应的二进制文件所在的路径？
+一种情况是，这是因为这些指令所在的路径（一般是/usr/bin）被加入到了该用户的环境变量中。当终端读取到一个不带路径的命令之后，系统只会在环境变量中搜索，从而方便用户使用。当然，默认被加入环境变量里的路径一般只有一些系统路径，除非自行设置，家目录下面没有目录默认在环境变量中。如感兴趣，修改环境变量的方法可自行搜索了解。
+另一种情况是，部分指令是Shell内建指令（如cd），它们的意义直接由Shell解释，没有对应的二进制文件。此情况可能会在下一实验中详细阐述。
+2.2.4 指令及其参数
+    无论是Linux还是Windows，一条完整的命令都由命令及其参数构成。你们可以通过man 指令名来自行了解指令语法。一般来说，指令语法里带有&rsquo;[ ]&lsquo;的是可选参数，其他是必选参数。不同的参数的顺序一般是可以互换的。下面以gcc（一种编译器）为例，介绍实验文档描述指令的方式，以及如何按需构造一条指令。
+本次要用到的gcc指令的一部分语法是：gcc [-static] [-o outfile] infile 。下面是各参数介绍：
+
+  
+      
+          参数
+          含义
+      
+  
+  
+      
+          -static
+          静态编译选项（此处参数仅为示例，参数详细含义请自行上网搜索）。
+      
+      
+          -o outfile
+          指定输出的可执行文件的文件名为outfile。如果不指定，会输出为a.out。
+      
+      
+          infile
+          要编译的gcc文件名。注意绝对路径/相对路径的问题。
+      
+  
+
+
+如果我们编译test.c，不指定输出文件名，命令就只是gcc test.c；（这种情况下，gcc会自动命名输出文件为a.out）
+如果我们编译test.c，输出二进制文件名为test，命令就是gcc -o test test.c；
+
+一般来说参数的顺序是无所谓的。所以使用gcc test.c -o test也一样能编译。
+
+
+如果我们编译test.c，输出二进制文件名为test，且要使用静态编译，那么构造出的编译指令就是gcc -static -o test test.c。
+
+2.2.5 终端使用小技巧
+    
+按键盘的↑↓键可以切换到之前输入过的指令；
+按键盘的Tab键可以自动补全。如果按一下Tab之后没反应，说明候选项太多。再按一下Tab可以显示所有候选项。
+在shell里，Ctrl&#43;C是终止不是复制。复制的快捷键是Ctrl&#43;Insert或Ctrl&#43;Shift&#43;C，粘贴的快捷键是Shift&#43;Insert或Ctrl&#43;Shift&#43;V。
+
+2.3 Linux常用指令
+    
+  注：一些指令的使用方法详见提供的链接。本部分涉及测验考察，测验方式见文档3.2。
+    
+  ">
+<meta
+  property="og:type"
+  content="
+    article
+  ">
+<meta property="og:url" content="https://ustc-isp.github.io/lab/lab1/part2/"><meta property="article:section" content="lab">
+
+
+
+
+  <meta itemprop="name" content="章节二：初探Linux">
+  <meta itemprop="description" content="考虑到很多同学在本次实验之前没有使用过Linux系统，因此提供此部分来速成Linux。
+2.1 Ubuntu GUI的使用打开虚拟机进入到Ubuntu之后，即可看到Ubuntu的GUI界面。默认左侧是Dock（类似Windows的任务栏），里面有若干内置软件。左下角是菜单（类似Windows的开始菜单）。考虑到部分同学首次接触Ubuntu，因此建议各位依次点击所有的软件、按钮，以进一步了解Ubuntu并熟悉其中的软件。
+屏幕最右上角有几个图标，可以调整音量、网络设置、语言、输入法等，还可以关机。在菜单里找到“设置”，里面可以调整系统设置，如分辨率、壁纸等。Dock里有一个文件夹形状的图标，它是文件管理器，可以像windows一样图形化地浏览文件。
+提示：如果在执行某个操作时报错文件/文件夹不存在，可以在UI界面内手动复制粘贴文件到目标位置（文件所有者为root用户的除外）。
+2.2 终端（命令行）的使用2.2.1 打开终端在桌面/文件管理器的空白处右键即可出现“在终端打开”按钮，点击此处即可呼出终端进而在终端中执行相关的Linux指令。注意：终端也是有工作位置的。简单而言，在哪个目录下打开终端，命令就会在哪个目录下执行。终端当前目录一般称为“工作目录”。
+举例：ls指令可以显示工作目录下的文件。在不同的目录下运行此指令的结果显然是不一样的。
+终端会显示工作目录
+2.2.2 目录与路径Linux与Windows不同，Windows一般会分有多个逻辑磁盘，每个逻辑磁盘各有一棵目录树，但Linux只有一个目录树，磁盘可以作为一棵子树挂载到目录树的某个节点。在Linux操作系统中，整个目录树的根节点被称为根目录。每个用户拥有一个主目录，或称家目录，类似windows的C:\Users\用户名。从根目录看，除root用户之外，每个用户的家目录为/home/用户名。
+Linux终端里使用的路径分为绝对路径和相对路径两种。绝对路径指从根目录算起的路径，相对路径指从工作目录算起的路径。其中，以根目录算起的绝对路径以/开头，以家目录算起的绝对路径以~开头，相对路径不需要/或～开头。
+举例：一个名为ustc的用户在他的家目录下创建了一个名为os的目录，在os目录下面又创建了一个名为lab1的目录，则该lab1目录可以表示为：
+/home/ustc/os/lab1 ~/os/lab1 如果工作目录在家目录：os/lab1 如果工作目录在os目录：lab1 一些特殊的目录：
+.代表该目录自身。例：cd .代表原地跳转（cd是切换目录的指令）； ..代表该目录的父目录。特别地，根目录的父目录也是自身。 在Linux里，文件名以.开头的文件是隐藏文件（或目录），如何显示它们请参考2.3.3. .和..都是隐藏的目录。 举例：以下几个路径是等价的：
+/home/ustc/os/lab1 /home/ustc/os/././././././lab1 /home/ustc/os/../os/lab1 2.2.3 运行指令在终端中输入可执行文件的路径即可。终端所在路径是程序运行时的路径。需要注意的是，如果运行的二进制文件就在工作目录下，需要在文件名前加上./。
+提示：与windows可执行文件扩展名为.exe不同，Linux中，可执行文件一般没有扩展名。例外：gcc在不指定输出文件名的情况下，编译出的可执行文件会带有.out的扩展名。但你也不需要管这个.out，直接运行也是一样的。
+例：有一个可执行文件，其路径为~/os/lab1/testprog。它在运行时会读取一个相对路径为a.txt的文件。
+在家目录下运行：需要执行os/lab1/testprog（或~/os/lab1/testprog等绝对路径），程序读取的a.txt在家目录下； 在~/os/lab1下运行：需要执行./testprog(当然你用绝对路径也无所谓)，程序读取的a.txt在~/os/lab1目录下。 相关问题：为什么在运行sudo、man等命令时，只需要输入指令名而不需要输入这些指令对应的二进制文件所在的路径？
+一种情况是，这是因为这些指令所在的路径（一般是/usr/bin）被加入到了该用户的环境变量中。当终端读取到一个不带路径的命令之后，系统只会在环境变量中搜索，从而方便用户使用。当然，默认被加入环境变量里的路径一般只有一些系统路径，除非自行设置，家目录下面没有目录默认在环境变量中。如感兴趣，修改环境变量的方法可自行搜索了解。
+另一种情况是，部分指令是Shell内建指令（如cd），它们的意义直接由Shell解释，没有对应的二进制文件。此情况可能会在下一实验中详细阐述。
+2.2.4 指令及其参数无论是Linux还是Windows，一条完整的命令都由命令及其参数构成。你们可以通过man 指令名来自行了解指令语法。一般来说，指令语法里带有’[ ]‘的是可选参数，其他是必选参数。不同的参数的顺序一般是可以互换的。下面以gcc（一种编译器）为例，介绍实验文档描述指令的方式，以及如何按需构造一条指令。
+本次要用到的gcc指令的一部分语法是：gcc [-static] [-o outfile] infile 。下面是各参数介绍：
+参数 含义 -static 静态编译选项（此处参数仅为示例，参数详细含义请自行上网搜索）。 -o outfile 指定输出的可执行文件的文件名为outfile。如果不指定，会输出为a.out。 infile 要编译的gcc文件名。注意绝对路径/相对路径的问题。 如果我们编译test.c，不指定输出文件名，命令就只是gcc test.c；（这种情况下，gcc会自动命名输出文件为a.out） 如果我们编译test.c，输出二进制文件名为test，命令就是gcc -o test test.c； 一般来说参数的顺序是无所谓的。所以使用gcc test.c -o test也一样能编译。 如果我们编译test.c，输出二进制文件名为test，且要使用静态编译，那么构造出的编译指令就是gcc -static -o test test.c。 2.2.5 终端使用小技巧按键盘的↑↓键可以切换到之前输入过的指令； 按键盘的Tab键可以自动补全。如果按一下Tab之后没反应，说明候选项太多。再按一下Tab可以显示所有候选项。 在shell里，Ctrl&#43;C是终止不是复制。复制的快捷键是Ctrl&#43;Insert或Ctrl&#43;Shift&#43;C，粘贴的快捷键是Shift&#43;Insert或Ctrl&#43;Shift&#43;V。 2.3 Linux常用指令注：一些指令的使用方法详见提供的链接。本部分涉及测验考察，测验方式见文档3.2。">
+  <meta itemprop="wordCount" content="352">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="章节二：初探Linux">
+  <meta name="twitter:description" content="考虑到很多同学在本次实验之前没有使用过Linux系统，因此提供此部分来速成Linux。
+2.1 Ubuntu GUI的使用打开虚拟机进入到Ubuntu之后，即可看到Ubuntu的GUI界面。默认左侧是Dock（类似Windows的任务栏），里面有若干内置软件。左下角是菜单（类似Windows的开始菜单）。考虑到部分同学首次接触Ubuntu，因此建议各位依次点击所有的软件、按钮，以进一步了解Ubuntu并熟悉其中的软件。
+屏幕最右上角有几个图标，可以调整音量、网络设置、语言、输入法等，还可以关机。在菜单里找到“设置”，里面可以调整系统设置，如分辨率、壁纸等。Dock里有一个文件夹形状的图标，它是文件管理器，可以像windows一样图形化地浏览文件。
+提示：如果在执行某个操作时报错文件/文件夹不存在，可以在UI界面内手动复制粘贴文件到目标位置（文件所有者为root用户的除外）。
+2.2 终端（命令行）的使用2.2.1 打开终端在桌面/文件管理器的空白处右键即可出现“在终端打开”按钮，点击此处即可呼出终端进而在终端中执行相关的Linux指令。注意：终端也是有工作位置的。简单而言，在哪个目录下打开终端，命令就会在哪个目录下执行。终端当前目录一般称为“工作目录”。
+举例：ls指令可以显示工作目录下的文件。在不同的目录下运行此指令的结果显然是不一样的。
+终端会显示工作目录
+2.2.2 目录与路径Linux与Windows不同，Windows一般会分有多个逻辑磁盘，每个逻辑磁盘各有一棵目录树，但Linux只有一个目录树，磁盘可以作为一棵子树挂载到目录树的某个节点。在Linux操作系统中，整个目录树的根节点被称为根目录。每个用户拥有一个主目录，或称家目录，类似windows的C:\Users\用户名。从根目录看，除root用户之外，每个用户的家目录为/home/用户名。
+Linux终端里使用的路径分为绝对路径和相对路径两种。绝对路径指从根目录算起的路径，相对路径指从工作目录算起的路径。其中，以根目录算起的绝对路径以/开头，以家目录算起的绝对路径以~开头，相对路径不需要/或～开头。
+举例：一个名为ustc的用户在他的家目录下创建了一个名为os的目录，在os目录下面又创建了一个名为lab1的目录，则该lab1目录可以表示为：
+/home/ustc/os/lab1 ~/os/lab1 如果工作目录在家目录：os/lab1 如果工作目录在os目录：lab1 一些特殊的目录：
+.代表该目录自身。例：cd .代表原地跳转（cd是切换目录的指令）； ..代表该目录的父目录。特别地，根目录的父目录也是自身。 在Linux里，文件名以.开头的文件是隐藏文件（或目录），如何显示它们请参考2.3.3. .和..都是隐藏的目录。 举例：以下几个路径是等价的：
+/home/ustc/os/lab1 /home/ustc/os/././././././lab1 /home/ustc/os/../os/lab1 2.2.3 运行指令在终端中输入可执行文件的路径即可。终端所在路径是程序运行时的路径。需要注意的是，如果运行的二进制文件就在工作目录下，需要在文件名前加上./。
+提示：与windows可执行文件扩展名为.exe不同，Linux中，可执行文件一般没有扩展名。例外：gcc在不指定输出文件名的情况下，编译出的可执行文件会带有.out的扩展名。但你也不需要管这个.out，直接运行也是一样的。
+例：有一个可执行文件，其路径为~/os/lab1/testprog。它在运行时会读取一个相对路径为a.txt的文件。
+在家目录下运行：需要执行os/lab1/testprog（或~/os/lab1/testprog等绝对路径），程序读取的a.txt在家目录下； 在~/os/lab1下运行：需要执行./testprog(当然你用绝对路径也无所谓)，程序读取的a.txt在~/os/lab1目录下。 相关问题：为什么在运行sudo、man等命令时，只需要输入指令名而不需要输入这些指令对应的二进制文件所在的路径？
+一种情况是，这是因为这些指令所在的路径（一般是/usr/bin）被加入到了该用户的环境变量中。当终端读取到一个不带路径的命令之后，系统只会在环境变量中搜索，从而方便用户使用。当然，默认被加入环境变量里的路径一般只有一些系统路径，除非自行设置，家目录下面没有目录默认在环境变量中。如感兴趣，修改环境变量的方法可自行搜索了解。
+另一种情况是，部分指令是Shell内建指令（如cd），它们的意义直接由Shell解释，没有对应的二进制文件。此情况可能会在下一实验中详细阐述。
+2.2.4 指令及其参数无论是Linux还是Windows，一条完整的命令都由命令及其参数构成。你们可以通过man 指令名来自行了解指令语法。一般来说，指令语法里带有’[ ]‘的是可选参数，其他是必选参数。不同的参数的顺序一般是可以互换的。下面以gcc（一种编译器）为例，介绍实验文档描述指令的方式，以及如何按需构造一条指令。
+本次要用到的gcc指令的一部分语法是：gcc [-static] [-o outfile] infile 。下面是各参数介绍：
+参数 含义 -static 静态编译选项（此处参数仅为示例，参数详细含义请自行上网搜索）。 -o outfile 指定输出的可执行文件的文件名为outfile。如果不指定，会输出为a.out。 infile 要编译的gcc文件名。注意绝对路径/相对路径的问题。 如果我们编译test.c，不指定输出文件名，命令就只是gcc test.c；（这种情况下，gcc会自动命名输出文件为a.out） 如果我们编译test.c，输出二进制文件名为test，命令就是gcc -o test test.c； 一般来说参数的顺序是无所谓的。所以使用gcc test.c -o test也一样能编译。 如果我们编译test.c，输出二进制文件名为test，且要使用静态编译，那么构造出的编译指令就是gcc -static -o test test.c。 2.2.5 终端使用小技巧按键盘的↑↓键可以切换到之前输入过的指令； 按键盘的Tab键可以自动补全。如果按一下Tab之后没反应，说明候选项太多。再按一下Tab可以显示所有候选项。 在shell里，Ctrl&#43;C是终止不是复制。复制的快捷键是Ctrl&#43;Insert或Ctrl&#43;Shift&#43;C，粘贴的快捷键是Shift&#43;Insert或Ctrl&#43;Shift&#43;V。 2.3 Linux常用指令注：一些指令的使用方法详见提供的链接。本部分涉及测验考察，测验方式见文档3.2。">
+<link href="/css/compiled/main.css" rel="stylesheet" />
+    <link href="/css/variables.css" rel="stylesheet" />
+    <link href="/css/custom.css" rel="stylesheet" />
+
+  
+<script src="/js/main-head.js" integrity=""></script>
+
+  
+  
+  </head>
+<body>
+    <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-primary-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">跳至内容</a><div class="hextra-nav-container hx:sticky hx:top-0 hx:z-20 hx:w-full hx:bg-transparent hx:print:hidden">
+  <div
+    class="hextra-nav-container-blur hx:pointer-events-none hx:absolute hx:z-[-1] hx:h-full hx:w-full hx:bg-white hx:dark:bg-dark hx:shadow-[0_2px_4px_rgba(0,0,0,.02),0_1px_0_rgba(0,0,0,.06)] hx:contrast-more:shadow-[0_0_0_1px_#000] hx:dark:shadow-[0_-1px_0_rgba(255,255,255,.1)_inset] hx:contrast-more:dark:shadow-[0_0_0_1px_#fff]"
+  ></div>
+
+  <nav class="hextra-max-navbar-width hx:mx-auto hx:flex hx:items-center hx:justify-end hx:gap-2 hx:h-16 hx:px-6">
+    <a class="hx:flex hx:items-center hx:hover:opacity-75 hx:ltr:mr-auto hx:rtl:ml-auto" href="/">
+    <img class="hx:mr-2 hx:block hx:dark:hidden" src="/images/logo.svg" alt="Logo" height="20" width="20" />
+    <img class="hx:mr-2 hx:hidden hx:dark:block" src="/images/logo.svg" alt="Dark Logo" height="20" width="20" />
+    <span class="hx:mr-2 hx:font-extrabold hx:inline hx:select-none">系统程序设计基础 (USTC ISP)</span>
+</a>
+<a
+  title=""
+  href="/lectures/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">课程讲义</span>
+</a><a
+  title=""
+  href="/lab/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:font-medium"
+><span class="hx:text-center">实验指导</span>
+</a><a
+  title=""
+  href="/resources/"
+  
+  class="hx:text-sm hx:contrast-more:text-gray-700 hx:contrast-more:dark:text-gray-100 hx:relative hx:-ml-2 hx:hidden hx:whitespace-nowrap hx:p-2 hx:md:inline-flex hx:items-center hx:gap-1 hx:text-gray-600 hx:hover:text-gray-800 hx:dark:text-gray-400 hx:dark:hover:text-gray-200"
+><span class="hx:text-center">课程资源</span>
+</a>
+          <a class="hx:p-2 hx:text-current" target="_blank" rel="noreferrer" href="https://github.com/USTC-ISP" title="GitHub"><svg height=24 fill="currentColor" viewBox="3 3 18 18">
+  <path d="M12 3C7.0275 3 3 7.12937 3 12.2276C3 16.3109 5.57625 19.7597 9.15374 20.9824C9.60374 21.0631 9.77249 20.7863 9.77249 20.5441C9.77249 20.3249 9.76125 19.5982 9.76125 18.8254C7.5 19.2522 6.915 18.2602 6.735 17.7412C6.63375 17.4759 6.19499 16.6569 5.8125 16.4378C5.4975 16.2647 5.0475 15.838 5.80124 15.8264C6.51 15.8149 7.01625 16.4954 7.18499 16.7723C7.99499 18.1679 9.28875 17.7758 9.80625 17.5335C9.885 16.9337 10.1212 16.53 10.38 16.2993C8.3775 16.0687 6.285 15.2728 6.285 11.7432C6.285 10.7397 6.63375 9.9092 7.20749 9.26326C7.1175 9.03257 6.8025 8.08674 7.2975 6.81794C7.2975 6.81794 8.05125 6.57571 9.77249 7.76377C10.4925 7.55615 11.2575 7.45234 12.0225 7.45234C12.7875 7.45234 13.5525 7.55615 14.2725 7.76377C15.9937 6.56418 16.7475 6.81794 16.7475 6.81794C17.2424 8.08674 16.9275 9.03257 16.8375 9.26326C17.4113 9.9092 17.76 10.7281 17.76 11.7432C17.76 15.2843 15.6563 16.0687 13.6537 16.2993C13.98 16.5877 14.2613 17.1414 14.2613 18.0065C14.2613 19.2407 14.25 20.2326 14.25 20.5441C14.25 20.7863 14.4188 21.0746 14.8688 20.9824C16.6554 20.364 18.2079 19.1866 19.3078 17.6162C20.4077 16.0457 20.9995 14.1611 21 12.2276C21 7.12937 16.9725 3 12 3Z"></path>
+</svg>
+<span class="hx:sr-only">GitHub</span>
+          </a><button type="button" aria-label="菜单" aria-expanded="false" class="hextra-hamburger-menu hx:cursor-pointer hx:-mr-2 hx:rounded-sm hx:p-2 hx:active:bg-gray-400/20 hx:md:hidden hx:hextra-focus-visible-inset"><svg height=24 fill="none" viewBox="0 0 24 24" stroke="currentColor"><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8H20"></path></g><g><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16H20"></path></g></svg></button>
+  </nav>
+</div>
+
+  <div class='hx:mx-auto hx:flex hextra-max-page-width'>
+    <aside class="hextra-sidebar-container hx:flex hx:flex-col hx:print:hidden hx:md:top-16 hx:md:shrink-0 hx:md:w-64 hx:md:self-start hx:max-md:[transform:translate3d(0,-100%,0)] hx:md:sticky">
+    <div class="hx:px-4 hx:pt-4 hx:md:hidden">
+      <div class="hextra-search-wrapper hx:relative hx:md:w-64">
+  <div class="hx:relative hx:flex hx:items-center hx:text-gray-900 hx:contrast-more:text-gray-800 hx:dark:text-gray-300 hx:contrast-more:dark:text-gray-300">
+    <input
+      placeholder="搜索文档..."
+      aria-label="搜索文档..."
+      class="hextra-search-input hx:hextra-focus-visible hx:block hx:w-full hx:appearance-none hx:rounded-lg hx:px-3 hx:py-2 hx:transition-colors hx:text-base hx:leading-tight hx:md:text-sm hx:bg-black/[.05] hx:dark:bg-gray-50/10 hx:focus-visible:bg-white hx:dark:focus-visible:bg-dark hx:placeholder:text-gray-500 hx:dark:placeholder:text-gray-400 hx:contrast-more:border hx:contrast-more:border-current"
+      type="search"
+      autocomplete="off"
+      value=""
+      spellcheck="false"
+    />
+    <kbd
+      class="hx:absolute hx:my-1.5 hx:select-none hx:ltr:right-1.5 hx:rtl:left-1.5 hx:h-5 hx:rounded-sm hx:bg-white hx:px-1.5 hx:font-mono hx:text-[10px] hx:font-medium hx:text-gray-500 hx:border hx:border-gray-200 hx:dark:border-gray-100/20 hx:dark:bg-dark/50 hx:contrast-more:border-current hx:contrast-more:text-current hx:contrast-more:dark:border-current hx:items-center hx:gap-1 hx:transition-opacity hx:pointer-events-none hx:hidden hx:sm:flex"
+    >
+      CTRL K
+    </kbd>
+  </div>
+
+  <div>
+    <ul
+      class="hextra-search-results hextra-scrollbar hx:hidden hx:border hx:border-gray-200 hx:bg-white hx:text-gray-100 hx:dark:border-neutral-800 hx:dark:bg-neutral-900 hx:absolute hx:top-full hx:z-20 hx:mt-2 hx:overflow-auto hx:overscroll-contain hx:rounded-xl hx:py-2.5 hx:shadow-xl hx:max-h-[min(calc(50vh-11rem-env(safe-area-inset-bottom)),400px)] hx:md:max-h-[min(calc(100vh-5rem-env(safe-area-inset-bottom)),400px)] hx:inset-x-0 hx:ltr:md:left-auto hx:rtl:md:right-auto hx:contrast-more:border hx:contrast-more:border-gray-900 hx:contrast-more:dark:border-gray-50 hx:w-screen hx:min-h-[100px] hx:max-w-[min(calc(100vw-2rem),calc(100%+20rem))]"
+      aria-label="搜索结果"
+      style="transition: max-height 0.2s ease 0s;"
+    ></ul>
+    <div class="hextra-search-status hx:sr-only" aria-live="polite" role="status"></div>
+  </div>
+</div>
+
+    </div><div class="hextra-scrollbar hx:overflow-y-auto hx:overflow-x-hidden hx:p-4 hx:grow hx:md:h-[calc(100vh-var(--navbar-height)-var(--menu-height))]">
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:md:hidden">
+      
+      
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lectures/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">课程讲义</span>
+    </a>
+  </div></li>
+          <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:ltr:pr-8 hx:rtl:pl-8
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">实验指导</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:ltr:pr-8 hx:rtl:pl-8
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">实验一：Linux基础&amp;Codia平台介绍</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div>
+              <div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/part1/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">章节一：在虚拟机下安装Linux系统（选做）</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/lab/lab1/part2/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">章节二：初探Linux</span>
+    </a>
+  </div>
+  
+    <ul class='hx:flex hx:flex-col hx:gap-1 hx:relative hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:dark:before:bg-neutral-800 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:pr-3 hx:rtl:before:right-0 hx:ltr:ml-3 hx:rtl:mr-3'><li>
+              <a
+                href="#21-ubuntu-gui%e7%9a%84%e4%bd%bf%e7%94%a8"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.1 Ubuntu GUI的使用</a>
+            </li>
+          <li>
+              <a
+                href="#22-%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e8%a1%8c%e7%9a%84%e4%bd%bf%e7%94%a8"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.2 终端（命令行）的使用</a>
+            </li>
+          <li>
+              <a
+                href="#23-linux%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.3 Linux常用指令</a>
+            </li>
+          <li>
+              <a
+                href="#24-%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99"
+                class="hx:flex hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [word-break:break-word] hx:cursor-pointer [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:contrast-more:border hx:gap-2 hx:before:opacity-25 hx:before:content-['#'] hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:text-gray-900 hx:contrast-more:dark:text-gray-50 hx:contrast-more:border-transparent hx:contrast-more:hover:border-gray-900 hx:contrast-more:dark:hover:border-gray-50"
+              >2.4 参考资料</a>
+            </li>
+          </ul>
+  
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/part3/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">章节三：Codia平台介绍</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/additional/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">补充材料</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/requirement/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">实验要求与检查</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div>
+            </li></ul>
+      </div></li>
+          <li class=""><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/resources/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">课程资源</span>
+    </a>
+  </div></li>
+    </ul>
+
+    <ul class="hx:flex hx:flex-col hx:gap-1 hx:max-md:hidden">
+        
+          <li class="open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none] hx:ltr:pr-8 hx:rtl:pl-8
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">实验一：Linux基础&amp;Codia平台介绍</span>
+    </a>
+      <button type="button" class="hextra-sidebar-collapsible-button hx:absolute hx:top-1/2 hx:-translate-y-1/2 hx:ltr:right-2 hx:rtl:left-2 hx:shrink-0 hx:cursor-pointer hx:p-0 hx:text-gray-500 hx:dark:text-neutral-400 hx:group-hover:text-gray-900 hx:dark:group-hover:text-gray-50 hx:group-data-[active=true]:text-primary-800 hx:group-data-[active=true]:dark:text-primary-600 hx:hextra-focus-visible-inset" aria-label="切换章节" aria-expanded="true"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:h-[18px] hx:min-w-[18px] hx:rounded-xs hx:p-0.5 hx:hover:bg-gray-800/5 hx:dark:hover:bg-gray-100/5"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" class="hx:origin-center hx:transition-transform hx:rtl:-rotate-180"></path></svg></button>
+  </div><div class="hextra-sidebar-children hx:ltr:pr-0 hx:rtl:pl-0 hx:overflow-hidden">
+        <ul class='hx:relative hx:flex hx:flex-col hx:gap-1 hx:before:absolute hx:before:inset-y-1 hx:before:w-px hx:before:bg-gray-200 hx:before:content-[""] hx:ltr:ml-3 hx:ltr:pl-3 hx:ltr:before:left-0 hx:rtl:mr-3 hx:rtl:pr-3 hx:rtl:before:right-0 hx:dark:before:bg-neutral-800'><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/part1/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">章节一：在虚拟机下安装Linux系统（选做）</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col open"><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="true">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hextra-sidebar-active-item hx:bg-primary-100 hx:font-semibold hx:text-primary-800 hx:contrast-more:border hx:contrast-more:border-primary-500 hx:dark:bg-primary-400/10 hx:dark:text-primary-600 hx:contrast-more:dark:border-primary-500"
+      href="/lab/lab1/part2/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">章节二：初探Linux</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/part3/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">章节三：Codia平台介绍</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/additional/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">补充材料</span>
+    </a>
+  </div>
+              
+            </li><li class="hx:flex hx:flex-col "><div class="hextra-sidebar-item hx:group hx:relative hx:flex hx:items-center" data-active="false">
+    <a
+      class="hx:flex hx:items-center hx:justify-between hx:gap-2 hx:grow hx:cursor-pointer hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:transition-colors [-webkit-tap-highlight-color:transparent] [-webkit-touch-callout:none]
+      hx:hextra-focus-visible-inset
+        hx:text-gray-500 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:contrast-more:border hx:contrast-more:border-transparent hx:contrast-more:text-gray-900 hx:contrast-more:hover:border-gray-900 hx:dark:text-neutral-400 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:contrast-more:dark:text-gray-50 hx:contrast-more:dark:hover:border-gray-50"
+      href="/lab/lab1/requirement/"
+      
+    >
+      <span class="hx:min-w-0 [word-break:break-word]">实验要求与检查</span>
+    </a>
+  </div>
+              
+            </li></ul>
+      </div></li>
+        
+      </ul>
+    </div>
+  
+  
+    <div class="  hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-white hx:dark:bg-dark hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show"><div class="hx:flex hx:grow hx:flex-col"><div class="hx:flex hx:justify-items-start hx:group" data-theme="light">
+  <button
+    title="切换主题"
+    data-state="closed"
+    data-location="bottom"
+    class="hextra-theme-toggle hx:cursor-pointer hx:rounded-md hx:text-left hx:font-medium hx:h-7 hx:px-2 hx:text-xs hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-primary-100/5 hx:dark:hover:text-gray-50 hx:font-medium hx:text-gray-600 hx:transition-colors hx:dark:text-gray-400 hx:grow"
+    type="button"
+    aria-label="切换主题"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <div class="hx:flex hx:items-center hx:gap-2 hx:capitalize"><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden">浅色</span><svg height=12 class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg><span class="hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden">深色</span><svg height=12 class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="currentColor">
+  <path d="M 11.996094,2 C 6.4986225,2.0192368 2.03125,6.5024993 2.03125,12 c 0,5.497501 4.4673725,9.980763 9.964844,10 H 12 12.0039 c 5.497471,-0.01924 9.964844,-4.502499 9.964844,-10 0,-5.4975007 -4.467373,-9.9807632 -9.964844,-10 H 12 Z M 12,4 c 4.417218,0.017598 7.96875,3.5822356 7.96875,8 0,4.417764 -3.551532,7.982402 -7.96875,8 z" />
+</svg>
+<span class="hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden">跟随系统</span></div>
+  </button>
+  <ul
+    class="hextra-theme-toggle-options hx:hidden hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900"
+    style="position: fixed; inset: auto auto 0px 0px; margin: 0px; min-width: 100px;"
+    data-theme="light"
+    role="menu"
+  >
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="true"
+        tabindex="-1"
+        data-item="light"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        浅色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="dark"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        深色
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=light]:hidden hx:group-data-[theme=system]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+    <li role="none" class="hx:flex hx:flex-col">
+      <button
+        type="button"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-item="system"
+        class="hx:text-gray-700 hx:dark:text-gray-300 hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100 hx:relative hx:cursor-pointer hx:whitespace-nowrap hx:rounded-sm hx:py-1.5 hx:transition-colors hx:ltr:pl-3 hx:ltr:pr-9 hx:rtl:pr-3 hx:rtl:pl-9 hx:text-left hx:w-full hx:bg-transparent hx:border-0"
+      >
+        跟随系统
+         <span class="hx:absolute hx:inset-y-0 hx:flex hx:items-center hx:ltr:right-3 hx:rtl:left-3 hx:group-data-[theme=dark]:hidden hx:group-data-[theme=light]:hidden"><svg height=1em width=1em xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      </button>
+    </li>
+  </ul>
+</div>
+</div></div></aside>
+    
+<nav class="hextra-toc hx:order-last hx:hidden hx:w-64 hx:shrink-0 hx:xl:block hx:print:hidden hx:px-4" aria-label="目录">
+    <div class="hextra-scrollbar hx:sticky hx:top-16 hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4"><p class="hx:mb-4 hx:font-semibold hx:tracking-tight">此页上</p><ul>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#21-ubuntu-gui%e7%9a%84%e4%bd%bf%e7%94%a8">2.1 Ubuntu GUI的使用
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#22-%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e8%a1%8c%e7%9a%84%e4%bd%bf%e7%94%a8">2.2 终端（命令行）的使用
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#221-%e6%89%93%e5%bc%80%e7%bb%88%e7%ab%af">2.2.1 打开终端
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#222-%e7%9b%ae%e5%bd%95%e4%b8%8e%e8%b7%af%e5%be%84">2.2.2 目录与路径
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#223-%e8%bf%90%e8%a1%8c%e6%8c%87%e4%bb%a4">2.2.3 运行指令
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#224-%e6%8c%87%e4%bb%a4%e5%8f%8a%e5%85%b6%e5%8f%82%e6%95%b0">2.2.4 指令及其参数
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#225-%e7%bb%88%e7%ab%af%e4%bd%bf%e7%94%a8%e5%b0%8f%e6%8a%80%e5%b7%a7">2.2.5 终端使用小技巧
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#23-linux%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4">2.3 Linux常用指令
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#231-man">2.3.1 man
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#232-sudo">2.3.2 sudo
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#233-ls">2.3.3 ls
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#234-cd">2.3.4 cd
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#235-pwd">2.3.5 pwd
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#236-rm">2.3.6 rm
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#237-mv">2.3.7 mv
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#238-cp">2.3.8 cp
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#239-mkdir">2.3.9 mkdir
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2310-cat">2.3.10 cat
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2311-kill">2.3.11 kill
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2312-ps">2.3.12 ps
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2313-wget">2.3.13 wget
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2314-tar">2.3.14 tar
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2315-%e5%8c%85%e7%ae%a1%e7%90%86%e5%99%a8apt%e7%ad%89">2.3.15 包管理器（apt等）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2316-%e6%96%87%e5%ad%97%e7%bc%96%e8%be%91%e5%99%a8vimgedit%e7%ad%89">2.3.16 文字编辑器（vim、gedit等）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2317-%e7%bc%96%e8%af%91%e6%8c%87%e4%bb%a4gccgmake%e7%ad%89">2.3.17 编译指令（gcc、g&#43;&#43;、make等）
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:ltr:pl-4 hx:rtl:pr-4 hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#2318-gdb%e8%b0%83%e8%af%95%e6%8c%87%e4%bb%a4">2.3.18 gdb调试指令
+        </a>
+      </li>
+      <li class="hx:my-2 hx:scroll-my-6 hx:scroll-py-6">
+        <a class="hx:font-medium hx:inline-block hx:rounded-sm hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-300 hx:contrast-more:text-gray-900 hx:contrast-more:underline hx:contrast-more:dark:text-gray-50 hx:w-full hx:wrap-break-word hx:hextra-focus-visible-inset" href="#24-%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99">2.4 参考资料
+        </a>
+      </li></ul>
+      <div class="hx:mt-8 hx:border-t hx:bg-white hx:pt-8 hx:shadow-[0_-12px_16px_white] hx:dark:bg-dark hx:dark:shadow-[0_-12px_16px_#111] hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
+        <button id="backToTop" tabindex="-1" onClick="scrollUp();" class="hx:cursor-pointer hx:transition-all hx:duration-75 hx:opacity-0 hx:text-xs hx:font-medium hx:text-gray-500 hx:hover:text-gray-900 hx:dark:text-gray-400 hx:dark:hover:text-gray-100 hx:contrast-more:text-gray-800 hx:contrast-more:dark:text-gray-50">
+          <span>返回顶部</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" focusable="false" class="hx:inline hx:ltr:ml-1 hx:rtl:mr-1 hx:h-3.5 hx:w-3.5 hx:rounded-full hx:border hx:border-gray-500 hx:hover:border-gray-900 hx:dark:border-gray-400 hx:dark:hover:border-gray-100 hx:contrast-more:border-gray-800 hx:contrast-more:dark:border-gray-50">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+
+    <article class="hx:w-full hx:break-words hx:flex hx:min-h-[calc(100vh-var(--navbar-height))] hx:min-w-0 hx:justify-center hx:pb-8 hx:pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main id="content" class="hx:w-full hx:min-w-0 hextra-max-content-width hx:px-6 hx:pt-4 hx:md:px-12">
+        <div class="hx:mt-1.5 hx:flex hx:items-center hx:gap-1 hx:overflow-hidden hx:text-sm hx:text-gray-500 hx:dark:text-gray-400 hx:contrast-more:text-current">
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/lab/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">实验指导</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        <div class="hx:whitespace-nowrap hx:transition-colors hx:min-w-[24px] hx:overflow-hidden hx:text-ellipsis hx:hover:text-gray-900 hx:dark:hover:text-gray-100">
+          <a href="/lab/lab1/" class="hx:inline-block hx:rounded-sm hx:hextra-focus-visible-inset">实验一：Linux基础&amp;Codia平台介绍</a>
+        </div><svg class="hx:w-3.5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg><div class="hx:whitespace-nowrap hx:transition-colors hx:font-medium hx:text-gray-700 hx:contrast-more:font-bold hx:contrast-more:text-current hx:dark:text-gray-100 hx:contrast-more:dark:text-current">章节二：初探Linux</div>
+  </div>
+
+        <div class="content">
+          
+          <div class="hx:flex hx:flex-col hx:sm:flex-row hx:items-start hx:sm:items-center hx:sm:justify-between hx:gap-4 hx:mb-4">
+            <h1 class="hx:mb-0">章节二：初探Linux</h1>
+            
+          </div>
+          
+          <blockquote>
+  <p>考虑到很多同学在本次实验之前没有使用过Linux系统，因此提供此部分来速成Linux。</p>
+
+</blockquote>
+<h2>2.1 Ubuntu GUI的使用<span class="hx:absolute hx:-mt-20" id="21-ubuntu-gui的使用"></span>
+    <a href="#21-ubuntu-gui%e7%9a%84%e4%bd%bf%e7%94%a8" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><p>打开虚拟机进入到Ubuntu之后，即可看到Ubuntu的GUI界面。默认左侧是Dock（类似Windows的任务栏），里面有若干内置软件。左下角是菜单（类似Windows的开始菜单）。考虑到部分同学首次接触Ubuntu，因此建议各位依次点击所有的软件、按钮，以进一步了解Ubuntu并熟悉其中的软件。</p>
+<p>屏幕最右上角有几个图标，可以调整音量、网络设置、语言、输入法等，还可以关机。在菜单里找到“设置”，里面可以调整系统设置，如分辨率、壁纸等。Dock里有一个文件夹形状的图标，它是文件管理器，可以像windows一样图形化地浏览文件。</p>
+<blockquote>
+  <p>提示：如果在执行某个操作时报错文件/文件夹不存在，可以在UI界面内手动复制粘贴文件到目标位置（文件所有者为root用户的除外）。</p>
+
+</blockquote>
+<img src="/exp1-part1.assets/image-20250314204308347.png"  style="zoom: 25%;" />
+<h2>2.2 终端（命令行）的使用<span class="hx:absolute hx:-mt-20" id="22-终端命令行的使用"></span>
+    <a href="#22-%e7%bb%88%e7%ab%af%e5%91%bd%e4%bb%a4%e8%a1%8c%e7%9a%84%e4%bd%bf%e7%94%a8" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><h3>2.2.1 打开终端<span class="hx:absolute hx:-mt-20" id="221-打开终端"></span>
+    <a href="#221-%e6%89%93%e5%bc%80%e7%bb%88%e7%ab%af" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>在桌面/文件管理器的空白处右键即可出现“在终端打开”按钮，点击此处即可呼出终端进而在终端中执行相关的Linux指令。注意：终端也是有工作位置的。简单而言，在哪个目录下打开终端，命令就会在哪个目录下执行。终端当前目录一般称为“<strong>工作目录</strong>”。</p>
+<blockquote>
+  <p>举例：<code>ls</code>指令可以显示工作目录下的文件。在不同的目录下运行此指令的结果显然是不一样的。</p>
+
+</blockquote>
+<p>终端会显示工作目录</p>
+<h3>2.2.2 目录与路径<span class="hx:absolute hx:-mt-20" id="222-目录与路径"></span>
+    <a href="#222-%e7%9b%ae%e5%bd%95%e4%b8%8e%e8%b7%af%e5%be%84" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>Linux与Windows不同，Windows一般会分有多个逻辑磁盘，每个逻辑磁盘各有一棵目录树，但Linux只有一个目录树，磁盘可以作为一棵子树<strong>挂载</strong>到目录树的某个节点。在Linux操作系统中，整个目录树的根节点被称为<strong>根目录</strong>。每个用户拥有一个<strong>主目录</strong>，或称<strong>家目录</strong>，类似windows的<code>C:\Users\用户名</code>。从根目录看，除root用户之外，每个用户的家目录为<code>/home/用户名</code>。</p>
+<p>Linux终端里使用的路径分为<strong>绝对路径</strong>和<strong>相对路径</strong>两种。绝对路径指从根目录算起的路径，相对路径指从工作目录算起的路径。其中，以根目录算起的绝对路径以<code>/</code>开头，以家目录算起的绝对路径以<code>~</code>开头，相对路径不需要<code>/</code>或<code>～</code>开头。</p>
+<blockquote>
+  <p>举例：一个名为ustc的用户在他的家目录下创建了一个名为os的目录，在os目录下面又创建了一个名为lab1的目录，则该lab1目录可以表示为：</p>
+<ul>
+<li><code>/home/ustc/os/lab1</code></li>
+<li><code>~/os/lab1</code></li>
+<li>如果工作目录在家目录：<code>os/lab1</code></li>
+<li>如果工作目录在os目录：<code>lab1</code></li>
+</ul>
+
+</blockquote>
+<p>一些特殊的目录：</p>
+<ul>
+<li><code>.</code>代表该目录自身。例：<code>cd .</code>代表原地跳转（<code>cd</code>是切换目录的指令）；</li>
+<li><code>..</code>代表该目录的父目录。特别地，根目录的父目录也是自身。</li>
+<li>在Linux里，文件名以<code>.</code>开头的文件是隐藏文件（或目录），如何显示它们请参考2.3.3.
+<ul>
+<li><code>.</code>和<code>..</code>都是隐藏的目录。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+  <p>举例：以下几个路径是等价的：</p>
+<ul>
+<li><code>/home/ustc/os/lab1</code></li>
+<li><code>/home/ustc/os/././././././lab1</code></li>
+<li><code>/home/ustc/os/../os/lab1</code></li>
+</ul>
+
+</blockquote>
+<h3>2.2.3 运行指令<span class="hx:absolute hx:-mt-20" id="223-运行指令"></span>
+    <a href="#223-%e8%bf%90%e8%a1%8c%e6%8c%87%e4%bb%a4" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>在终端中输入可执行文件的路径即可。终端所在路径是程序运行时的路径。需要注意的是，如果运行的二进制文件就在工作目录下，需要在文件名前加上<code>./</code>。</p>
+<blockquote>
+  <p>提示：与windows可执行文件扩展名为.exe不同，Linux中，可执行文件一般没有扩展名。例外：gcc在不指定输出文件名的情况下，编译出的可执行文件会带有.out的扩展名。但你也不需要管这个.out，直接运行也是一样的。</p>
+
+</blockquote>
+<blockquote>
+  <p>例：有一个可执行文件，其路径为<code>~/os/lab1/testprog</code>。它在运行时会读取一个相对路径为<code>a.txt</code>的文件。</p>
+<ul>
+<li>在家目录下运行：需要执行<code>os/lab1/testprog</code>（或<code>~/os/lab1/testprog</code>等绝对路径），程序读取的<code>a.txt</code>在家目录下；</li>
+<li>在<code>~/os/lab1</code>下运行：需要执行<code>./testprog</code>(当然你用绝对路径也无所谓)，程序读取的<code>a.txt</code>在<code>~/os/lab1</code>目录下。</li>
+</ul>
+
+</blockquote>
+<p>相关问题：为什么在运行<code>sudo</code>、<code>man</code>等命令时，只需要输入指令名而不需要输入这些指令对应的二进制文件所在的路径？</p>
+<p>一种情况是，这是因为这些指令所在的路径（一般是<code>/usr/bin</code>）被加入到了该用户的<strong>环境变量</strong>中。当终端读取到一个不带路径的命令之后，系统只会在环境变量中搜索，从而方便用户使用。当然，默认被加入环境变量里的路径一般只有一些系统路径，除非自行设置，家目录下面没有目录默认在环境变量中。如感兴趣，修改环境变量的方法可自行搜索了解。</p>
+<p>另一种情况是，部分指令是Shell内建指令（如<code>cd</code>），它们的意义直接由Shell解释，没有对应的二进制文件。此情况可能会在下一实验中详细阐述。</p>
+<h3>2.2.4 指令及其参数<span class="hx:absolute hx:-mt-20" id="224-指令及其参数"></span>
+    <a href="#224-%e6%8c%87%e4%bb%a4%e5%8f%8a%e5%85%b6%e5%8f%82%e6%95%b0" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>无论是Linux还是Windows，一条完整的命令都由命令及其参数构成。你们可以通过<code>man 指令名</code>来自行了解指令语法。一般来说，指令语法里带有&rsquo;[ ]&lsquo;的是可选参数，其他是必选参数。不同的参数的顺序一般是可以互换的。下面以<code>gcc</code>（一种编译器）为例，介绍实验文档描述指令的方式，以及如何按需构造一条指令。</p>
+<p>本次要用到的<code>gcc</code>指令的一部分语法是：<code>gcc [-static] [-o outfile] infile</code> 。下面是各参数介绍：</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>-static</td>
+          <td>静态编译选项（此处参数仅为示例，参数详细含义请自行上网搜索）。</td>
+      </tr>
+      <tr>
+          <td>-o outfile</td>
+          <td>指定输出的可执行文件的文件名为outfile。如果不指定，会输出为a.out。</td>
+      </tr>
+      <tr>
+          <td>infile</td>
+          <td>要编译的gcc文件名。注意绝对路径/相对路径的问题。</td>
+      </tr>
+  </tbody>
+</table>
+<ul>
+<li>如果我们编译test.c，不指定输出文件名，命令就只是<code>gcc test.c</code>；（这种情况下，gcc会自动命名输出文件为a.out）</li>
+<li>如果我们编译test.c，输出二进制文件名为test，命令就是<code>gcc -o test test.c</code>；
+<ul>
+<li>一般来说参数的顺序是无所谓的。所以使用<code>gcc test.c -o test</code>也一样能编译。</li>
+</ul>
+</li>
+<li>如果我们编译test.c，输出二进制文件名为test，且要使用静态编译，那么构造出的编译指令就是<code>gcc -static -o test test.c</code>。</li>
+</ul>
+<h3>2.2.5 终端使用小技巧<span class="hx:absolute hx:-mt-20" id="225-终端使用小技巧"></span>
+    <a href="#225-%e7%bb%88%e7%ab%af%e4%bd%bf%e7%94%a8%e5%b0%8f%e6%8a%80%e5%b7%a7" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><ul>
+<li>按键盘的<code>↑↓</code>键可以切换到之前输入过的指令；</li>
+<li>按键盘的<code>Tab</code>键可以自动补全。如果按一下Tab之后没反应，说明候选项太多。再按一下Tab可以显示所有候选项。</li>
+<li>在shell里，<code>Ctrl+C</code>是终止不是复制。复制的快捷键是<code>Ctrl+Insert</code>或<code>Ctrl+Shift+C</code>，粘贴的快捷键是<code>Shift+Insert</code>或<code>Ctrl+Shift+V</code>。</li>
+</ul>
+<h2>2.3 Linux常用指令<span class="hx:absolute hx:-mt-20" id="23-linux常用指令"></span>
+    <a href="#23-linux%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><blockquote>
+  <p>注：一些指令的使用方法详见提供的链接。本部分涉及测验考察，测验方式见文档3.2。</p>
+
+</blockquote>
+<h3>2.3.1 man<span class="hx:absolute hx:-mt-20" id="231-man"></span>
+    <a href="#231-man" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文缩写：manual</p>
+<p>如果你不知道一条命令的含义，使用<code>man xxx</code>可以显示该命令的使用手册。</p>
+<p>举例：<code>man ps</code> 可以显示<code>ps</code>指令的使用方法。按q退出手册。</p>
+<h3>2.3.2 sudo<span class="hx:absolute hx:-mt-20" id="232-sudo"></span>
+    <a href="#232-sudo" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p><strong>TL;DR：<code>sudo</code> = “以管理员模式运行”</strong>。<a href="https://mp.weixin.qq.com/s/JEIiLl-VXAkiahKZk8ECfw"target="_blank" rel="noopener">A joke</a></p>
+<p>Linux采用<strong>用户组</strong>的概念实现访问控制，其中，只有root用户组才具备管理系统的权限。在<code>sudo</code>出现之前，一般用户管理linux系统的方式是，先用<code>su</code>指令切换到root用户，然后在root用户下进行操作。但是使用<code>su</code>的缺点之一在于必须要先告知root用户的密码，且这种控制方式不够精细。</p>
+<p>为了方便操作，并更加精确地控制权限，<code>sudo</code>用来将root用户的部分权限让渡给普通用户。普通用户只需要输入自己的密码，确认“我是我自己”，就能执行自己拥有的那部分管理员权限。特别地，在Ubuntu下，普通用户默认可以通过<code>sudo</code>取得root用户的所有权限。若想精确地控制每个用户能用<code>sudo</code>干什么，可以参阅<code>visudo</code>。</p>
+<p>如果在输入某个指令后，系统提示权限不够(Permission Denied)，那么在指令前加上<code>sudo</code>一般都能解决问题。</p>
+<blockquote>
+  <p>注意1：root用户具备很高的权限。一些需要管理员权限才能执行的指令（如，删除整个磁盘上的内容）会破坏系统。所以在使用<code>sudo</code>时，请务必确认输入的指令没问题。</p>
+<p>注意2：为了防止旁窥者获知密码长度，linux下输入密码不会在屏幕上给出诸如***的回显。输完密码敲回车就行了。</p>
+
+</blockquote>
+<p>常见使用方法：<code>sudo command</code></p>
+<p>例：以普通用户运行<code>apt install vim</code>，会被告知没有权限，因为只有root用户（管理员）才有资格安装软件包。正确的用法是<code>sudo apt install vim</code>。</p>
+<h3>2.3.3 ls<span class="hx:absolute hx:-mt-20" id="233-ls"></span>
+    <a href="#233-ls" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：list files</p>
+<p>显示特定目录中的文件列表。常见的一部分语法是：<code>ls [-a] [name]</code> 。参数含义详见<a href="https://www.runoob.com/linux/linux-comm-ls.html"target="_blank" rel="noopener">Linux ls命令</a>。</p>
+<h3>2.3.4 cd<span class="hx:absolute hx:-mt-20" id="234-cd"></span>
+    <a href="#234-cd" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：change directory</p>
+<p>切换工作目录。常见的一部分语法是：<code>cd [name]</code> 。参数含义详见<a href="https://www.runoob.com/linux/linux-comm-cd.html"target="_blank" rel="noopener">Linux cd命令</a>。特别地，常见使用<code>cd -</code>来返回上次到达的目录。</p>
+<h3>2.3.5 pwd<span class="hx:absolute hx:-mt-20" id="235-pwd"></span>
+    <a href="#235-pwd" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：print work directory</p>
+<p>输出工作目录的绝对路径。常见的使用方法是：<code>pwd</code> 。</p>
+<h3>2.3.6 rm<span class="hx:absolute hx:-mt-20" id="236-rm"></span>
+    <a href="#236-rm" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：remove</p>
+<p>删除一个文件或目录。常见的一部分语法是：<code>rm [-rf] name</code> 。参数含义详见<a href="https://www.runoob.com/linux/linux-comm-rm.html"target="_blank" rel="noopener">Linux rm命令</a>。</p>
+<h3>2.3.7 mv<span class="hx:absolute hx:-mt-20" id="237-mv"></span>
+    <a href="#237-mv" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：move</p>
+<p>移动一个文件或目录，或重命名文件。常见的一部分语法是：<code>mv source dest</code> 。参数含义详见<a href="https://www.runoob.com/linux/linux-comm-mv.html"target="_blank" rel="noopener">Linux mv命令</a>。</p>
+<h3>2.3.8 cp<span class="hx:absolute hx:-mt-20" id="238-cp"></span>
+    <a href="#238-cp" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：copy</p>
+<p>复制一个文件或目录。常见的一部分语法是：<code>cp [-r] source dest</code> 。参数含义详见<a href="https://www.runoob.com/linux/linux-comm-cp.html"target="_blank" rel="noopener">Linux cp命令</a>。</p>
+<h3>2.3.9 mkdir<span class="hx:absolute hx:-mt-20" id="239-mkdir"></span>
+    <a href="#239-mkdir" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：make directory</p>
+<p>创建目录。常见的一部分语法是：<code>mkdir [-p] dirName</code> 。</p>
+<p>参数含义详见<a href="https://www.runoob.com/linux/linux-comm-mkdir.html"target="_blank" rel="noopener">Linux mkdir命令</a>。</p>
+<h3>2.3.10 cat<span class="hx:absolute hx:-mt-20" id="2310-cat"></span>
+    <a href="#2310-cat" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：concatenate</p>
+<p>一般用于将文件内容输出到屏幕。常见的使用方法是：<code>cat fileName</code> 。</p>
+<h3>2.3.11 kill<span class="hx:absolute hx:-mt-20" id="2311-kill"></span>
+    <a href="#2311-kill" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>用于将指定的信息发送给程序，通常使用此指令来结束进程。强制结束进程的信号编号是9，所以强制结束进程的使用方法是：<code>kill -9 [进程编号]</code>。</p>
+<p>其他参数的使用方法可以参考<a href="https://www.runoob.com/linux/linux-comm-kill.html"target="_blank" rel="noopener">Linux kill命令</a>。</p>
+<h3>2.3.12 ps<span class="hx:absolute hx:-mt-20" id="2312-ps"></span>
+    <a href="#2312-ps" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>英文全拼：process status</p>
+<p>用于显示进程状态（任务管理器）。常见的使用方法：</p>
+<ul>
+<li><code>ps</code>: 显示<strong>当前用户</strong>在当前终端控制下的进程。考虑到用户通常想看不止当前用户和当前终端下的进程，所以不加参数的用法并不常用。</li>
+<li><code>ps aux</code>: 展示所有用户所有进程的详细信息。注意，a前面带一个横线是严格意义上不正确的使用方法。</li>
+<li><code>ps -ef</code>: 也是展示所有用户所有进程的详细信息。就输出结果而言和<code>ps aux</code>无甚差别。</li>
+</ul>
+<h3>2.3.13 wget<span class="hx:absolute hx:-mt-20" id="2313-wget"></span>
+    <a href="#2313-wget" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>wget是一个在命令行下下载文件的工具。常见的使用方法是：<code>wget [-O FILE] URL</code>。</p>
+<p>例如，我们要下载 <a href="https://git-scm.com/images/logo@2x.png"target="_blank" rel="noopener">https://git-scm.com/images/logo@2x.png</a> 到本地。</p>
+<ol>
+<li>直接下载：<code>wget https://git-scm.com/images/logo@2x.png</code>，文件名是logo@2x.png。</li>
+<li>直接下载并重命名：<code>wget -O git.png https://git-scm.com/images/logo@2x.png</code>，文件名是git.png。注：-O中的O表示字母O而不是数字0。</li>
+</ol>
+<p>注意，如果发现有同名文件，1所示方法会在文件名后面加上.1的后缀进行区分，而2所示方法会直接覆盖。</p>
+<h3>2.3.14 tar<span class="hx:absolute hx:-mt-20" id="2314-tar"></span>
+    <a href="#2314-tar" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>用于压缩、解压压缩包。常见使用方法：</p>
+<ul>
+<li>把某名为source的文件或目录压缩成名为out.tar.gz的gzip格式压缩文件：<code>tar zcvf out.tar.gz source</code></li>
+<li>解压缩某名为abc.tar.gz的gzip格式压缩文件：<code>tar zxvf abc.tar.gz</code></li>
+</ul>
+<p>其他使用方法详见<a href="https://www.runoob.com/linux/linux-comm-tar.html"target="_blank" rel="noopener">Linux tar命令</a></p>
+<h3>2.3.15 包管理器（apt等）<span class="hx:absolute hx:-mt-20" id="2315-包管理器apt等"></span>
+    <a href="#2315-%e5%8c%85%e7%ae%a1%e7%90%86%e5%99%a8apt%e7%ad%89" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>在Linux下，如何安装软件包？每个Linux发行版都会自带一个<strong>包管理器</strong>，类似一个“软件管家”，专门下载免费软件。</p>
+<p>不同Linux发行版附带的包管理器是不一样的。如，Debian用apt（Ubuntu是基于Debian的，所以也用apt），ArchLinux用Pacman，CentOS用yum，等等。</p>
+<p>apt的常见用法：</p>
+<ul>
+<li>安装xx包，yy包和zz包：<code>sudo apt install xx yy zz</code></li>
+<li>删除xx包，yy包和zz包：<code>sudo apt remove xx yy zz</code></li>
+<li>更新已安装的软件包：<code>sudo apt upgrade</code></li>
+<li>从软件源处检查系统中的软件包是否有更新：<code>sudo apt update</code></li>
+</ul>
+<p>其他使用方法参见<a href="https://www.runoob.com/linux/linux-comm-apt.html"target="_blank" rel="noopener">Linux apt命令</a>。</p>
+<blockquote>
+  <p>其他提示：</p>
+<ul>
+<li>如果报错<code>“无法获得锁 /var/lib/dpkg/lock.....”</code>，这是因为系统在同一时刻只能运行一个apt，请耐心等另一边安装/更新完。Ubuntu的软件包管理器也是一个apt。若你确信没有别的apt在运行，可能是因为没安装完包就关掉了终端或apt。请重启Linux或参考<a href="https://blog.csdn.net/yaoduren/article/details/8561145"target="_blank" rel="noopener">此链接</a>。</li>
+<li>如果报错<code>“下列软件包有未满足的依赖关系......”</code>或<code>没有可用的软件包.....，但是它被其他软件包引用了....</code>，可能是因为刚换了源，没等包刷新完就关闭窗口，请手动<code>sudo apt-get update</code>。</li>
+</ul>
+
+</blockquote>
+<h3>2.3.16 文字编辑器（vim、gedit等）<span class="hx:absolute hx:-mt-20" id="2316-文字编辑器vimgedit等"></span>
+    <a href="#2316-%e6%96%87%e5%ad%97%e7%bc%96%e8%be%91%e5%99%a8vimgedit%e7%ad%89" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>Linux系统中，常见的使用命令行的文字编辑器是vim。系统一般并<strong>不</strong>自带vim，需要使用包管理器安装。由于vim的使用方法与我们习惯的的GUI编辑方式有很大差异，所以在这里不详细介绍它的用法。若想了解请参考https://www.runoob.com/linux/linux-vim.html。</p>
+<p>gedit是Ubuntu使用的Gnome桌面环境<strong>自带</strong>的一款文本编辑器，其使用方法与Windows的记事本(Notepad)大同小异。在这里也不多介绍。在终端里输入<code>gedit</code>回车即可启动gedit。编辑特定的文件的使用方法是<code>gedit 文件名</code>，若输入的文件名不存在，将自动创建新文件。在Ubuntu的图形化界面中直接双击文本文件也可以编辑文件。<strong>但需要注意的是，在编辑一些需要root权限的文件时，直接双击文件不能编辑，只能在终端里<code>sudo gedit 文件名</code>。</strong></p>
+<blockquote>
+  <p>在命令行下启动gedit会在终端里报warning，忽略即可。<a href="https://askubuntu.com/questions/798935/set-document-metadata-failed-when-i-run-sudo-gedit"target="_blank" rel="noopener">参考链接</a></p>
+
+</blockquote>
+<p>如果想使用一些更高级的编辑器，可以考虑安装vscode。安装方法请自行到网上搜索。</p>
+<p>比起在虚拟机内安装vscode，更推荐在主机上安装vscode并用ssh连接虚拟机，可以参考链接：<a href="https://blog.csdn.net/m0_73500130/article/details/139669691"target="_blank" rel="noopener">https://blog.csdn.net/m0_73500130/article/details/139669691</a></p>
+<p>如果想安装高级IDE的话（不推荐这么做），只能用CLion等。Visual Studio不支持Linux。</p>
+<blockquote>
+  <p>在后续的实验中，如果某步骤写着<code>vim xxx</code>，说明这是让你编辑某文件。编辑文件的方式不仅局限于vim，用gedit等也可。</p>
+
+</blockquote>
+<h3>2.3.17 编译指令（gcc、g++、make等）<span class="hx:absolute hx:-mt-20" id="2317-编译指令gccgmake等"></span>
+    <a href="#2317-%e7%bc%96%e8%af%91%e6%8c%87%e4%bb%a4gccgmake%e7%ad%89" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>我们在编译代码时，需要使用编译器。<code>gcc</code>和<code>g++</code>是常见的编译命令。其中:</p>
+<ul>
+<li><code>gcc</code>会把<code>.c</code>文件当作C语言进行编译，把<code>.cpp</code>文件当作C++语言编译。</li>
+<li><code>g++</code>会把<code>.c</code>和<code>.cpp</code>文件都当作C++语言编译。</li>
+</ul>
+<p>考虑到复杂工程需要编译的文件数量会很多，此时每次都手输编译命令较为繁琐，为此GNU提供了一个make工具，可以按照一个编写好的Makefile文件来完成编译任务。我们将在实验一的第二部分给予重点介绍。</p>
+<blockquote>
+  <p>注意：</p>
+<ol>
+<li>这里的“C语言”是C90标准的C语言，<strong>不能使用STL、类、引用、for内定义变量等C++特性</strong>。</li>
+<li>Linux内核是使用上面所述的C语言编写的，而不是C++。</li>
+<li>在编写代码时，请注意代码文件的扩展名命名，和编译指令的选择。</li>
+<li><code>gcc</code>和<code>g++</code>默认是不安装的。如果你想使用，请先使用包管理器安装<code>build-essential</code>包，里面包括<code>gcc</code>、<code>g++</code>等常见编译器，和make工具等。</li>
+</ol>
+
+</blockquote>
+<p>简单地使用<code>gcc</code>/<code>g++</code>编译的语法是：<code>gcc [-o outfile] infile</code> 。下面是指令的各个参数介绍。如需了解更详尽的使用方法，可参考gcc官方手册：http://www.gnu.org/software/gcc/。</p>
+<table>
+  <thead>
+      <tr>
+          <th>参数</th>
+          <th>含义</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>-o outfile</td>
+          <td>指定输出的可执行文件的文件名为outfile。如果不指定，会输出为a.out。</td>
+      </tr>
+      <tr>
+          <td>infile</td>
+          <td>要编译的gcc文件名。注意绝对路径/相对路径的问题。</td>
+      </tr>
+  </tbody>
+</table>
+<p>使用<code>make</code>的方法是：在工程目录下直接运行<code>make</code>即可。一些Makefile会提供多种编译选项，如删除编译好的二进制文件(<code>make clean</code>)、编译不同的文件等。这时候需要根据Makefile来确定不同的编译选项。</p>
+<h3>2.3.18 gdb调试指令<span class="hx:absolute hx:-mt-20" id="2318-gdb调试指令"></span>
+    <a href="#2318-gdb%e8%b0%83%e8%af%95%e6%8c%87%e4%bb%a4" class="subheading-anchor" aria-label="此章节的永久链接"></a></h3><p>gdb是一款命令行下常用的调试工具，可以用来打断点、显示变量的内存地址，以及内存地址中的数据等。使用方法是<code>gdb 可执行文件名</code>，即可在gdb下调试某二进制文件。</p>
+<p>gdb需要使用包管理器来安装。（参考<code>2.3.15</code>）</p>
+<p>一般在使用gcc等编译器编译程序的时候，编译器不会把调试信息放进可执行文件里，进而导致gdb知道某段内存里有内容，但并不知道这些内容是变量a还是变量b。或者，gdb知道运行了若干机器指令，但不知道这些机器指令对应哪些C语言代码。所以，在使用gdb时需要在编译时加入<code>-g</code>选项，如：<code>gcc -g -o test test.c</code>来将调试信息加入可执行文件。而Linux内核采取了另一种方式：它把符号表独立成了另一个文件，在调试的时候载入符号表文件就可以达到相同的效果。</p>
+<ul>
+<li>
+<p>gdb里的常用命令</p>
+<div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+
+<div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">r/run                 				<span class="c1"># 开始执行程序</span>
+</span></span><span class="line"><span class="cl">b/break &lt;location&gt;    				<span class="c1"># 在location处添加断点，location可以是代码行数或函数名</span>
+</span></span><span class="line"><span class="cl">b/break &lt;location&gt; <span class="k">if</span> &lt;condition&gt;   <span class="c1"># 在location处添加断点，仅当condition条件满足才中断运行</span>
+</span></span><span class="line"><span class="cl">c/continue                          <span class="c1"># 继续执行到下一个断点或程序结束</span>
+</span></span><span class="line"><span class="cl">n/next                				<span class="c1"># 运行下一行代码，如果遇到函数调用直接跳到调用结束</span>
+</span></span><span class="line"><span class="cl">s/step                				<span class="c1"># 运行下一行代码，如果遇到函数调用则进入函数内部逐行执行</span>
+</span></span><span class="line"><span class="cl">ni/nexti              				<span class="c1"># 类似next，运行下一行汇编代码（一行c代码可能对应多行汇编代码）</span>
+</span></span><span class="line"><span class="cl">si/stepi              				<span class="c1"># 类似step，运行下一行汇编代码</span>
+</span></span><span class="line"><span class="cl">l/list                  				<span class="c1"># 显示当前行代码</span>
+</span></span><span class="line"><span class="cl">p/print &lt;expression&gt;   				<span class="c1"># 查看表达式expression的值</span>
+</span></span><span class="line"><span class="cl">q                     				<span class="c1"># 退出gdb</span></span></span></code></pre></div></div><div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0">
+  <button
+    class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+    title="复制代码"
+    aria-label="复制代码"
+    data-copied-label="已复制！"
+  >
+    <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"></div>
+<div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"></div>
+  </button>
+</div>
+</div>
+</li>
+</ul>
+<h2>2.4 参考资料<span class="hx:absolute hx:-mt-20" id="24-参考资料"></span>
+    <a href="#24-%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" class="subheading-anchor" aria-label="此章节的永久链接"></a></h2><ul>
+<li>Linux命令大全：https://www.runoob.com/linux/linux-command-manual.html</li>
+<li>Shell教程：https://www.runoob.com/linux/linux-shell.html</li>
+</ul>
+<div STYLE="page-break-after: always;"></div>
+        </div>
+        <div class="hx:mt-16"></div><div class="hx:mb-8 hx:flex hx:items-center hx:border-t hx:pt-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400 hx:print:hidden"><a
+        href="/lab/lab1/part1/"
+        title="章节一：在虚拟机下安装Linux系统（选做）"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:pr-4 hx:rtl:pl-4"
+      ><svg class="hx:inline hx:h-5 hx:shrink-0 hx:ltr:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>章节一：在虚拟机下安装Linux系统（选做）</a><a
+        href="/lab/lab1/part3/"
+        title="章节三：Codia平台介绍"
+        class="hx:flex hx:max-w-[50%] hx:items-center hx:gap-1 hx:py-4 hx:text-base hx:font-medium hx:text-gray-600 hx:transition-colors [word-break:break-word] hx:hover:text-primary-600 hx:dark:text-gray-300 hx:md:text-lg hx:ltr:ml-auto hx:ltr:pl-4 hx:ltr:text-right hx:rtl:mr-auto hx:rtl:pr-4 hx:rtl:text-left"
+      >章节三：Codia平台介绍<svg class="hx:inline hx:h-5 hx:shrink-0 hx:rtl:-rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
+      </main>
+    </article>
+  </div>
+
+      <footer class="hextra-footer hx:bg-gray-100 hx:pb-[env(safe-area-inset-bottom)] hx:dark:bg-neutral-900 hx:print:bg-transparent"><div class="hextra-custom-footer hextra-max-footer-width hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400"></div><div
+      class="hextra-max-footer-width hx:mx-auto hx:flex hx:justify-center hx:py-12 hx:pl-[max(env(safe-area-inset-left),1.5rem)] hx:pr-[max(env(safe-area-inset-right),1.5rem)] hx:text-gray-600 hx:dark:text-gray-400 hx:md:justify-start"
+    >
+      <div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:sm:items-start"><div class="hx:font-semibold"><a class="hx:flex hx:text-sm hx:items-center hx:gap-1 hx:text-current" target="_blank" rel="noopener noreferrer" title="Hextra GitHub Homepage" href="https://github.com/imfing/hextra">
+    <span>由 Hextra 驱动<svg height=1em class="hx:inline-block hx:ltr:ml-1 hx:rtl:mr-1 hx:align-[-2.5px]" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="m 105.50024,22.224647 c -9.59169,-5.537563 -21.40871,-5.537563 -31.000093,0 L 39.054693,42.689119 C 29.463353,48.226675 23.55484,58.460531 23.55484,69.535642 v 40.928918 c 0,11.07542 5.908513,21.3092 15.499853,26.84652 l 35.445453,20.46446 c 9.591313,5.53732 21.408404,5.53732 31.000094,0 l 35.44507,-20.46446 c 9.59131,-5.53732 15.49985,-15.7711 15.49985,-26.84652 V 69.535642 c 0,-11.075111 -5.90854,-21.308967 -15.49985,-26.846523 z M 34.112797,85.737639 c -1.384445,2.397827 -1.384445,5.352099 0,7.749927 l 24.781554,42.922974 c 1.38437,2.39783 3.942853,3.87496 6.711592,3.87496 h 49.563107 c 2.76905,0 5.3273,-1.47713 6.71144,-3.87496 l 24.78194,-42.922974 c 1.38414,-2.397828 1.38414,-5.3521 0,-7.749927 L 121.88049,42.814746 c -1.38414,-2.397828 -3.94239,-3.874964 -6.71144,-3.874964 H 65.605944 c -2.768739,0 -5.327223,1.477059 -6.711592,3.874964 z" style="stroke-width:0.774993" /></svg></span>
+  </a></div></div>
+    </div></footer>
+    
+    <script defer src="/js/main.js" integrity=""></script>
+<script defer src="/js/flexsearch.9f5b5908f93ae86f1ecd4b043b799f580c2d1654e703dd9357d568ac41b2547a.js" integrity="sha256-n1tZCPk66G8ezUsEO3mfWAwtFlTnA92TV9VorEGyVHo=" crossorigin="anonymous"></script>
+        <script defer src="/zh-cn.search.js" integrity=""></script>
+  </body>
+</html>
