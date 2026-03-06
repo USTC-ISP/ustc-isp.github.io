@@ -585,7 +585,7 @@ data-copied-label="已复制！"
 &lt;/details&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;提交内容：&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;终端执行系统信息查询指令（&lt;code&gt;lsb_release&lt;/code&gt; 和 &lt;code&gt;whoami&lt;/code&gt;）的输出截图。&lt;/li&gt;
+&lt;li&gt;终端执行系统信息查询指令（&lt;code&gt;lsb_release -a&lt;/code&gt; 和 &lt;code&gt;whoami&lt;/code&gt;）的输出截图。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h3&gt;第二部分：Linux 命令行与开发实战&lt;span class="hx:absolute hx:-mt-20" id="第二部分linux-命令行与开发实战"&gt;&lt;/span&gt;
@@ -614,6 +614,7 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;p&gt;(不支持中文的话用英文/拼音也可以。)&lt;/p&gt;
 &lt;h4&gt;任务 3：编译与运行&lt;span class="hx:absolute hx:-mt-20" id="任务-3编译与运行"&gt;&lt;/span&gt;
 &lt;a href="#%e4%bb%bb%e5%8a%a1-3%e7%bc%96%e8%af%91%e4%b8%8e%e8%bf%90%e8%a1%8c" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;任务：&lt;/strong&gt; 1. 使用 &lt;code&gt;gcc&lt;/code&gt; 手动编译源码，并指定生成的可执行文件名为 &lt;code&gt;hello&lt;/code&gt;。&lt;/li&gt;
