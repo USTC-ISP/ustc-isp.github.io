@@ -625,6 +625,6 @@ data-copied-label="已复制！"
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;提交内容（核心）：&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;目录结构图&lt;/strong&gt;（由 &lt;code&gt;ls -l&lt;/code&gt; 生成）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;编译命令及输出截图&lt;/strong&gt;（需看到编译成功的提示）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;程序运行结果截图&lt;/strong&gt;（需看到包含姓名学号的输出）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;编译命令截图&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;程序运行结果截图&lt;/strong&gt;（需看到包含姓名学号的输出）.&lt;/li&gt;
 &lt;/ul&gt;</description></item></channel></rss>
