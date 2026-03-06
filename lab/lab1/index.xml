@@ -619,7 +619,7 @@ data-copied-label="已复制！"
 &lt;li&gt;&lt;strong&gt;任务：&lt;/strong&gt; 1. 使用 &lt;code&gt;gcc&lt;/code&gt; 手动编译源码，并指定生成的可执行文件名为 &lt;code&gt;hello&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;ol start="2"&gt;
-&lt;li&gt;使用 &lt;code&gt;ls -l&lt;/code&gt; 命令展示该目录下的文件结构（应包含源码、备份文件和可执行文件）。&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;ls -l&lt;/code&gt; 命令展示该目录下的文件结构（应包含源码和可执行文件）。&lt;/li&gt;
 &lt;li&gt;运行程序并查看输出。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;ul&gt;
