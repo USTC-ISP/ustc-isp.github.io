@@ -412,6 +412,29 @@ data-copied-label="已复制！"
 &lt;p&gt;&lt;strong&gt;助教寄语&lt;/strong&gt;：“代码没存，电脑崩了”、“这个版本改坏了，想回退到昨天”、“我的代码被舍友改乱了”…… 如果你遇到过这些问题，那么 Git 将是你的救星。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
+&lt;h2&gt;3.0 安装 Git&lt;span class="hx:absolute hx:-mt-20" id="30-安装-git"&gt;&lt;/span&gt;
+&lt;a href="#30-%e5%ae%89%e8%a3%85-git" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在 Linux 上，Git 通常已经预装了。如果没有，可以使用包管理器安装：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Ubuntu/Debian&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo apt install git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Fedora&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo dnf install git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Arch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo pacman -S git&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;在 Windows 上，推荐使用 &lt;a href="https://git-scm.com/download/win"target="_blank" rel="noopener"&gt;Git for Windows&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;安装完成后，你可以在命令行输入 &lt;code&gt;git --version&lt;/code&gt; 来验证安装是否成功。&lt;/p&gt;
 &lt;h2&gt;3.1 核心概念：Git 的“三层空间”&lt;span class="hx:absolute hx:-mt-20" id="31-核心概念git-的三层空间"&gt;&lt;/span&gt;
 &lt;a href="#31-%e6%a0%b8%e5%bf%83%e6%a6%82%e5%bf%b5git-%e7%9a%84%e4%b8%89%e5%b1%82%e7%a9%ba%e9%97%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;理解 Git 的关键在于明白代码在提交过程中经过的&lt;strong&gt;三个地方&lt;/strong&gt;。我们可以用 &lt;strong&gt;“打包发货”&lt;/strong&gt; 来比喻：&lt;/p&gt;
 &lt;ol&gt;
@@ -714,8 +737,59 @@ data-copied-label="已复制！"
 &lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab2/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/requirement/</guid><description>
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200"&gt;
-&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;暂未确定。&lt;/p&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;暂未最终确定，最好先不要按这个做，等正式发布后再仔细阅读。&lt;/p&gt;
 &lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
 &lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item></channel></rss>
+&lt;/div&gt;
+&lt;h2&gt;1. 实验任务清单&lt;span class="hx:absolute hx:-mt-20" id="1-实验任务清单"&gt;&lt;/span&gt;
+&lt;a href="#1-%e5%ae%9e%e9%aa%8c%e4%bb%bb%e5%8a%a1%e6%b8%85%e5%8d%95" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本次实验要求你完成以下四个具体的步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;账号准备&lt;/strong&gt;：前往 &lt;a href="https://gitee.com/"target="_blank" rel="noopener"&gt;Gitee&lt;/a&gt; 注册账号。由于国内访问 GitHub 可能不太稳定，Gitee 是一个更适合国内用户的选择。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代码构建 (CMake)&lt;/strong&gt;：编写一个包含 2-3 个源文件（例如 &lt;code&gt;main.c&lt;/code&gt;, &lt;code&gt;math_utils.c&lt;/code&gt;, &lt;code&gt;math_utils.h&lt;/code&gt;）的小项目，并编写 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 实现成功编译。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;版本控制 (Git)&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;在本地初始化仓库 (&lt;code&gt;git init&lt;/code&gt;)。&lt;/li&gt;
+&lt;li&gt;完成多次代码修改并进行暂存与提交 (&lt;code&gt;git add&lt;/code&gt;, &lt;code&gt;git commit&lt;/code&gt;)。&lt;/li&gt;
+&lt;li&gt;在 Gitee 上创建同名仓库，并将本地代码推送到远端 (&lt;code&gt;git remote add&lt;/code&gt;, &lt;code&gt;git push&lt;/code&gt;)。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;&lt;strong&gt;作业提交&lt;/strong&gt;：按照要求整理截图，上传至 &lt;strong&gt;BB 系统&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2&gt;2. 标准目录结构&lt;span class="hx:absolute hx:-mt-20" id="2-标准目录结构"&gt;&lt;/span&gt;
+&lt;a href="#2-%e6%a0%87%e5%87%86%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;为了方便管理和助教评阅，请务必统一使用以下目录结构（以项目名 &lt;code&gt;Lab2_Project&lt;/code&gt; 为例）：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Lab2_Project/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── .git/ # Git 仓库元数据（执行 git init 后自动生成）
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── .gitignore # 忽略文件，务必包含 build/ 和可执行文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── CMakeLists.txt # CMake 配置文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── include/ # 存放所有 .h 头文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── utils.h
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── src/ # 存放所有 .c 源文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ ├── main.c
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── utils.c
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── build/ # 构建目录（所有编译产物都在这里，不进入 Git）
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;└── README.md # [可选] 简要说明你的项目&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;3. 截图作业说明（上交 BB）&lt;span class="hx:absolute hx:-mt-20" id="3-截图作业说明上交-bb"&gt;&lt;/span&gt;
+&lt;a href="#3-%e6%88%aa%e5%9b%be%e4%bd%9c%e4%b8%9a%e8%af%b4%e6%98%8e%e4%b8%8a%e4%ba%a4-bb" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请提交一份 PDF 格式的文档，内容需包含以下关键截图：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;CMake 编译截图&lt;/strong&gt;：在终端执行 &lt;code&gt;make&lt;/code&gt; 成功生成可执行文件的过程。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Git 历史截图&lt;/strong&gt;：执行 &lt;code&gt;git log --oneline --graph --all&lt;/code&gt; 后的终端输出，展示你的提交历史。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gitee 仓库截图&lt;/strong&gt;：浏览器打开你的 Gitee 项目主页，清晰显示项目名称及提交次数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;目录结构截图&lt;/strong&gt;：执行 &lt;code&gt;tree&lt;/code&gt; 命令（或在文件管理器中）展示你的项目目录结构。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;祝大家实验顺利！如有问题请在课程群及时反馈。&lt;/strong&gt;&lt;/p&gt;</description></item></channel></rss>
