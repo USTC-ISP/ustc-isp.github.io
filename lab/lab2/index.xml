@@ -1,0 +1,721 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>系统程序设计基础 (USTC ISP) – 实验二：基础工具——make/cmake与git的使用</title><link>https://ustc-isp.github.io/lab/lab2/</link><description>Recent content in 实验二：基础工具——make/cmake与git的使用 on 系统程序设计基础 (USTC ISP)</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://ustc-isp.github.io/lab/lab2/index.xml" rel="self" type="application/rss+xml"/><item><title>章节一：Make简介与Makefile编写</title><link>https://ustc-isp.github.io/lab/lab2/part1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/part1/</guid><description>
+&lt;blockquote&gt;
+&lt;p&gt;在上一章，我们还在手动输入 gcc main.c -o main。如果项目有 100 个源文件，手动编译不仅是“体力活”，更是“精细活”——改动一个文件，该重编哪些？漏掉一个怎么办？make 工具因此诞生。它不仅能一键完成所有工作，还能聪明地只处理“变动过”的部分。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;1.1 为什么需要 Make？&lt;span class="hx:absolute hx:-mt-20" id="11-为什么需要-make"&gt;&lt;/span&gt;
+&lt;a href="#11-%e4%b8%ba%e4%bb%80%e4%b9%88%e9%9c%80%e8%a6%81-make" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在大型 C/C++ 项目中，通常会有许多源文件。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;自动化&lt;/strong&gt;：一键完成编译、链接甚至打包。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;增量编译&lt;/strong&gt;：&lt;code&gt;make&lt;/code&gt; 会检查文件的修改时间。如果 &lt;code&gt;func.c&lt;/code&gt; 没变，它就不会重新编译 &lt;code&gt;func.o&lt;/code&gt;，大大节省了大型项目的构建时间。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;1.2 Makefile 核心语法&lt;span class="hx:absolute hx:-mt-20" id="12-makefile-核心语法"&gt;&lt;/span&gt;
+&lt;a href="#12-makefile-%e6%a0%b8%e5%bf%83%e8%af%ad%e6%b3%95" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;make&lt;/code&gt; 本身并不知道如何编译 C 语言。你需要通过一个名为 &lt;code&gt;Makefile&lt;/code&gt; 的文本文件告诉它规则。&lt;/p&gt;
+&lt;h3&gt;1.2.1 规则 (Rules)&lt;span class="hx:absolute hx:-mt-20" id="121-规则-rules"&gt;&lt;/span&gt;
+&lt;a href="#121-%e8%a7%84%e5%88%99-rules" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Makefile 的核心是&lt;strong&gt;规则&lt;/strong&gt;，其格式如下：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;target&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;dependencies&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;command&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Target (目标)：你想生成的东西（如 &lt;code&gt;main&lt;/code&gt; 程序、&lt;code&gt;tool.o&lt;/code&gt; 文件）。也可以是一个动作名（如 &lt;code&gt;clean&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;Dependencies (依赖)：生成目标需要哪些“原材料”（源文件或其他目标）。&lt;/li&gt;
+&lt;li&gt;Command (命令)：具体怎么做（通常是 &lt;code&gt;gcc&lt;/code&gt; 命令）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;Warning&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Makefile 诞生于 1976 年，当时的作者为了方便，规定命令前必须是 \t (Tab)。这个“设计缺陷”保留了 50 年。
+所以：命令前必须是一个 &lt;strong&gt;Tab 字符&lt;/strong&gt;，不能是空格！&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" open&gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;递归检查&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;p&gt;这里的核心逻辑是：递归检查&lt;/p&gt;
+&lt;p&gt;当你告诉 &lt;code&gt;make&lt;/code&gt; 去生成 &lt;code&gt;target&lt;/code&gt; 时，它会启动一个&lt;strong&gt;递归过程&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;检查依赖是否存在？&lt;/strong&gt; 如果 &lt;code&gt;dependencies&lt;/code&gt; 里的某个文件不存在，&lt;code&gt;make&lt;/code&gt; 会在 Makefile 中寻找是否有其他规则可以生成这个“原材料”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;检查是否需要更新？&lt;/strong&gt; 如果 &lt;code&gt;dependencies&lt;/code&gt; 中任何一个文件的“最后修改时间”比 &lt;code&gt;target&lt;/code&gt; 更新，&lt;code&gt;make&lt;/code&gt; 就会重新执行 &lt;code&gt;command&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h3&gt;1.2.2 简单示例&lt;span class="hx:absolute hx:-mt-20" id="122-简单示例"&gt;&lt;/span&gt;
+&lt;a href="#122-%e7%ae%80%e5%8d%95%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设项目结构如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;main.c&lt;/code&gt; (调用了 &lt;code&gt;tool.h&lt;/code&gt; 中的函数)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tool.c&lt;/code&gt; (函数的实现)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tool.h&lt;/code&gt; (函数声明)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 1. 最终目标(规则 A)：将两个 .o 文件链接成可执行文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;.&lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;.&lt;span class="n"&gt;o&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; gcc -o main main.o tool.o
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 2. 中间目标(规则 B)：将 main.c 编译成 main.o
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 注意：如果 tool.h 变了，main.o 也必须重编，因为它 #include 了 tool.h
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;main.o&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;main&lt;/span&gt;.&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;.&lt;span class="n"&gt;h&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; gcc -c main.c
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 3. 中间目标(规则 C)：将 tool.c 编译成 tool.o
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;tool.o&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;.&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="n"&gt;tool&lt;/span&gt;.&lt;span class="n"&gt;h&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; gcc -c tool.c
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 4. 伪目标：清理现场
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 执行 &amp;#39;make clean&amp;#39; 即可删除所有中间产物，还你一个干净的目录
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;.PHONY&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;clean&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;clean&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; rm -f main *.o
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" open&gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;编译过程&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;p&gt;&lt;strong&gt;当你输入 &lt;code&gt;make&lt;/code&gt; 时，幕后发生了什么？&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;make&lt;/code&gt; 看到第一个目标是 &lt;code&gt;main&lt;/code&gt;，它发现 &lt;code&gt;main&lt;/code&gt; 依赖 &lt;code&gt;main.o&lt;/code&gt; 和 &lt;code&gt;tool.o&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;它去找 &lt;code&gt;main.o&lt;/code&gt;，发现有&lt;strong&gt;规则 B&lt;/strong&gt;。它检查 &lt;code&gt;main.c&lt;/code&gt; 和 &lt;code&gt;tool.h&lt;/code&gt; 是否比 &lt;code&gt;main.o&lt;/code&gt; 新。如果是，执行 &lt;code&gt;gcc -c main.c&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;它再去处理 &lt;code&gt;tool.o&lt;/code&gt;，发现有&lt;strong&gt;规则 C&lt;/strong&gt;。同样检查时间戳，必要时执行 &lt;code&gt;gcc -c tool.c&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;当“原材料” &lt;code&gt;main.o&lt;/code&gt; 和 &lt;code&gt;tool.o&lt;/code&gt; 都准备好（或更新完）后，它最后执行&lt;strong&gt;规则 A&lt;/strong&gt; 里的链接命令。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h2&gt;1.3 变量与自动变量&lt;span class="hx:absolute hx:-mt-20" id="13-变量与自动变量"&gt;&lt;/span&gt;
+&lt;a href="#13-%e5%8f%98%e9%87%8f%e4%b8%8e%e8%87%aa%e5%8a%a8%e5%8f%98%e9%87%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在上面的例子中，如果我们想把编译器从 &lt;code&gt;gcc&lt;/code&gt; 换成 &lt;code&gt;clang&lt;/code&gt;，或者增加编译选项 &lt;code&gt;-O2&lt;/code&gt;（优化级别），我们需要修改每一行命令。这显然不符合程序员“偷懒”的美德。我们可以使用变量和模式匹配来简化。&lt;/p&gt;
+&lt;h3&gt;1.3.1 使用变量 (Variables)&lt;span class="hx:absolute hx:-mt-20" id="131-使用变量-variables"&gt;&lt;/span&gt;
+&lt;a href="#131-%e4%bd%bf%e7%94%a8%e5%8f%98%e9%87%8f-variables" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;变量就像 C 语言里的宏，方便统一修改。&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;CC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; gcc &lt;span class="c1"&gt;# 指定编译器&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;CFLAGS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; -Wall -g &lt;span class="c1"&gt;# 编译选项：显示所有警告，保留调试信息&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;TARGET&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; main &lt;span class="c1"&gt;# 最终产物名&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;OBJS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; main.o tool.o &lt;span class="c1"&gt;# 对象文件列表&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;$(TARGET)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;OBJS&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CC&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CFLAGS&lt;span class="k"&gt;)&lt;/span&gt; -o &lt;span class="k"&gt;$(&lt;/span&gt;TARGET&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;OBJS&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-green-200 hx:bg-green-100 hx:text-green-900 hx:dark:border-green-200/30 hx:dark:bg-green-900/30 hx:dark:text-green-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/&gt;&lt;/svg&gt;Tip&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;变量名通常约定俗成用大写。&lt;code&gt;CC&lt;/code&gt; 代表 C Compiler，&lt;code&gt;CFLAGS&lt;/code&gt; 代表 C Flags（编译参数）。&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;1.3.2 模式规则与自动变量 (Pattern Rules)&lt;span class="hx:absolute hx:-mt-20" id="132-模式规则与自动变量-pattern-rules"&gt;&lt;/span&gt;
+&lt;a href="#132-%e6%a8%a1%e5%bc%8f%e8%a7%84%e5%88%99%e4%b8%8e%e8%87%aa%e5%8a%a8%e5%8f%98%e9%87%8f-pattern-rules" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;对于几十个 &lt;code&gt;.c&lt;/code&gt; 文件，我们不可能每个都写一遍规则。Makefile 提供了一种通配符 &lt;code&gt;%&lt;/code&gt;（类似于正则表达式中的 &lt;code&gt;*&lt;/code&gt;）。&lt;/p&gt;
+&lt;p&gt;在模式规则中，由于文件名是动态确定的，我们无法写死文件名。因此，Makefile 提供了三个&lt;strong&gt;自动变量&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;$@&lt;/code&gt;&lt;/strong&gt;：代表当前的&lt;strong&gt;目标&lt;/strong&gt;（Target）。比如上面的 &lt;code&gt;main.o&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;$&amp;lt;&lt;/code&gt;&lt;/strong&gt;：代表&lt;strong&gt;第一个依赖文件&lt;/strong&gt;。比如上面的 &lt;code&gt;main.c&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;$^&lt;/code&gt;&lt;/strong&gt;：代表&lt;strong&gt;所有的依赖文件&lt;/strong&gt;（以空格分隔）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 这里的 % 相当于通配符。这条规则的意思是：
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 任何一个 .o 文件都依赖于对应的 .c 文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;%.o&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; %.&lt;span class="n"&gt;c&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CC&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CFLAGS&lt;span class="k"&gt;)&lt;/span&gt; -c $&amp;lt; -o &lt;span class="nv"&gt;$@&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" open&gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;发生了什么&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;p&gt;假设 &lt;code&gt;make&lt;/code&gt; 现在正在处理 &lt;code&gt;main.o&lt;/code&gt; 这个目标：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;模式匹配&lt;/strong&gt;：&lt;code&gt;%.o&lt;/code&gt; 匹配到了 &lt;code&gt;main.o&lt;/code&gt;，于是 &lt;code&gt;%&lt;/code&gt; 就是 &lt;code&gt;main&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;依赖推导&lt;/strong&gt;：&lt;code&gt;%.c&lt;/code&gt; 自动变成了 &lt;code&gt;main.c&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;变量代换&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;$@&lt;/code&gt;&lt;/strong&gt; (目标) -&amp;gt; &lt;code&gt;main.o&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;$&amp;lt;&lt;/code&gt;&lt;/strong&gt; (第一个依赖) -&amp;gt; &lt;code&gt;main.c&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;&lt;strong&gt;最终生成的命令&lt;/strong&gt;：&lt;code&gt;gcc -Wall -g -c main.c -o main.o&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;h3&gt;1.3.3 演示&lt;span class="hx:absolute hx:-mt-20" id="133-演示"&gt;&lt;/span&gt;
+&lt;a href="#133-%e6%bc%94%e7%a4%ba" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;我们将 1.2.2 的冗长代码简化为“工业级”写法：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;CC&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; gcc
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;CFLAGS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; -Wall -g
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;TARGET&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; main
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;OBJS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; main.o tool.o
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 链接阶段：使用 $^ 包含所有 .o 文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;$(TARGET)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;OBJS&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CC&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CFLAGS&lt;span class="k"&gt;)&lt;/span&gt; -o &lt;span class="nv"&gt;$@&lt;/span&gt; $^
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 编译阶段：使用模式规则
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 对于每一个 .o 文件，都去找对应的 .c 文件
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;%.o&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; %.&lt;span class="n"&gt;c&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CC&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;CFLAGS&lt;span class="k"&gt;)&lt;/span&gt; -c $&amp;lt; -o &lt;span class="nv"&gt;$@&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;1.3.4 伪目标&lt;span class="hx:absolute hx:-mt-20" id="134-伪目标"&gt;&lt;/span&gt;
+&lt;a href="#134-%e4%bc%aa%e7%9b%ae%e6%a0%87" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;有些目标（如 &lt;code&gt;clean&lt;/code&gt;）并不对应实际的文件，而是一个动作的名字。为了避免和同名文件冲突，我们可以使用 &lt;code&gt;.PHONY&lt;/code&gt; 声明：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;.PHONY&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;clean&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;clean&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; rm -f &lt;span class="k"&gt;$(&lt;/span&gt;TARGET&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;OBJS&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;1.4 Q&amp;amp;A&lt;span class="hx:absolute hx:-mt-20" id="14-qa"&gt;&lt;/span&gt;
+&lt;a href="#14-qa" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 我输入 &lt;code&gt;make&lt;/code&gt; 提示 &lt;code&gt;make: 'main' is up to date.&lt;/code&gt; 是什么意思？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A: 这说明你自上次编译以来没改过代码。如果你非要重编，可以先 &lt;code&gt;make clean&lt;/code&gt; 再 &lt;code&gt;make&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么提示 &lt;code&gt;missing separator. Stop.&lt;/code&gt;？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A: 检查一下！你的命令前面是不是用了空格而不是 &lt;strong&gt;Tab&lt;/strong&gt;？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么头文件 &lt;code&gt;.h&lt;/code&gt; 不需要写在 &lt;code&gt;gcc -c&lt;/code&gt; 命令里，却要写在依赖列表里？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A: 编译器会自动去找 &lt;code&gt;#include&lt;/code&gt; 的头文件，但 &lt;code&gt;make&lt;/code&gt; 需要你显式告诉它：如果 &lt;code&gt;.h&lt;/code&gt; 变了，对应的 &lt;code&gt;.o&lt;/code&gt; 也得重编。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>章节二：现代构建系统：CMake</title><link>https://ustc-isp.github.io/lab/lab2/part2/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/part2/</guid><description>
+&lt;p&gt;在上一章节中，我们手动编写了 Makefile。虽然对于几个文件的项目来说还算轻松，但如果项目引入了复杂的文件夹结构、外部库，或者需要从 Linux 迁移到 Windows，手写 Makefile 就会变成一场噩梦。&lt;/p&gt;
+&lt;p&gt;这一节，我们将学习现代 C/C++ 开发的标准工具——&lt;strong&gt;CMake&lt;/strong&gt;。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;2.1 什么是 CMake？&lt;span class="hx:absolute hx:-mt-20" id="21-什么是-cmake"&gt;&lt;/span&gt;
+&lt;a href="#21-%e4%bb%80%e4%b9%88%e6%98%af-cmake" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;CMake (Cross-Platform Make)&lt;/strong&gt; 并不是直接替代 &lt;code&gt;make&lt;/code&gt; 的编译器，而是一个&lt;strong&gt;构建系统生成器 (Generator)&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Make&lt;/strong&gt;：像是一个&lt;strong&gt;具体的食谱&lt;/strong&gt;，规定了哪一分钟下肉，哪一分钟撒盐。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CMake&lt;/strong&gt;：更像是一个&lt;strong&gt;厨政主管&lt;/strong&gt;。你只需要告诉它：“我要做一个宫保鸡丁”，它会根据你现在的厨房环境（是 Linux 的 &lt;code&gt;gcc&lt;/code&gt; 厨房，还是 Windows 的 &lt;code&gt;Visual Studio&lt;/code&gt; 厨房），自动为你写好那份详细的“食谱”（Makefile 或项目文件）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;2.2 基础 CMakeLists.txt&lt;span class="hx:absolute hx:-mt-20" id="22-基础-cmakeliststxt"&gt;&lt;/span&gt;
+&lt;a href="#22-%e5%9f%ba%e7%a1%80-cmakeliststxt" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;CMake 的所有指令都写在一个名为 &lt;code&gt;CMakeLists.txt&lt;/code&gt;（注意大小写和拼写）的文件中。&lt;/p&gt;
+&lt;h3&gt;2.2.1 四行核心指令&lt;span class="hx:absolute hx:-mt-20" id="221-四行核心指令"&gt;&lt;/span&gt;
+&lt;a href="#221-%e5%9b%9b%e8%a1%8c%e6%a0%b8%e5%bf%83%e6%8c%87%e4%bb%a4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;一个最基础的 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 如下：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cmake" data-lang="cmake"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 1. 声明要求的最低版本（保证语法兼容性）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cmake_minimum_required&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;VERSION&lt;/span&gt; &lt;span class="s"&gt;3.10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 2. 定义项目名称和版本
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;project&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;ISP_Lab2&lt;/span&gt; &lt;span class="s"&gt;VERSION&lt;/span&gt; &lt;span class="s"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 3. 指定编译选项（这里开启了所有警告并使用 C11 标准）
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;CMAKE_C_STANDARD&lt;/span&gt; &lt;span class="s"&gt;11&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;add_compile_options&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;-Wall&lt;/span&gt; &lt;span class="s"&gt;-Wextra&lt;/span&gt; &lt;span class="s"&gt;-g&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 4. 告诉 CMake：我要生成一个叫 hello 的程序，源码是这些
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;add_executable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;hello&lt;/span&gt; &lt;span class="s"&gt;main.c&lt;/span&gt; &lt;span class="s"&gt;tool.c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Note&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;&lt;strong&gt;CMake 的优势&lt;/strong&gt;：你发现了吗？我们&lt;strong&gt;没有&lt;/strong&gt;在这里手动写 &lt;code&gt;.h&lt;/code&gt; 的依赖关系。CMake 会在生成构建系统时，自动扫描源码中的 &lt;code&gt;#include&lt;/code&gt;，并帮你处理好依赖树。&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2&gt;2.3 标准构建流程：外部构建 (Out-of-source Build)&lt;span class="hx:absolute hx:-mt-20" id="23-标准构建流程外部构建-out-of-source-build"&gt;&lt;/span&gt;
+&lt;a href="#23-%e6%a0%87%e5%87%86%e6%9e%84%e5%bb%ba%e6%b5%81%e7%a8%8b%e5%a4%96%e9%83%a8%e6%9e%84%e5%bb%ba-out-of-source-build" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在运行 CMake 时，会产生大量的中间缓存文件（如 &lt;code&gt;CMakeCache.txt&lt;/code&gt;, &lt;code&gt;CMakeFiles/&lt;/code&gt;）。如果直接在源码目录下运行，你的代码文件夹会瞬间变得极其混乱。&lt;/p&gt;
+&lt;p&gt;因此，所有专业的开发者都会使用 &lt;strong&gt;“外部构建”&lt;/strong&gt;：&lt;/p&gt;
+&lt;h3&gt;构建命令：&lt;span class="hx:absolute hx:-mt-20" id="构建命令"&gt;&lt;/span&gt;
+&lt;a href="#%e6%9e%84%e5%bb%ba%e5%91%bd%e4%bb%a4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir build &lt;span class="c1"&gt;# 1. 创建一个独立的构建目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; build &lt;span class="c1"&gt;# 2. 钻进这个目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cmake .. &lt;span class="c1"&gt;# 3. “隔空取物”：让 CMake 读取上一级目录(..)的 CMakeLists.txt，并在当前目录生成 Makefile&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;make &lt;span class="c1"&gt;# 4. 此时 Makefile 已在 build 中生成，执行 make 即可编译&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;为什么执行 &lt;code&gt;cmake ..&lt;/code&gt;？&lt;/strong&gt;
+&lt;code&gt;..&lt;/code&gt; 代表父目录。CMake 需要知道 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 在哪，同时也知道要把生成的“垃圾文件”留在当前的 &lt;code&gt;build/&lt;/code&gt; 文件夹里。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;2.4 进阶：如何处理头文件？&lt;span class="hx:absolute hx:-mt-20" id="24-进阶如何处理头文件"&gt;&lt;/span&gt;
+&lt;a href="#24-%e8%bf%9b%e9%98%b6%e5%a6%82%e4%bd%95%e5%a4%84%e7%90%86%e5%a4%b4%e6%96%87%e4%bb%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果你的项目结构变得复杂，例如头文件放在 &lt;code&gt;include/&lt;/code&gt; 目录下：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── CMakeLists.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── include/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── tool.h
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;└── src/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ├── main.c
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; └── tool.c&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;你需要告诉 CMake 去哪里找头文件，否则编译时会报 &lt;code&gt;fatal error: tool.h: No such file or directory&lt;/code&gt;。&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-cmake" data-lang="cmake"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 添加头文件搜索路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;target_include_directories&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;hello&lt;/span&gt; &lt;span class="s"&gt;PUBLIC&lt;/span&gt; &lt;span class="s"&gt;include&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="err"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# 指定源码路径
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;add_executable&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;hello&lt;/span&gt; &lt;span class="s"&gt;src/main.c&lt;/span&gt; &lt;span class="s"&gt;src/tool.c&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2&gt;2.5 为什么我们要用 CMake？（对比总结）&lt;span class="hx:absolute hx:-mt-20" id="25-为什么我们要用-cmake对比总结"&gt;&lt;/span&gt;
+&lt;a href="#25-%e4%b8%ba%e4%bb%80%e4%b9%88%e6%88%91%e4%bb%ac%e8%a6%81%e7%94%a8-cmake%e5%af%b9%e6%af%94%e6%80%bb%e7%bb%93" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;Make / Makefile&lt;/th&gt;
+&lt;th&gt;CMake&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;层级&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;底层，直接控制编译动作&lt;/td&gt;
+&lt;td&gt;高层，抽象描述项目需求&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;头文件依赖&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;必须手动维护&lt;/strong&gt;，漏写会导致更新不及时&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;自动扫描&lt;/strong&gt;，无需操心&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;跨平台&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;换个系统（如 Win）基本要重写&lt;/td&gt;
+&lt;td&gt;同样的文件，生成对应的工程文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;复杂度&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;文件多了之后，维护极其困难&lt;/td&gt;
+&lt;td&gt;支持嵌套，大型项目的工业标准&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2&gt;2.6 Q&amp;amp;A 与避坑指南&lt;span class="hx:absolute hx:-mt-20" id="26-qa-与避坑指南"&gt;&lt;/span&gt;
+&lt;a href="#26-qa-%e4%b8%8e%e9%81%bf%e5%9d%91%e6%8c%87%e5%8d%97" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: &lt;code&gt;cmake ..&lt;/code&gt; 报错 &lt;code&gt;CMakeLists.txt not found&lt;/code&gt;？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A: 检查你是否在 &lt;code&gt;build&lt;/code&gt; 目录下，且 &lt;code&gt;..&lt;/code&gt; 路径是否正确指向了包含 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 的那个文件夹。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 我修改了代码，需要重新运行 &lt;code&gt;cmake ..&lt;/code&gt; 吗？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A: 通常不需要。直接在 &lt;code&gt;build&lt;/code&gt; 目录下运行 &lt;code&gt;make&lt;/code&gt; 即可。生成的 Makefile 非常聪明，它如果检测到 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 变了，会自己触发 CMake 更新。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么生成的 &lt;code&gt;build&lt;/code&gt; 目录下有几百个文件？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A: 别担心，这就是为什么我们要建 &lt;code&gt;build&lt;/code&gt; 文件夹的原因。如果你想“彻底清理”编译产物，直接 &lt;code&gt;rm -rf build&lt;/code&gt; 即可，完全不会伤及源码。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>章节三：版本控制工具：Git</title><link>https://ustc-isp.github.io/lab/lab2/part3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/part3/</guid><description>
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;助教寄语&lt;/strong&gt;：“代码没存，电脑崩了”、“这个版本改坏了，想回退到昨天”、“我的代码被舍友改乱了”…… 如果你遇到过这些问题，那么 Git 将是你的救星。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2&gt;3.1 核心概念：Git 的“三层空间”&lt;span class="hx:absolute hx:-mt-20" id="31-核心概念git-的三层空间"&gt;&lt;/span&gt;
+&lt;a href="#31-%e6%a0%b8%e5%bf%83%e6%a6%82%e5%bf%b5git-%e7%9a%84%e4%b8%89%e5%b1%82%e7%a9%ba%e9%97%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;理解 Git 的关键在于明白代码在提交过程中经过的&lt;strong&gt;三个地方&lt;/strong&gt;。我们可以用 &lt;strong&gt;“打包发货”&lt;/strong&gt; 来比喻：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;工作区 (Working Directory)&lt;/strong&gt;：你正在改代码的地方。—— &lt;strong&gt;你的办公桌&lt;/strong&gt;，随你怎么涂改。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;暂存区 (Staging Area / Index)&lt;/strong&gt;：准备提交的“缓存区”。—— &lt;strong&gt;准备寄出的快递盒&lt;/strong&gt;，你把要发货的东西放进去，但还没封口。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;版本库 (Repository)&lt;/strong&gt;：存储所有历史快照的地方。—— &lt;strong&gt;快递公司的仓库&lt;/strong&gt;。一旦封口发出（Commit），这个版本就永久记录在案了。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h2&gt;3.2 基础命令流&lt;span class="hx:absolute hx:-mt-20" id="32-基础命令流"&gt;&lt;/span&gt;
+&lt;a href="#32-%e5%9f%ba%e7%a1%80%e5%91%bd%e4%bb%a4%e6%b5%81" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;3.2.1 第一步：我是谁？（配置）&lt;span class="hx:absolute hx:-mt-20" id="321-第一步我是谁配置"&gt;&lt;/span&gt;
+&lt;a href="#321-%e7%ac%ac%e4%b8%80%e6%ad%a5%e6%88%91%e6%98%af%e8%b0%81%e9%85%8d%e7%bd%ae" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在使用 Git 之前，你必须告诉它你的身份，否则它会拒绝你的提交。&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git config --global user.name &lt;span class="s2"&gt;&amp;#34;Your Name&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git config --global user.email &lt;span class="s2"&gt;&amp;#34;your_email@example.com&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;一般来说，Git 会将这些信息保存，只用一次配置就行了。你可以通过 &lt;code&gt;git config --list&lt;/code&gt; 来查看当前的配置信息。&lt;/p&gt;
+&lt;h3&gt;3.2.2 第二步：日常开发&lt;span class="hx:absolute hx:-mt-20" id="322-第二步日常开发"&gt;&lt;/span&gt;
+&lt;a href="#322-%e7%ac%ac%e4%ba%8c%e6%ad%a5%e6%97%a5%e5%b8%b8%e5%bc%80%e5%8f%91" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;对应动作&lt;/th&gt;
+&lt;th&gt;详解&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;git init&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;创始&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;在当前文件夹创建一个隐藏的 &lt;code&gt;.git&lt;/code&gt; 目录，开启监控。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;git status&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;观察&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;最常用的命令！&lt;/strong&gt; 它会告诉你哪些文件改了没加，哪些加了没存。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;git add &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;打包&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;把文件从“办公桌”放进“快递盒”（暂存区）。常用 &lt;code&gt;git add .&lt;/code&gt; 添加全部。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;git commit -m &amp;quot;msg&amp;quot;&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;封箱&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;真正生成一个版本。&lt;code&gt;msg&lt;/code&gt; 必须清晰，如 &amp;ldquo;Fix: 修复了 Makefile 报错&amp;rdquo;。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;git log&lt;/code&gt;&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;翻看历史&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;查看过去所有的提交记录。按 &lt;code&gt;q&lt;/code&gt; 退出。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-green-200 hx:bg-green-100 hx:text-green-900 hx:dark:border-green-200/30 hx:dark:bg-green-900/30 hx:dark:text-green-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/&gt;&lt;/svg&gt;Tip&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;&lt;strong&gt;养成好习惯&lt;/strong&gt;：每次写完一个独立的小功能（比如写完一个函数并通过了编译），就进行一次 &lt;code&gt;add&lt;/code&gt; 和 &lt;code&gt;commit&lt;/code&gt;。不要等写了 500 行代码后再提交，那样“回滚”的代价太大了。&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" &gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;如何写好 Commit Message？——关于约定式提交&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;p&gt;在项目开发中，如果提交信息（Commit Message）随心所欲，过了一周连你自己都不知道当时改了什么。&lt;strong&gt;约定式提交&lt;/strong&gt;是工业界通用的规范，其基本格式为：
+&lt;code&gt;&amp;lt;type&amp;gt;: &amp;lt;description&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类型 (Type)&lt;/th&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;示例&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;feat&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;新功能 (Feature)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;feat: 增加 Makefile 自动运行功能&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;fix&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;修复 Bug&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;fix: 解决 tool.c 中的段错误&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;docs&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;仅文档改动&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;docs: 修改实验报告中的笔误&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;style&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;格式变动 (不影响逻辑)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;style: 统一将缩进由空格改为 Tab&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;refactor&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;重构 (既不是 fix 也不加 feat)&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;refactor: 优化了头文件的引用结构&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;chore&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;构建过程或辅助工具的变动&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;chore: 更新 .gitignore 忽略列表&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;为什么要这么做？&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;可读性&lt;/strong&gt;：快速过滤历史记录，一眼看出哪些是功能更新，哪些是 Bug 修复。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自动化&lt;/strong&gt;：可以通过脚本自动从 commit 中提取信息生成更新日志（CHANGELOG）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/details&gt;
+&lt;hr&gt;
+&lt;h2&gt;3.3 巧妙使用 .gitignore：保持仓库整洁&lt;span class="hx:absolute hx:-mt-20" id="33-巧妙使用-gitignore保持仓库整洁"&gt;&lt;/span&gt;
+&lt;a href="#33-%e5%b7%a7%e5%a6%99%e4%bd%bf%e7%94%a8-gitignore%e4%bf%9d%e6%8c%81%e4%bb%93%e5%ba%93%e6%95%b4%e6%b4%81" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在做实验时，我们不希望把编译生成的 &lt;code&gt;build/&lt;/code&gt; 目录或巨大的二进制文件存进 Git，因为它们是自动生成的，且占空间。&lt;/p&gt;
+&lt;p&gt;在项目根目录创建 &lt;code&gt;.gitignore&lt;/code&gt; 文件，写入你要忽略的内容，示例：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 忽略所有以 .o 结尾的文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;*.o
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 忽略所有的构建文件夹
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;build/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 忽略可执行文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;main
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;*.exe
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# 忽略系统自动生成的临时文件
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;.DS_Store
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;.vscode/&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-green-200 hx:bg-green-100 hx:text-green-900 hx:dark:border-green-200/30 hx:dark:bg-green-900/30 hx:dark:text-green-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/&gt;&lt;/svg&gt;Tip&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;&lt;strong&gt;.gitignore 的优先级&lt;/strong&gt;：如果一个文件已经被 &lt;code&gt;git add&lt;/code&gt; 过了，那么它就已经进入了版本库的监控范围了。此时即使你在 &lt;code&gt;.gitignore&lt;/code&gt; 里写了这个文件，它也不会被忽略。要让它生效，你需要先运行 &lt;code&gt;git rm --cached &amp;lt;file&amp;gt;&lt;/code&gt; 把它从版本库中移除，然后再提交一次。&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
+&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;&lt;/div&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;strong&gt;忠告&lt;/strong&gt;：
+Git 仓库里&lt;strong&gt;只应该存放源码、配置文件（如 Makefile/CMakeLists）和文档&lt;/strong&gt;。千万不要把 &lt;code&gt;build/&lt;/code&gt; 文件夹或者编译出来的 &lt;code&gt;main&lt;/code&gt; 程序推送到远程仓库。
+如果你发现 &lt;code&gt;git status&lt;/code&gt; 里出现了一堆编译产物，请立刻检查你的 &lt;code&gt;.gitignore&lt;/code&gt;！&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;hr&gt;
+&lt;h2&gt;3.4 如何回退？&lt;span class="hx:absolute hx:-mt-20" id="34-如何回退"&gt;&lt;/span&gt;
+&lt;a href="#34-%e5%a6%82%e4%bd%95%e5%9b%9e%e9%80%80" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;如果代码改坏了，想回到上一个版本怎么办？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;如果你只想看一眼过去&lt;/strong&gt;：
+&lt;code&gt;git checkout &amp;lt;commit_id&amp;gt;&lt;/code&gt; （通过 &lt;code&gt;git log&lt;/code&gt; 找到那串长长的 ID）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;如果你想放弃当前修改，回到上一次 commit 的状态&lt;/strong&gt;：
+&lt;code&gt;git reset --hard HEAD&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;Warning&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;&lt;code&gt;git reset --hard&lt;/code&gt; 是危险操作，它会抹除你工作区还没提交的所有修改，请务必确认后再使用。&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;3.5 远程仓库：代码的云端备份&lt;span class="hx:absolute hx:-mt-20" id="35-远程仓库代码的云端备份"&gt;&lt;/span&gt;
+&lt;a href="#35-%e8%bf%9c%e7%a8%8b%e4%bb%93%e5%ba%93%e4%bb%a3%e7%a0%81%e7%9a%84%e4%ba%91%e7%ab%af%e5%a4%87%e4%bb%bd" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在之前的步骤中，你的所有操作都发生在你的&lt;strong&gt;本地硬盘&lt;/strong&gt;。如果电脑进水或硬盘损坏，代码依然会丢失。远程仓库（如 GitHub、Gitee 或校内 GitLab）就是你的“云端保险箱”和“协作平台”。&lt;/p&gt;
+&lt;h3&gt;3.5.1 常用场景与指令&lt;span class="hx:absolute hx:-mt-20" id="351-常用场景与指令"&gt;&lt;/span&gt;
+&lt;a href="#351-%e5%b8%b8%e7%94%a8%e5%9c%ba%e6%99%af%e4%b8%8e%e6%8c%87%e4%bb%a4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;h4&gt;A. 从零开始（下载别人的项目）&lt;span class="hx:absolute hx:-mt-20" id="a-从零开始下载别人的项目"&gt;&lt;/span&gt;
+&lt;a href="#a-%e4%bb%8e%e9%9b%b6%e5%bc%80%e5%a7%8b%e4%b8%8b%e8%bd%bd%e5%88%ab%e4%ba%ba%e7%9a%84%e9%a1%b9%e7%9b%ae" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;如果你想参与开源项目，或者以后获取助教分发的实验框架：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git clone &amp;lt;url&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这会将远程仓库完整地下载到本地，并自动建立连接。&lt;/p&gt;
+&lt;h4&gt;B. 建立关联（将本地作业上传）&lt;span class="hx:absolute hx:-mt-20" id="b-建立关联将本地作业上传"&gt;&lt;/span&gt;
+&lt;a href="#b-%e5%bb%ba%e7%ab%8b%e5%85%b3%e8%81%94%e5%b0%86%e6%9c%ac%e5%9c%b0%e4%bd%9c%e4%b8%9a%e4%b8%8a%e4%bc%a0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;如果你先在本地写好了代码，现在想上传到自己的 GitHub 仓库：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;关联远程库&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git remote add origin https://github.com/YourName/YourRepo.git&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;这里的 &lt;code&gt;origin&lt;/code&gt; 是给远程仓库起的“外号”，你可以理解为指向云端地址的快捷方式。
+2. &lt;strong&gt;第一次推送&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;git push -u origin main&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;-u&lt;/code&gt; 参数会将本地的 &lt;code&gt;main&lt;/code&gt; 分支与远程的 &lt;code&gt;main&lt;/code&gt; 分支绑定，以后只需输入 &lt;code&gt;git push&lt;/code&gt; 即可。&lt;/p&gt;
+&lt;h4&gt;C. 同步更新（多台设备协作）&lt;span class="hx:absolute hx:-mt-20" id="c-同步更新多台设备协作"&gt;&lt;/span&gt;
+&lt;a href="#c-%e5%90%8c%e6%ad%a5%e6%9b%b4%e6%96%b0%e5%a4%9a%e5%8f%b0%e8%ae%be%e5%a4%87%e5%8d%8f%e4%bd%9c" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;p&gt;如果你在实验室写了一半，回宿舍想继续写：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;推送 (Push)&lt;/strong&gt;：在实验室写完后，&lt;code&gt;commit&lt;/code&gt; 并 &lt;code&gt;git push&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;拉取 (Pull)&lt;/strong&gt;：回宿舍后，在代码目录执行 &lt;code&gt;git pull&lt;/code&gt;，将云端最新的修改“拉”下来同步到本地。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;3.5.2 身份校验（避坑指南）&lt;span class="hx:absolute hx:-mt-20" id="352-身份校验避坑指南"&gt;&lt;/span&gt;
+&lt;a href="#352-%e8%ba%ab%e4%bb%bd%e6%a0%a1%e9%aa%8c%e9%81%bf%e5%9d%91%e6%8c%87%e5%8d%97" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;现在的远程仓库为了安全，通常不允许直接用“账号+密码”提交。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;HTTPS 方式&lt;/strong&gt;：可能需要使用 &lt;strong&gt;Personal Access Token (PAT)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SSH 方式&lt;/strong&gt;：这是最推荐的方式。通过生成 SSH 密钥对（&lt;code&gt;ssh-keygen&lt;/code&gt;），将公钥上传到服务器，实现免密提交。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;3.6 章节小结：Git 常用命令速查表&lt;span class="hx:absolute hx:-mt-20" id="36-章节小结git-常用命令速查表"&gt;&lt;/span&gt;
+&lt;a href="#36-%e7%ab%a0%e8%8a%82%e5%b0%8f%e7%bb%93git-%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4%e9%80%9f%e6%9f%a5%e8%a1%a8" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;场景&lt;/th&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;开启新项目&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;git init&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;确认当前状态&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;git status&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;准备提交&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;git add &amp;lt;file&amp;gt;&lt;/code&gt; 或 &lt;code&gt;git add .&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;正式记录&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;git commit -m &amp;quot;feat: xxx&amp;quot;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;查看过去&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;git log --oneline --graph&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;同步云端&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;git push&lt;/code&gt; (推上去) / &lt;code&gt;git pull&lt;/code&gt; (拉下来)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;3.6 实验常见问题 Q&amp;amp;A&lt;span class="hx:absolute hx:-mt-20" id="36-实验常见问题-qa"&gt;&lt;/span&gt;
+&lt;a href="#36-%e5%ae%9e%e9%aa%8c%e5%b8%b8%e8%a7%81%e9%97%ae%e9%a2%98-qa" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 为什么我运行 &lt;code&gt;git commit&lt;/code&gt; 会弹出一个奇怪的编辑器（Vim）？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A: 那是因为你没加 &lt;code&gt;-m &amp;quot;消息&amp;quot;&lt;/code&gt;。Git 强迫你输入提交说明。输入 &lt;code&gt;:q!&lt;/code&gt; 可以退出，或者按 &lt;code&gt;i&lt;/code&gt; 进入输入模式，写完后按 &lt;code&gt;Esc&lt;/code&gt; 再输入 &lt;code&gt;:wq&lt;/code&gt; 保存退出。建议初学者永远记得带上 &lt;code&gt;-m&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: &lt;code&gt;git status&lt;/code&gt; 看到一堆红色的文件名是什么意思？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A: 那说明这些文件被改动了，但还没进“暂存区”。快运行 &lt;code&gt;git add&lt;/code&gt; 吧！&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Q: 我把 &lt;code&gt;.git&lt;/code&gt; 文件夹删了会怎样？&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A: &lt;strong&gt;千万别删！&lt;/strong&gt; 所有的历史版本、提交记录都存在那个文件夹里。删了它，你的项目就退化回普通的文件夹了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab2/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/requirement/</guid><description>
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;暂未确定。&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>
