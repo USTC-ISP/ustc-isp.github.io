@@ -754,36 +754,14 @@ data-copied-label="已复制！"
 &lt;p&gt;A: &lt;strong&gt;千万别删！&lt;/strong&gt; 所有的历史版本、提交记录都存在那个文件夹里。删了它，你的项目就退化回普通的文件夹了。&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab2/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/requirement/</guid><description>
-&lt;h2&gt;1. 实验项目：简单数学工具箱 (MathUtils)&lt;span class="hx:absolute hx:-mt-20" id="1-实验项目简单数学工具箱-mathutils"&gt;&lt;/span&gt;
-&lt;a href="#1-%e5%ae%9e%e9%aa%8c%e9%a1%b9%e7%9b%ae%e7%ae%80%e5%8d%95%e6%95%b0%e5%ad%a6%e5%b7%a5%e5%85%b7%e7%ae%b1-mathutils" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;为了统一实验标准，请所有同学按照以下代码逻辑进行编写：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;include/math_utils.h&lt;/code&gt;&lt;/strong&gt;: 声明一个函数 &lt;code&gt;int factorial(int n);&lt;/code&gt;（计算阶乘）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;src/math_utils.c&lt;/code&gt;&lt;/strong&gt;: 实现 &lt;code&gt;factorial&lt;/code&gt; 函数（建议使用递归或循环）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;src/main.c&lt;/code&gt;&lt;/strong&gt;: 在 &lt;code&gt;main&lt;/code&gt; 函数中调用 &lt;code&gt;factorial&lt;/code&gt; 并输出结果（例如：&lt;code&gt;5! = 120&lt;/code&gt;）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;h2&gt;2. 实验任务清单&lt;span class="hx:absolute hx:-mt-20" id="2-实验任务清单"&gt;&lt;/span&gt;
-&lt;a href="#2-%e5%ae%9e%e9%aa%8c%e4%bb%bb%e5%8a%a1%e6%b8%85%e5%8d%95" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;任务一：手动构建 (Make)&lt;span class="hx:absolute hx:-mt-20" id="任务一手动构建-make"&gt;&lt;/span&gt;
-&lt;a href="#%e4%bb%bb%e5%8a%a1%e4%b8%80%e6%89%8b%e5%8a%a8%e6%9e%84%e5%bb%ba-make" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在根目录下编写一个 &lt;code&gt;Makefile&lt;/code&gt;，要求实现 &lt;code&gt;make&lt;/code&gt;（生成可执行文件）和 &lt;code&gt;make clean&lt;/code&gt;（清除 &lt;code&gt;.o&lt;/code&gt; 和生成的程序）。&lt;/p&gt;
-&lt;h3&gt;任务二：现代构建 (CMake)&lt;span class="hx:absolute hx:-mt-20" id="任务二现代构建-cmake"&gt;&lt;/span&gt;
-&lt;a href="#%e4%bb%bb%e5%8a%a1%e4%ba%8c%e7%8e%b0%e4%bb%a3%e6%9e%84%e5%bb%ba-cmake" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在根目录下编写 &lt;code&gt;CMakeLists.txt&lt;/code&gt;，要求：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;使用 &lt;code&gt;target_include_directories&lt;/code&gt; 指定头文件路径。&lt;/li&gt;
-&lt;li&gt;使用 &lt;strong&gt;外部构建 (Out-of-source Build)&lt;/strong&gt; 流程，在 &lt;code&gt;build/&lt;/code&gt; 文件夹内生成 Makefile 并编译。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3&gt;任务三：版本管理 (Git &amp;amp; Gitee)&lt;span class="hx:absolute hx:-mt-20" id="任务三版本管理-git--gitee"&gt;&lt;/span&gt;
-&lt;a href="#%e4%bb%bb%e5%8a%a1%e4%b8%89%e7%89%88%e6%9c%ac%e7%ae%a1%e7%90%86-git--gitee" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;本地管理&lt;/strong&gt;：使用 &lt;code&gt;git init&lt;/code&gt; 初始化，配置好 &lt;code&gt;.gitignore&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;记录足迹&lt;/strong&gt;：开发过程中至少进行 &lt;strong&gt;3 次以上&lt;/strong&gt; 提交。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;云端备份&lt;/strong&gt;：在 &lt;a href="https://gitee.com/"target="_blank" rel="noopener"&gt;Gitee&lt;/a&gt; 创建公开仓库，将本地代码 &lt;code&gt;push&lt;/code&gt; 到云端。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;hr&gt;
-&lt;h2&gt;3. 标准目录结构&lt;span class="hx:absolute hx:-mt-20" id="3-标准目录结构"&gt;&lt;/span&gt;
-&lt;a href="#3-%e6%a0%87%e5%87%86%e7%9b%ae%e5%bd%95%e7%bb%93%e6%9e%84" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请严格遵守以下结构，结构不规范将影响实验评分：&lt;/p&gt;
+&lt;h2&gt;1. 实验项目&lt;span class="hx:absolute hx:-mt-20" id="1-实验项目"&gt;&lt;/span&gt;
+&lt;a href="#1-%e5%ae%9e%e9%aa%8c%e9%a1%b9%e7%9b%ae" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本次实验要求你完成一个简单的 C 项目，作用是读取并计算一个整数的阶乘。&lt;/p&gt;
+&lt;p&gt;最终需包含以下文件结构：&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Lab2_Project/
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── .git/ # 执行 git init 后生成
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── .gitignore # 过滤编译产物
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── PB25XXXXXXX-张三.pdf # 实验报告（PDF格式）
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── Makefile # 任务一产物
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── CMakeLists.txt # 任务二产物
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── include/
@@ -803,12 +781,34 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;h2&gt;4. 提交物与验收标准&lt;span class="hx:absolute hx:-mt-20" id="4-提交物与验收标准"&gt;&lt;/span&gt;
-&lt;a href="#4-%e6%8f%90%e4%ba%a4%e7%89%a9%e4%b8%8e%e9%aa%8c%e6%94%b6%e6%a0%87%e5%87%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请将以下截图合并为一个 &lt;strong&gt;PDF&lt;/strong&gt; 文档上传：&lt;/p&gt;
+&lt;p&gt;按照以下代码逻辑进行编写：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;include/math_utils.h&lt;/code&gt;&lt;/strong&gt;: 声明一个函数 &lt;code&gt;int factorial(int n);&lt;/code&gt;（计算阶乘）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;src/math_utils.c&lt;/code&gt;&lt;/strong&gt;: 实现 &lt;code&gt;factorial&lt;/code&gt; 函数（建议使用递归或循环）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;src/main.c&lt;/code&gt;&lt;/strong&gt;: 在 &lt;code&gt;main&lt;/code&gt; 函数中读取用户输入，调用 &lt;code&gt;factorial&lt;/code&gt; 并输出结果。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;2. 实验任务&lt;span class="hx:absolute hx:-mt-20" id="2-实验任务"&gt;&lt;/span&gt;
+&lt;a href="#2-%e5%ae%9e%e9%aa%8c%e4%bb%bb%e5%8a%a1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;任务一：版本管理 (Git &amp;amp; Gitee)&lt;span class="hx:absolute hx:-mt-20" id="任务一版本管理-git--gitee"&gt;&lt;/span&gt;
+&lt;a href="#%e4%bb%bb%e5%8a%a1%e4%b8%80%e7%89%88%e6%9c%ac%e7%ae%a1%e7%90%86-git--gitee" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;本地管理&lt;/strong&gt;：使用 &lt;code&gt;git init&lt;/code&gt; 初始化，配置好 &lt;code&gt;.gitignore&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;记录足迹&lt;/strong&gt;：开发过程中至少进行 &lt;strong&gt;3 次以上&lt;/strong&gt; 提交。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;云端备份&lt;/strong&gt;：在 &lt;a href="https://gitee.com/"target="_blank" rel="noopener"&gt;Gitee&lt;/a&gt; 创建公开仓库，将本地代码 &lt;code&gt;push&lt;/code&gt; 到云端。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;任务二：手动构建 (Make)&lt;span class="hx:absolute hx:-mt-20" id="任务二手动构建-make"&gt;&lt;/span&gt;
+&lt;a href="#%e4%bb%bb%e5%8a%a1%e4%ba%8c%e6%89%8b%e5%8a%a8%e6%9e%84%e5%bb%ba-make" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在根目录下编写一个 &lt;code&gt;Makefile&lt;/code&gt;，要求实现 &lt;code&gt;make&lt;/code&gt;（生成可执行文件）和 &lt;code&gt;make clean&lt;/code&gt;（清除 &lt;code&gt;.o&lt;/code&gt; 和生成的程序）。&lt;/p&gt;
+&lt;h3&gt;任务三：现代构建 (CMake)&lt;span class="hx:absolute hx:-mt-20" id="任务三现代构建-cmake"&gt;&lt;/span&gt;
+&lt;a href="#%e4%bb%bb%e5%8a%a1%e4%b8%89%e7%8e%b0%e4%bb%a3%e6%9e%84%e5%bb%ba-cmake" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在根目录下编写 &lt;code&gt;CMakeLists.txt&lt;/code&gt;，要求：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;目录结构图&lt;/strong&gt;：在终端输入 &lt;code&gt;tree&lt;/code&gt;（或 &lt;code&gt;ls -R&lt;/code&gt;），展示你的标准目录结构。&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;target_include_directories&lt;/code&gt; 指定头文件路径。&lt;/li&gt;
+&lt;li&gt;使用 &lt;strong&gt;外部构建 (Out-of-source Build)&lt;/strong&gt; 流程，在 &lt;code&gt;build/&lt;/code&gt; 文件夹内生成 Makefile 并编译。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;3. 提交物与验收标准&lt;span class="hx:absolute hx:-mt-20" id="3-提交物与验收标准"&gt;&lt;/span&gt;
+&lt;a href="#3-%e6%8f%90%e4%ba%a4%e7%89%a9%e4%b8%8e%e9%aa%8c%e6%94%b6%e6%a0%87%e5%87%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;实验报告需包含以下截图：&lt;/p&gt;
+&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;Make 编译图&lt;/strong&gt;：展示执行 &lt;code&gt;make&lt;/code&gt; 生成程序以及执行 &lt;code&gt;make clean&lt;/code&gt; 清理产物的过程。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;CMake 编译图&lt;/strong&gt;：展示在 &lt;code&gt;build/&lt;/code&gt; 目录下执行 &lt;code&gt;cmake ..&lt;/code&gt; 和 &lt;code&gt;make&lt;/code&gt; 的过程。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Git 历史图&lt;/strong&gt;：执行 &lt;code&gt;git log --oneline --graph --all&lt;/code&gt;，展示你不少于 3 次的&lt;strong&gt;规范提交记录&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Git 历史图&lt;/strong&gt;：执行 &lt;code&gt;git log --oneline --graph --all&lt;/code&gt;，展示你不少于 3 次的&lt;strong&gt;提交记录&lt;/strong&gt;。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Gitee 主页图&lt;/strong&gt;：展示你的云端仓库页面，确认代码已同步。&lt;/li&gt;
-&lt;/ol&gt;</description></item></channel></rss>
+&lt;/ol&gt;
+&lt;p&gt;提交包含以上目录结构的压缩包（如 &lt;code&gt;PB25XXXXXXX-张三.zip&lt;/code&gt;）到BB平台。&lt;/p&gt;</description></item></channel></rss>
