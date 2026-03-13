@@ -449,7 +449,7 @@ data-copied-label="已复制！"
 &lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>章节三：版本控制工具：Git</title><link>https://ustc-isp.github.io/lab/lab2/part3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/part3/</guid><description>
 &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;助教寄语&lt;/strong&gt;：“代码没存，电脑崩了”、“这个版本改坏了，想回退到昨天”、“我的代码被舍友改乱了”…… 如果你遇到过这些问题，那么 Git 将是你的救星。&lt;/p&gt;
+&lt;p&gt;“代码没存，电脑崩了”、“这个版本改坏了，想回退到昨天”、“我的代码被舍友改乱了”…… 如果你遇到过这些问题，那么 Git 将是你的救星。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2&gt;3.0 安装 Git&lt;span class="hx:absolute hx:-mt-20" id="30-安装-git"&gt;&lt;/span&gt;
@@ -775,7 +775,9 @@ data-copied-label="已复制！"
 &lt;li&gt;
 &lt;p&gt;A: &lt;strong&gt;千万别删！&lt;/strong&gt; 所有的历史版本、提交记录都存在那个文件夹里。删了它，你的项目就退化回普通的文件夹了。&lt;/p&gt;
 &lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab2/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/requirement/</guid><description>
+&lt;/ul&gt;
+&lt;p&gt;补充材料：&lt;a href="./git%e5%85%a5%e9%97%a8%e6%95%99%e7%a8%8b.pdf"&gt;Git 入门教程&lt;/a&gt;。
+&lt;a href="https://git-scm.com/docs/user-manual.html"target="_blank" rel="noopener"&gt;Git 官方文档&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab2/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab2/requirement/</guid><description>
 &lt;h2&gt;1. 实验项目&lt;span class="hx:absolute hx:-mt-20" id="1-实验项目"&gt;&lt;/span&gt;
 &lt;a href="#1-%e5%ae%9e%e9%aa%8c%e9%a1%b9%e7%9b%ae" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本次实验要求你完成一个简单的 C 项目，作用是读取并计算一个整数的阶乘。&lt;/p&gt;
 &lt;p&gt;最终需包含以下文件结构：&lt;/p&gt;
