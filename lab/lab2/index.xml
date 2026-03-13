@@ -28,6 +28,37 @@ data-copied-label="已复制！"
 &lt;/ol&gt;
 &lt;h2&gt;1.2 Makefile 核心语法&lt;span class="hx:absolute hx:-mt-20" id="12-makefile-核心语法"&gt;&lt;/span&gt;
 &lt;a href="#12-makefile-%e6%a0%b8%e5%bf%83%e8%af%ad%e6%b3%95" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;code&gt;make&lt;/code&gt; 本身并不知道如何编译 C 语言。你需要通过一个名为 &lt;code&gt;Makefile&lt;/code&gt; 的文本文件（无拓展性）告诉它规则。&lt;/p&gt;
+&lt;p&gt;Makefile 的核心是&lt;strong&gt;规则&lt;/strong&gt;，其格式如下：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;target&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;dependencies&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;command&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Target (目标)：你想生成的东西（如 &lt;code&gt;main&lt;/code&gt; 程序、&lt;code&gt;tool.o&lt;/code&gt; 文件）。也可以是一个动作名（如 &lt;code&gt;clean&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;Dependencies (依赖)：生成目标需要哪些“原材料”（源文件或其他目标）。&lt;/li&gt;
+&lt;li&gt;Command (命令)：具体执行的命令（通常是 &lt;code&gt;gcc&lt;/code&gt; 命令）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
+&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;Warning&lt;/p&gt;
+&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
+&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Makefile 诞生于 1976 年，当时的作者为了方便，规定命令前必须是 \t (Tab)。这个“设计缺陷”保留了 50 年。
+所以：命令前必须是一个 &lt;strong&gt;Tab 字符&lt;/strong&gt;，不能是空格！&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;在同一个 Makefile 中可以定义多个目标，你可以通过运行 &lt;code&gt;make &amp;lt;targetname&amp;gt;&lt;/code&gt; 来生成名称为 &lt;code&gt;&amp;lt;targetname&amp;gt;&lt;/code&gt; 的目标，或者运行 &lt;code&gt;make&lt;/code&gt;，它会运行文件中第一个 Target 为文件而非动作的目标。&lt;/p&gt;
+&lt;p&gt;Makefile 通过执行你在目标下面定义的 command 来生成目标，当它发现 dependencies 缺失，它会首先寻找生成 dependencies 的目标。&lt;/p&gt;
+&lt;p&gt;示例：&lt;/p&gt;
 &lt;p&gt;假设项目结构如下：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;main.c&lt;/code&gt; (调用了 &lt;code&gt;tool.h&lt;/code&gt; 中的函数)&lt;/li&gt;
@@ -66,37 +97,6 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;h3&gt;1.2 规则 (Rules)&lt;span class="hx:absolute hx:-mt-20" id="12-规则-rules"&gt;&lt;/span&gt;
-&lt;a href="#12-%e8%a7%84%e5%88%99-rules" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Makefile 的核心是&lt;strong&gt;规则&lt;/strong&gt;，其格式如下：&lt;/p&gt;
-&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-makefile" data-lang="makefile"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nf"&gt;target&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;dependencies&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;command&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
-&lt;button
-class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
-title="复制代码"
-aria-label="复制代码"
-data-copied-label="已复制！"
-&gt;
-&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
-&lt;/button&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;ol&gt;
-&lt;li&gt;Target (目标)：你想生成的东西（如 &lt;code&gt;main&lt;/code&gt; 程序、&lt;code&gt;tool.o&lt;/code&gt; 文件）。也可以是一个动作名（如 &lt;code&gt;clean&lt;/code&gt;）。&lt;/li&gt;
-&lt;li&gt;Dependencies (依赖)：生成目标需要哪些“原材料”（源文件或其他目标）。&lt;/li&gt;
-&lt;li&gt;Command (命令)：具体执行的命令（通常是 &lt;code&gt;gcc&lt;/code&gt; 命令）。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
-&lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;Warning&lt;/p&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;&lt;p&gt;Makefile 诞生于 1976 年，当时的作者为了方便，规定命令前必须是 \t (Tab)。这个“设计缺陷”保留了 50 年。
-所以：命令前必须是一个 &lt;strong&gt;Tab 字符&lt;/strong&gt;，不能是空格！&lt;/p&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;在同一个 Makefile 中可以定义多个目标，你可以通过运行 &lt;code&gt;make &amp;lt;targetname&amp;gt;&lt;/code&gt; 来生成名称为 &lt;code&gt;&amp;lt;targetname&amp;gt;&lt;/code&gt; 的目标，或者运行 &lt;code&gt;make&lt;/code&gt;，它会运行文件中第一个 Target 为文件而非动作的目标。&lt;/p&gt;
-&lt;p&gt;Makefile 通过执行你在目标下面定义的 command 来生成目标，当它发现 dependencies 缺失，它会首先寻找生成 dependencies 的目标，例如对上文的 &lt;code&gt;Makefile&lt;/code&gt; 运行 &lt;code&gt;make&lt;/code&gt; 指令：&lt;/p&gt;
 &lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" open&gt;
 &lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
 &lt;strong class="hx:text-lg"&gt;编译过程&lt;/strong&gt;
@@ -837,4 +837,5 @@ data-copied-label="已复制！"
 &lt;li&gt;&lt;strong&gt;Git 历史图&lt;/strong&gt;：执行 &lt;code&gt;git log --oneline --graph --all&lt;/code&gt;，展示你不少于 3 次的&lt;strong&gt;提交记录&lt;/strong&gt;。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Gitee 主页图&lt;/strong&gt;：展示你的云端仓库页面，确认代码已同步。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;提交包含以上目录结构的压缩包（如 &lt;code&gt;PB25XXXXXXX-张三.zip&lt;/code&gt;）到BB平台。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;提交包含以上目录结构的压缩包（如 &lt;code&gt;PB25XXXXXXX-张三.zip&lt;/code&gt;）到BB平台。
+（压缩包内需包含以上除build目录外所有文件：代码、Makefile、CMakeList、装有截图的报告……）&lt;/p&gt;</description></item></channel></rss>
