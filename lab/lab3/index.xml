@@ -4,7 +4,7 @@
 &lt;h2&gt;题目背景&lt;span class="hx:absolute hx:-mt-20" id="题目背景"&gt;&lt;/span&gt;
 &lt;a href="#%e9%a2%98%e7%9b%ae%e8%83%8c%e6%99%af" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在文本预处理中，常常需要先把一行字符串整理成规范形式，再进行进一步分析。现在请你编写一个小工具，对输入的一行英文文本完成整理和统计。&lt;/p&gt;
 &lt;h2&gt;题目描述&lt;span class="hx:absolute hx:-mt-20" id="题目描述"&gt;&lt;/span&gt;
-&lt;a href="#%e9%a2%98%e7%9b%ae%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输入一行只包含英文字母和空格的字符串，请完成以下任务：&lt;/p&gt;
+&lt;a href="#%e9%a2%98%e7%9b%ae%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输入一行只包含小写英文字母和空格的字符串，将其中连续的小写英文字母视为一个单词。请完成以下任务：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;删除多余空格，使单词之间只保留一个空格，且句首句尾没有空格。&lt;/li&gt;
 &lt;li&gt;统计整理后共有多少个单词。&lt;/li&gt;
@@ -27,7 +27,10 @@ data-copied-label="已复制！"
 &lt;/div&gt;
 &lt;p&gt;整理后应得到：&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;data structure and algorithm&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;data structure and algorithm
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;dsaa
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;structure&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -52,13 +55,9 @@ data-copied-label="已复制！"
 &lt;/ol&gt;
 &lt;h2&gt;数据范围&lt;span class="hx:absolute hx:-mt-20" id="数据范围"&gt;&lt;/span&gt;
 &lt;a href="#%e6%95%b0%e6%8d%ae%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;字符串总长度不超过 &lt;code&gt;200&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;单词个数不超过 &lt;code&gt;50&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;输入字符串（带空格）总长度不超过 &lt;code&gt;200&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;至少有一个单词&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;时间限制&lt;span class="hx:absolute hx:-mt-20" id="时间限制"&gt;&lt;/span&gt;
-&lt;a href="#%e6%97%b6%e9%97%b4%e9%99%90%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;1 秒&lt;/p&gt;
-&lt;h2&gt;内存限制&lt;span class="hx:absolute hx:-mt-20" id="内存限制"&gt;&lt;/span&gt;
-&lt;a href="#%e5%86%85%e5%ad%98%e9%99%90%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;128 MB&lt;/p&gt;
 &lt;h2&gt;样例 1&lt;span class="hx:absolute hx:-mt-20" id="样例-1"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
@@ -164,18 +163,22 @@ data-copied-label="已复制！"
 &lt;h2&gt;实现要求&lt;span class="hx:absolute hx:-mt-20" id="实现要求"&gt;&lt;/span&gt;
 &lt;a href="#%e5%ae%9e%e7%8e%b0%e8%a6%81%e6%b1%82" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;必须使用指针处理字符串，不要把核心逻辑完全写成下标枚举。&lt;/li&gt;
-&lt;li&gt;建议采用多文件实现，例如拆分为 &lt;code&gt;main.c&lt;/code&gt;、工具模块 &lt;code&gt;.c&lt;/code&gt;、头文件 &lt;code&gt;.h&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;徐老师班
+&lt;ul&gt;
+&lt;li&gt;采用多文件实现，例如拆分为 &lt;code&gt;main.c&lt;/code&gt;、工具模块 &lt;code&gt;.c&lt;/code&gt;、头文件 &lt;code&gt;.h&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;工程需要能通过 &lt;code&gt;Makefile&lt;/code&gt; 或 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 构建。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>题目二：成绩行筛选器</title><link>https://ustc-isp.github.io/lab/lab3/problem2_score_filter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab3/problem2_score_filter/</guid><description>
 &lt;h2&gt;截止日期&lt;span class="hx:absolute hx:-mt-20" id="截止日期"&gt;&lt;/span&gt;
 &lt;a href="#%e6%88%aa%e6%ad%a2%e6%97%a5%e6%9c%9f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2026年4月3日（两周）&lt;/p&gt;
 &lt;h2&gt;题目背景&lt;span class="hx:absolute hx:-mt-20" id="题目背景"&gt;&lt;/span&gt;
-&lt;a href="#%e9%a2%98%e7%9b%ae%e8%83%8c%e6%99%af" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在成绩分析中，常常需要从一个成绩表中筛选出满足条件的若干行。请你编写一个程序，从矩阵中保留平均分不低于给定阈值的所有行。&lt;/p&gt;
+&lt;a href="#%e9%a2%98%e7%9b%ae%e8%83%8c%e6%99%af" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在成绩分析中，常常需要从成绩表中筛选出满足条件的若干行。请你编写一个程序，从输入的成绩数据中保留平均分不低于给定阈值的所有行，并按原顺序输出这些行的信息。&lt;/p&gt;
 &lt;h2&gt;题目描述&lt;span class="hx:absolute hx:-mt-20" id="题目描述"&gt;&lt;/span&gt;
-&lt;a href="#%e9%a2%98%e7%9b%ae%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;给定一个 &lt;code&gt;n x m&lt;/code&gt; 的整数矩阵，第 &lt;code&gt;i&lt;/code&gt; 行表示第 &lt;code&gt;i&lt;/code&gt; 位同学的 &lt;code&gt;m&lt;/code&gt; 次成绩。请保留平均分不低于阈值 &lt;code&gt;k&lt;/code&gt; 的所有行，并按原顺序输出这些行的信息。&lt;/p&gt;
-&lt;p&gt;如果某一行满足：&lt;/p&gt;
+&lt;a href="#%e9%a2%98%e7%9b%ae%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;给定若干位同学的成绩数据，每位同学有若干次成绩记录。请保留平均分不低于阈值 &lt;code&gt;k&lt;/code&gt; 的所有同学的成绩行，并按原顺序输出这些行的信息。&lt;/p&gt;
+&lt;p&gt;为避免浮点精度问题，如果某同学成绩满足&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;该行元素和 &amp;gt;= k * m&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;某同学的成绩总分 &amp;gt;= k * 该同学的成绩次数&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -187,10 +190,10 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;则该行被保留。&lt;/p&gt;
+&lt;p&gt;则该同学成绩被保留。&lt;/p&gt;
 &lt;p&gt;输出时，请先输出保留下来的行数；随后对每一行输出：&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;该行总分 该行的 m 个成绩&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;该行总分 该同学的成绩次数 该同学的 m 个成绩&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -202,15 +205,30 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;如果没有任何一行被保留，则第二行输出 &lt;code&gt;EMPTY&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;若没有任何一行被保留，则共输出两行：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;EMPTY&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;h2&gt;输入格式&lt;span class="hx:absolute hx:-mt-20" id="输入格式"&gt;&lt;/span&gt;
-&lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输入 &lt;code&gt;3&lt;/code&gt; 个整数 &lt;code&gt;n m k&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;接下来输入 &lt;code&gt;n&lt;/code&gt; 行，每行 &lt;code&gt;m&lt;/code&gt; 个整数，表示矩阵中的元素。&lt;/p&gt;
+&lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输入整数：&lt;code&gt;n&lt;/code&gt;，代表同学数量。&lt;/p&gt;
+&lt;p&gt;接下来输入 &lt;code&gt;n&lt;/code&gt; 行，每行的格式为：&lt;code&gt;m a1 a2 ... am&lt;/code&gt;，其中 &lt;code&gt;m&lt;/code&gt; 是当前行同学的成绩次数（正整数）；&lt;code&gt;a1~am&lt;/code&gt; 是该同学的 &lt;code&gt;m&lt;/code&gt; 次成绩（非负整数）。&lt;/p&gt;
+&lt;p&gt;最后一行输入 &lt;code&gt;k&lt;/code&gt;，代表平均分阈值。&lt;/p&gt;
 &lt;h2&gt;输出格式&lt;span class="hx:absolute hx:-mt-20" id="输出格式"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输出保留下来的行数。&lt;/p&gt;
 &lt;p&gt;如果保留行数大于 &lt;code&gt;0&lt;/code&gt;，则接下来每行输出：&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sum a1 a2 ... am&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sum m a1 a2 ... am&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -222,7 +240,7 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;如果保留行数为 &lt;code&gt;0&lt;/code&gt;，则第二行输出：&lt;/p&gt;
+&lt;p&gt;如果保留行数为 &lt;code&gt;0&lt;/code&gt;，则接下来第二行输出：&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;EMPTY&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
@@ -238,22 +256,20 @@ data-copied-label="已复制！"
 &lt;/div&gt;
 &lt;h2&gt;数据范围&lt;span class="hx:absolute hx:-mt-20" id="数据范围"&gt;&lt;/span&gt;
 &lt;a href="#%e6%95%b0%e6%8d%ae%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;1 &amp;lt;= n, m &amp;lt;= 50&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;n, m &amp;gt;= 1&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;0 &amp;lt;= 成绩 &amp;lt;= 100&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;0 &amp;lt;= k &amp;lt;= 100&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;时间限制&lt;span class="hx:absolute hx:-mt-20" id="时间限制"&gt;&lt;/span&gt;
-&lt;a href="#%e6%97%b6%e9%97%b4%e9%99%90%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;1 秒&lt;/p&gt;
-&lt;h2&gt;内存限制&lt;span class="hx:absolute hx:-mt-20" id="内存限制"&gt;&lt;/span&gt;
-&lt;a href="#%e5%86%85%e5%ad%98%e9%99%90%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;128 MB&lt;/p&gt;
+&lt;p&gt;数据不会溢出 &lt;code&gt;int&lt;/code&gt; 限制&lt;/p&gt;
 &lt;h2&gt;样例 1&lt;span class="hx:absolute hx:-mt-20" id="样例-1"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;4 3 5
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;1 4 5
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;6 5 4
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;5 5 5
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;8 1 7&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2 1 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3 6 5 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3 5 5 5
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3 8 1 7
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;5&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -268,9 +284,9 @@ data-copied-label="已复制！"
 &lt;h3&gt;输出&lt;span class="hx:absolute hx:-mt-20" id="输出"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%87%ba" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;15 6 5 4
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;15 5 5 5
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;16 8 1 7&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;15 3 6 5 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;15 3 5 5 5
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;16 3 8 1 7&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -285,10 +301,11 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 2&lt;span class="hx:absolute hx:-mt-20" id="样例-2"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入-1"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3 4 6
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;6 6 6 6
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;9 3 6 6
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;1 2 3 4&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;4 6 6 6 6
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;5 9 3 6 6 9
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2 1 2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;6&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -303,8 +320,8 @@ data-copied-label="已复制！"
 &lt;h3&gt;输出&lt;span class="hx:absolute hx:-mt-20" id="输出-1"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%87%ba-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;24 6 6 6 6
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;24 9 3 6 6&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;24 4 6 6 6 6
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;33 5 9 3 6 6 9&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -319,9 +336,10 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 3&lt;span class="hx:absolute hx:-mt-20" id="样例-3"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-3" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入-2"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5-2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2 2 10
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;9 9
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;8 9&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2 9 9
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2 8 9
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;10&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -356,10 +374,13 @@ data-copied-label="已复制！"
 &lt;/ul&gt;
 &lt;h2&gt;实现要求&lt;span class="hx:absolute hx:-mt-20" id="实现要求"&gt;&lt;/span&gt;
 &lt;a href="#%e5%ae%9e%e7%8e%b0%e8%a6%81%e6%b1%82" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;必须动态申请二维数组。&lt;/li&gt;
-&lt;li&gt;必须使用二级指针表示矩阵，例如 &lt;code&gt;int **matrix&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;建议先动态申请二维数组，再使用二级指针表示成绩单，例如 &lt;code&gt;int **matrix&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;建议把“创建矩阵”“读入矩阵”“筛选矩阵”“释放内存”拆分到不同函数中。&lt;/li&gt;
+&lt;li&gt;徐老师班
+&lt;ul&gt;
 &lt;li&gt;工程需要能通过 &lt;code&gt;Makefile&lt;/code&gt; 或 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 构建。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>题目三：动态通讯录</title><link>https://ustc-isp.github.io/lab/lab3/problem3_phonebook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab3/problem3_phonebook/</guid><description>
 &lt;h2&gt;截止日期&lt;span class="hx:absolute hx:-mt-20" id="截止日期"&gt;&lt;/span&gt;
 &lt;a href="#%e6%88%aa%e6%ad%a2%e6%97%a5%e6%9c%9f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2026年4月10日（三周）&lt;/p&gt;
@@ -378,34 +399,32 @@ data-copied-label="已复制！"
 输出该联系人的电话号码；若不存在，则输出 &lt;code&gt;NOT FOUND&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;print&lt;/code&gt;
 按当前存储顺序输出所有联系人，格式为 &lt;code&gt;name:phone&lt;/code&gt;，相邻记录之间用一个空格分隔；若通讯录为空，则输出 &lt;code&gt;EMPTY&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stop&lt;/code&gt;
+终止程序&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;输入格式&lt;span class="hx:absolute hx:-mt-20" id="输入格式"&gt;&lt;/span&gt;
-&lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输入一个整数 &lt;code&gt;q&lt;/code&gt;，表示操作总数。&lt;/p&gt;
-&lt;p&gt;接下来 &lt;code&gt;q&lt;/code&gt; 行，每行是一条操作，格式如题目描述所示。&lt;/p&gt;
+&lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;每行是一条操作，格式如题目描述所示。&lt;/p&gt;
 &lt;h2&gt;输出格式&lt;span class="hx:absolute hx:-mt-20" id="输出格式"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;对于每一条 &lt;code&gt;find&lt;/code&gt; 操作和每一条 &lt;code&gt;print&lt;/code&gt; 操作，各输出一行结果。&lt;/p&gt;
 &lt;h2&gt;数据范围&lt;span class="hx:absolute hx:-mt-20" id="数据范围"&gt;&lt;/span&gt;
 &lt;a href="#%e6%95%b0%e6%8d%ae%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;1 &amp;lt;= q &amp;lt;= 200&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;name&lt;/code&gt; 长度不超过 &lt;code&gt;31&lt;/code&gt;，且只包含英文字母&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;phone&lt;/code&gt; 长度不超过 &lt;code&gt;31&lt;/code&gt;，且只包含数字字符&lt;/li&gt;
+&lt;li&gt;至少一个操作&lt;/li&gt;
+&lt;li&gt;保证同时有效的联系人数量不超过 &lt;code&gt;16&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;name&lt;/code&gt; 长度不超过 &lt;code&gt;31&lt;/code&gt;，至少为 &lt;code&gt;1&lt;/code&gt;，且只包含小写英文字母&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;phone&lt;/code&gt; 长度不超过 &lt;code&gt;31&lt;/code&gt;，至少为 &lt;code&gt;1&lt;/code&gt;，且只包含数字字符&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2&gt;时间限制&lt;span class="hx:absolute hx:-mt-20" id="时间限制"&gt;&lt;/span&gt;
-&lt;a href="#%e6%97%b6%e9%97%b4%e9%99%90%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;1 秒&lt;/p&gt;
-&lt;h2&gt;内存限制&lt;span class="hx:absolute hx:-mt-20" id="内存限制"&gt;&lt;/span&gt;
-&lt;a href="#%e5%86%85%e5%ad%98%e9%99%90%e5%88%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;128 MB&lt;/p&gt;
 &lt;h2&gt;样例 1&lt;span class="hx:absolute hx:-mt-20" id="样例-1"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;8
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add alice 1350000
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add alice 1350000
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add bob 1391111
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find alice
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;update bob 1888888
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find bob
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete alice
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find alice
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -437,8 +456,7 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 2&lt;span class="hx:absolute hx:-mt-20" id="样例-2"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入-1"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;10
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add tom 10086
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add tom 12345
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find tom
@@ -447,7 +465,8 @@ data-copied-label="已复制！"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete tom
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find tom
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -480,8 +499,7 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 3&lt;span class="hx:absolute hx:-mt-20" id="样例-3"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-3" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入-2"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5-2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;11
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add ann 1
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add ann 1
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add ben 2
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add cat 3
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
@@ -491,7 +509,8 @@ data-copied-label="已复制！"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find cat
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete ann
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete cat
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -531,9 +550,13 @@ data-copied-label="已复制！"
 &lt;a href="#%e5%ae%9e%e7%8e%b0%e8%a6%81%e6%b1%82" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;必须使用结构体保存联系人信息。&lt;/li&gt;
 &lt;li&gt;必须使用指针管理字符串内存。&lt;/li&gt;
-&lt;li&gt;必须使用二级指针或等价方式完成通讯录扩容，例如维护 &lt;code&gt;Contact **items&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;建议使用二级指针或等价方式完成通讯录扩容，例如维护 &lt;code&gt;Contact **items&lt;/code&gt;，当扩容后将原来 &lt;code&gt;items&lt;/code&gt; 数组内容复制到新 &lt;code&gt;items&lt;/code&gt; 内。&lt;/li&gt;
+&lt;li&gt;徐老师班
+&lt;ul&gt;
 &lt;li&gt;建议至少拆分为联系人模块、通讯录模块、主程序三部分。&lt;/li&gt;
 &lt;li&gt;工程需要能通过 &lt;code&gt;Makefile&lt;/code&gt; 或 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 构建。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab3/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab3/requirement/</guid><description>
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200"&gt;
 &lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Caution&lt;/p&gt;
