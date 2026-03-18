@@ -390,10 +390,10 @@ data-copied-label="已复制！"
 按当前存储顺序输出所有联系人，格式为 &lt;code&gt;name:phone&lt;/code&gt;，相邻记录之间用一个空格分隔；若通讯录为空，则输出 &lt;code&gt;EMPTY&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;输入格式&lt;span class="hx:absolute hx:-mt-20" id="输入格式"&gt;&lt;/span&gt;
-&lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;每行是一条操作，格式如题目描述所示。&lt;/p&gt;
-&lt;h2&gt;输出格式&lt;span class="hx:absolute hx:-mt-20" id="输出格式"&gt;&lt;/span&gt;
-&lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输入一个整数 &lt;code&gt;q&lt;/code&gt;，表示操作总数。&lt;/p&gt;
+&lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输入一个整数 &lt;code&gt;q&lt;/code&gt;，表示操作总数。&lt;/p&gt;
 &lt;p&gt;接下来 &lt;code&gt;q&lt;/code&gt; 行，每行是一条操作，格式如题目描述所示。&lt;/p&gt;
+&lt;h2&gt;输出格式&lt;span class="hx:absolute hx:-mt-20" id="输出格式"&gt;&lt;/span&gt;
+&lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;对于每一条 &lt;code&gt;find&lt;/code&gt; 操作和每一条 &lt;code&gt;print&lt;/code&gt; 操作，各输出一行结果。&lt;/p&gt;
 &lt;h2&gt;数据范围&lt;span class="hx:absolute hx:-mt-20" id="数据范围"&gt;&lt;/span&gt;
 &lt;a href="#%e6%95%b0%e6%8d%ae%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;code&gt;1 &amp;lt;= q &amp;lt;= 200&lt;/code&gt;&lt;/li&gt;
