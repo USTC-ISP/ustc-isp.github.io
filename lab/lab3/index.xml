@@ -56,7 +56,7 @@ data-copied-label="已复制！"
 &lt;h2&gt;数据范围&lt;span class="hx:absolute hx:-mt-20" id="数据范围"&gt;&lt;/span&gt;
 &lt;a href="#%e6%95%b0%e6%8d%ae%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;输入字符串（带空格）总长度不超过 &lt;code&gt;200&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;至少有一个单词&lt;/li&gt;
+&lt;li&gt;单词个数不超过 &lt;code&gt;50&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;样例 1&lt;span class="hx:absolute hx:-mt-20" id="样例-1"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入"&gt;&lt;/span&gt;
@@ -399,16 +399,15 @@ data-copied-label="已复制！"
 输出该联系人的电话号码；若不存在，则输出 &lt;code&gt;NOT FOUND&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;print&lt;/code&gt;
 按当前存储顺序输出所有联系人，格式为 &lt;code&gt;name:phone&lt;/code&gt;，相邻记录之间用一个空格分隔；若通讯录为空，则输出 &lt;code&gt;EMPTY&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;stop&lt;/code&gt;
-终止程序&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2&gt;输入格式&lt;span class="hx:absolute hx:-mt-20" id="输入格式"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;每行是一条操作，格式如题目描述所示。&lt;/p&gt;
 &lt;h2&gt;输出格式&lt;span class="hx:absolute hx:-mt-20" id="输出格式"&gt;&lt;/span&gt;
-&lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;对于每一条 &lt;code&gt;find&lt;/code&gt; 操作和每一条 &lt;code&gt;print&lt;/code&gt; 操作，各输出一行结果。&lt;/p&gt;
+&lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;第一行输入一个整数 &lt;code&gt;q&lt;/code&gt;，表示操作总数。&lt;/p&gt;
+&lt;p&gt;接下来 &lt;code&gt;q&lt;/code&gt; 行，每行是一条操作，格式如题目描述所示。&lt;/p&gt;
 &lt;h2&gt;数据范围&lt;span class="hx:absolute hx:-mt-20" id="数据范围"&gt;&lt;/span&gt;
 &lt;a href="#%e6%95%b0%e6%8d%ae%e8%8c%83%e5%9b%b4" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;至少一个操作&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1 &amp;lt;= q &amp;lt;= 200&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;保证同时有效的联系人数量不超过 &lt;code&gt;16&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;name&lt;/code&gt; 长度不超过 &lt;code&gt;31&lt;/code&gt;，至少为 &lt;code&gt;1&lt;/code&gt;，且只包含小写英文字母&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;phone&lt;/code&gt; 长度不超过 &lt;code&gt;31&lt;/code&gt;，至少为 &lt;code&gt;1&lt;/code&gt;，且只包含数字字符&lt;/li&gt;
@@ -416,15 +415,15 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 1&lt;span class="hx:absolute hx:-mt-20" id="样例-1"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add alice 1350000
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;8
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add alice 1350000
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add bob 1391111
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find alice
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;update bob 1888888
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find bob
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete alice
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find alice
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -456,7 +455,8 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 2&lt;span class="hx:absolute hx:-mt-20" id="样例-2"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入-1"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5-1" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;10
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add tom 10086
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add tom 12345
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find tom
@@ -465,8 +465,7 @@ data-copied-label="已复制！"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete tom
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find tom
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
@@ -499,7 +498,8 @@ data-copied-label="已复制！"
 &lt;h2&gt;样例 3&lt;span class="hx:absolute hx:-mt-20" id="样例-3"&gt;&lt;/span&gt;
 &lt;a href="#%e6%a0%b7%e4%be%8b-3" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;输入&lt;span class="hx:absolute hx:-mt-20" id="输入-2"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5-2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add ann 1
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;11
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add ann 1
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add ben 2
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;add cat 3
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
@@ -509,8 +509,7 @@ data-copied-label="已复制！"
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;find cat
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete ann
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;delete cat
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;print&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
