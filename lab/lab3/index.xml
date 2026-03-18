@@ -163,12 +163,6 @@ data-copied-label="已复制！"
 &lt;h2&gt;实现要求&lt;span class="hx:absolute hx:-mt-20" id="实现要求"&gt;&lt;/span&gt;
 &lt;a href="#%e5%ae%9e%e7%8e%b0%e8%a6%81%e6%b1%82" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;必须使用指针处理字符串，不要把核心逻辑完全写成下标枚举。&lt;/li&gt;
-&lt;li&gt;徐老师班
-&lt;ul&gt;
-&lt;li&gt;采用多文件实现，例如拆分为 &lt;code&gt;main.c&lt;/code&gt;、工具模块 &lt;code&gt;.c&lt;/code&gt;、头文件 &lt;code&gt;.h&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;工程需要能通过 &lt;code&gt;Makefile&lt;/code&gt; 或 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 构建。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>题目二：成绩行筛选器</title><link>https://ustc-isp.github.io/lab/lab3/problem2_score_filter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab3/problem2_score_filter/</guid><description>
 &lt;h2&gt;截止日期&lt;span class="hx:absolute hx:-mt-20" id="截止日期"&gt;&lt;/span&gt;
 &lt;a href="#%e6%88%aa%e6%ad%a2%e6%97%a5%e6%9c%9f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2026年4月3日（两周）&lt;/p&gt;
@@ -376,11 +370,6 @@ data-copied-label="已复制！"
 &lt;a href="#%e5%ae%9e%e7%8e%b0%e8%a6%81%e6%b1%82" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;建议先动态申请二维数组，再使用二级指针表示成绩单，例如 &lt;code&gt;int **matrix&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;建议把“创建矩阵”“读入矩阵”“筛选矩阵”“释放内存”拆分到不同函数中。&lt;/li&gt;
-&lt;li&gt;徐老师班
-&lt;ul&gt;
-&lt;li&gt;工程需要能通过 &lt;code&gt;Makefile&lt;/code&gt; 或 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 构建。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>题目三：动态通讯录</title><link>https://ustc-isp.github.io/lab/lab3/problem3_phonebook/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab3/problem3_phonebook/</guid><description>
 &lt;h2&gt;截止日期&lt;span class="hx:absolute hx:-mt-20" id="截止日期"&gt;&lt;/span&gt;
 &lt;a href="#%e6%88%aa%e6%ad%a2%e6%97%a5%e6%9c%9f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;2026年4月10日（三周）&lt;/p&gt;
@@ -550,12 +539,6 @@ data-copied-label="已复制！"
 &lt;li&gt;必须使用结构体保存联系人信息。&lt;/li&gt;
 &lt;li&gt;必须使用指针管理字符串内存。&lt;/li&gt;
 &lt;li&gt;建议使用二级指针或等价方式完成通讯录扩容，例如维护 &lt;code&gt;Contact **items&lt;/code&gt;，当扩容后将原来 &lt;code&gt;items&lt;/code&gt; 数组内容复制到新 &lt;code&gt;items&lt;/code&gt; 内。&lt;/li&gt;
-&lt;li&gt;徐老师班
-&lt;ul&gt;
-&lt;li&gt;建议至少拆分为联系人模块、通讯录模块、主程序三部分。&lt;/li&gt;
-&lt;li&gt;工程需要能通过 &lt;code&gt;Makefile&lt;/code&gt; 或 &lt;code&gt;CMakeLists.txt&lt;/code&gt; 构建。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab3/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab3/requirement/</guid><description>
 &lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:border-gray-200 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200"&gt;
 &lt;p class="hx:flex hx:items-center hx:font-medium"&gt;&lt;svg height=16px class="hx:inline-block hx:align-middle hx:mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;Caution&lt;/p&gt;
