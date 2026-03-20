@@ -721,6 +721,52 @@ data-copied-label="已复制！"
 &lt;li&gt;&lt;strong&gt;HTTPS 方式&lt;/strong&gt;：可能需要使用 &lt;strong&gt;Personal Access Token (PAT)&lt;/strong&gt;。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;SSH 方式&lt;/strong&gt;：这是最推荐的方式。通过生成 SSH 密钥对（&lt;code&gt;ssh-keygen&lt;/code&gt;），将公钥上传到服务器，实现免密提交。&lt;/li&gt;
 &lt;/ul&gt;
+&lt;details class="hx:last-of-type:mb-0 hx:rounded-lg hx:bg-neutral-50 hx:dark:bg-neutral-800 hx:p-2 hx:mt-4 hx:group" &gt;
+&lt;summary class="hx:flex hx:items-center hx:cursor-pointer hx:select-none hx:list-none hx:p-1 hx:rounded-sm hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800 hx:before:mr-1 hx:before:inline-block hx:before:transition-transform hx:before:content-[''] hx:dark:before:invert hx:rtl:before:rotate-180 hx:group-open:before:rotate-90"&gt;
+&lt;strong class="hx:text-lg"&gt;配置 SSH 密钥&lt;/strong&gt;
+&lt;/summary&gt;
+&lt;div class="hx:p-2 hx:overflow-hidden"&gt;
+&lt;p&gt;配置 SSH 密钥后，你可以免密码安全地推送代码。&lt;/p&gt;
+&lt;h3&gt;第一步：生成密钥对&lt;span class="hx:absolute hx:-mt-20" id="第一步生成密钥对"&gt;&lt;/span&gt;
+&lt;a href="#%e7%ac%ac%e4%b8%80%e6%ad%a5%e7%94%9f%e6%88%90%e5%af%86%e9%92%a5%e5%af%b9" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;在你的 Linux/WSL/MacOS 终端运行以下命令（若已生成可跳过）：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t ed25519 -C &lt;span class="s2"&gt;&amp;#34;your_email@mail.ustc.edu.cn&amp;#34;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;（一路回车即可，无需设置密码）&lt;/p&gt;
+&lt;h3&gt;第二步：获取公钥&lt;span class="hx:absolute hx:-mt-20" id="第二步获取公钥"&gt;&lt;/span&gt;
+&lt;a href="#%e7%ac%ac%e4%ba%8c%e6%ad%a5%e8%8e%b7%e5%8f%96%e5%85%ac%e9%92%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;运行以下命令查看并复制生成的公钥内容（以 &lt;code&gt;.pub&lt;/code&gt; 结尾）：&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat ~/.ssh/id_ed25519.pub&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h3&gt;第三步：添加到 Gitee/GitHub/GitLab&lt;span class="hx:absolute hx:-mt-20" id="第三步添加到-giteegithubgitlab"&gt;&lt;/span&gt;
+&lt;a href="#%e7%ac%ac%e4%b8%89%e6%ad%a5%e6%b7%bb%e5%8a%a0%e5%88%b0-giteegithubgitlab" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;登录后，点击右上角头像 -&amp;gt; &lt;strong&gt;Setting&lt;/strong&gt; 。&lt;/li&gt;
+&lt;li&gt;在左侧菜单点击 &lt;strong&gt;SSH Keys&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;Add new key&lt;/strong&gt;，将复制的公钥粘贴到 &lt;strong&gt;Key&lt;/strong&gt; 文本框中，&lt;strong&gt;Title&lt;/strong&gt; 可随意填写（如 &amp;ldquo;My-PC&amp;rdquo;）。&lt;strong&gt;Expires at&lt;/strong&gt;指密钥到期时间，留空或设置一个晚于本学期期末的时间。&lt;/li&gt;
+&lt;li&gt;点击 &lt;strong&gt;Add key&lt;/strong&gt; 保存。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;/details&gt;
 &lt;hr&gt;
 &lt;h2&gt;3.6 章节小结：Git 常用命令速查表&lt;span class="hx:absolute hx:-mt-20" id="36-章节小结git-常用命令速查表"&gt;&lt;/span&gt;
 &lt;a href="#36-%e7%ab%a0%e8%8a%82%e5%b0%8f%e7%bb%93git-%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4%e9%80%9f%e6%9f%a5%e8%a1%a8" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;table&gt;
