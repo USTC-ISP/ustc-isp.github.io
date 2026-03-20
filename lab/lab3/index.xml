@@ -44,7 +44,7 @@ data-copied-label="已复制！"
 &lt;/div&gt;
 &lt;h2&gt;输入格式&lt;span class="hx:absolute hx:-mt-20" id="输入格式"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输入只有一行，长度不超过 &lt;code&gt;200&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;保证该行只包含大小写英文字母和空格，且至少存在一个单词。&lt;/p&gt;
+&lt;p&gt;保证该行只包含小写英文字母和空格，且至少存在一个单词。&lt;/p&gt;
 &lt;h2&gt;输出格式&lt;span class="hx:absolute hx:-mt-20" id="输出格式"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%87%ba%e6%a0%bc%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输出共 &lt;code&gt;4&lt;/code&gt; 行：&lt;/p&gt;
 &lt;ol&gt;
