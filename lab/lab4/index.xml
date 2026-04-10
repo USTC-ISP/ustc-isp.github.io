@@ -183,25 +183,6 @@ data-copied-label="已复制！"
 &lt;li&gt;&lt;strong&gt;LFU (Least Frequently Used)&lt;/strong&gt;：最不经常使用。记录每个数据被访问的&lt;strong&gt;次数&lt;/strong&gt;，淘汰访问次数最少的。适用于某些长期高频访问的数据，但难以应对“瞬间高频随后冷寂”的情况。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Clock (时钟算法)&lt;/strong&gt;：LRU 的一种近似实现。它像钟表盘一样循环检查数据的使用位（Referenced Bit），硬件开销更小。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;ARC (Adaptive Replacement Cache)&lt;/strong&gt;：自适应缓存。结合了 LRU 和 LFU 的优点，能根据工作负载实时调整策略，是高性能存储系统中常用的算法。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;6. 本实验的实现建议&lt;span class="hx:absolute hx:-mt-20" id="6-本实验的实现建议"&gt;&lt;/span&gt;
-&lt;a href="#6-%e6%9c%ac%e5%ae%9e%e9%aa%8c%e7%9a%84%e5%ae%9e%e7%8e%b0%e5%bb%ba%e8%ae%ae" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"&gt;
-&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;&lt;/div&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;在本次实验中，我们要求使用 &lt;strong&gt;带头节点的单链表&lt;/strong&gt; 来实现 LRU 缓存。&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;h3&gt;6.1 为什么要移动节点？&lt;span class="hx:absolute hx:-mt-20" id="61-为什么要移动节点"&gt;&lt;/span&gt;
-&lt;a href="#61-%e4%b8%ba%e4%bb%80%e4%b9%88%e8%a6%81%e7%a7%bb%e5%8a%a8%e8%8a%82%e7%82%b9" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;为了方便管理，我们约定：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;链表头节点之后的第一个节点&lt;/strong&gt;始终是“最近访问”的节点。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;链表的最后一个节点&lt;/strong&gt;（尾节点）始终是“最久未访问”的节点。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;因此，每次执行 &lt;code&gt;get&lt;/code&gt; 或 &lt;code&gt;put&lt;/code&gt; 命中已有数据时，你需要执行“摘除节点”并“头插至首位”的操作。&lt;/p&gt;
-&lt;h3&gt;6.2 进阶思考&lt;span class="hx:absolute hx:-mt-20" id="62-进阶思考"&gt;&lt;/span&gt;
-&lt;a href="#62-%e8%bf%9b%e9%98%b6%e6%80%9d%e8%80%83" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;虽然单链表实现简单，但查找数据节点的时间复杂度是 $O(n)$。在生产环境中，LRU 通常要求 $O(1)$ 的时间复杂度。你可以思考：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果要实现 $O(1)$ 的快速定位和移动，通常需要组合使用什么样的数据结构？&lt;/li&gt;
 &lt;/ul&gt;</description></item><item><title>LRU题目</title><link>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</guid><description>
 &lt;h2&gt;问题描述&lt;span class="hx:absolute hx:-mt-20" id="问题描述"&gt;&lt;/span&gt;
 &lt;a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请你使用有头节点的链表,实现一个满足LRU(最近最少使用)缓存约束的数据结构及其基础功能.&lt;/p&gt;
