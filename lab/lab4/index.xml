@@ -1,0 +1,113 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>系统程序设计基础 (USTC ISP) – 实验四：链表综合训练（LRU缓存）</title><link>https://ustc-isp.github.io/lab/lab4/</link><description>Recent content in 实验四：链表综合训练（LRU缓存） on 系统程序设计基础 (USTC ISP)</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://ustc-isp.github.io/lab/lab4/index.xml" rel="self" type="application/rss+xml"/><item><title>LRU题目</title><link>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</guid><description>
+&lt;h2&gt;问题描述&lt;span class="hx:absolute hx:-mt-20" id="问题描述"&gt;&lt;/span&gt;
+&lt;a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请你使用有头节点的链表,实现一个满足LRU(最近最少使用)缓存约束的数据结构及其基础功能.&lt;/p&gt;
+&lt;p&gt;要求链表除头节点之外的内部节点在任意操作进行前和完成后均按上一次被访问(包括get和put)的时刻排序,即缓存中上一次被访问的时刻最近的节点为头节点的后继,缓存中上一次被访问的时刻最远的节点为链表末尾的节点.&lt;/p&gt;
+&lt;p&gt;这个数据结构需要实现以下基础功能:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;LRUCache* LRUCache_create(unsigned int capacity)&lt;/code&gt; 以非负整数作为容量capacity初始化LRU缓存,返回一个指向链表头节点的指针.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;unsigned int LRUCache_get(unsigned int key)&lt;/code&gt; 如果关键字key存在于缓存中,则返回关键字key对应的值value,否则返回-1.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;void LRUCache_put(unsigned int key, unsigned int value)&lt;/code&gt; 如果关键字key已经存在于缓存中,则变更其对应的值为新的value;如果不存在,则将这组key-value插入缓存中;若此次插入会导致缓存内key-value的数量超过容量capacity,则应删去缓存中最久未使用的key-value.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;void LRUCache_reverse(LRUCache* head)&lt;/code&gt; 如果head指针非空,则逆序输出缓存中存储的key-value组,即最先输出缓存中上一次被访问的时刻最远的节点的key-value组,最后输出缓存中上一次被访问的时刻最近的节点的key-value组.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;void LRUCache_free(LRUCache* head)&lt;/code&gt; 如果head指针非空,则释放LRU缓存,完成操作后原链表所使用的内存空间被完全释放.&lt;/p&gt;
+&lt;p&gt;另外,请你思考:如何设计函数&lt;code&gt;get()&lt;/code&gt;和&lt;code&gt;put()&lt;/code&gt;使其以O(1)的平均时间复杂度运行?你可以在本次实验中额外实现这一点,不作为强制要求.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;capacity&lt;/code&gt;,&lt;code&gt;key&lt;/code&gt;,&lt;code&gt;value&lt;/code&gt;均为&lt;code&gt;unsigned int&lt;/code&gt;型&lt;/p&gt;
+&lt;h2&gt;输入形式&lt;span class="hx:absolute hx:-mt-20" id="输入形式"&gt;&lt;/span&gt;
+&lt;a href="#%e8%be%93%e5%85%a5%e5%bd%a2%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输入第一行为LRU缓存容量&lt;code&gt;capacity和&lt;/code&gt;等待执行的操作数&lt;code&gt;n&lt;/code&gt;;&lt;/p&gt;
+&lt;p&gt;输入接下来&lt;code&gt;n&lt;/code&gt;行为等待执行的操作,每一行第一部分为3个字符代表操作名称,接下来为操作对应的变量;&lt;/p&gt;
+&lt;h2&gt;输出形式&lt;span class="hx:absolute hx:-mt-20" id="输出形式"&gt;&lt;/span&gt;
+&lt;a href="#%e8%be%93%e5%87%ba%e5%bd%a2%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输出根据不同的操作分为两种类型,&lt;code&gt;get&lt;/code&gt;和&lt;code&gt;rev&lt;/code&gt;,而&lt;code&gt;put&lt;/code&gt;没有输出.&lt;/p&gt;
+&lt;p&gt;连续的&lt;code&gt;get&lt;/code&gt;操作输出在同一行内;而当遇到&lt;code&gt;rev&lt;/code&gt;操作时,先另起一行,然后每一行输出一个节点对应的&lt;code&gt;key-value&lt;/code&gt;组(&lt;code&gt;key&lt;/code&gt;和&lt;code&gt;value&lt;/code&gt;用单个空格分隔),&lt;code&gt;rev&lt;/code&gt;的最后一行输出末尾有换行符.&lt;/p&gt;
+&lt;p&gt;一个抽象的例子(暂时不考虑LRU缓存中的具体情况):&lt;/p&gt;
+&lt;p&gt;假设LRU缓存大小为2,去除put操作后的输入为:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;对应的输出形如:&lt;/p&gt;
+&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;g_1 g_2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k1 r_v1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k2 r_v2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;g_3 g_4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k3 r_v3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k4 r_v4&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;样例输入&lt;span class="hx:absolute hx:-mt-20" id="样例输入"&gt;&lt;/span&gt;
+&lt;a href="#%e6%a0%b7%e4%be%8b%e8%be%93%e5%85%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;2 10
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;put 1 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;put 2 2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;put 3 3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;put 4 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;样例输出&lt;span class="hx:absolute hx:-mt-20" id="样例输出"&gt;&lt;/span&gt;
+&lt;a href="#%e6%a0%b7%e4%be%8b%e8%be%93%e5%87%ba" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;1 -1 -1 3 4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;3 3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;4 4&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;button
+class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
+title="复制代码"
+aria-label="复制代码"
+data-copied-label="已复制！"
+&gt;
+&lt;div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
+&lt;/button&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;h2&gt;样例说明&lt;span class="hx:absolute hx:-mt-20" id="样例说明"&gt;&lt;/span&gt;
+&lt;a href="#%e6%a0%b7%e4%be%8b%e8%af%b4%e6%98%8e" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请特别注意各变量以及指针的边界检查.&lt;/p&gt;
+&lt;h2&gt;评分标准&lt;span class="hx:absolute hx:-mt-20" id="评分标准"&gt;&lt;/span&gt;
+&lt;a href="#%e8%af%84%e5%88%86%e6%a0%87%e5%87%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;暂定4组测试样例,每组25分.&lt;/p&gt;</description></item><item><title>检查页</title><link>https://ustc-isp.github.io/lab/lab4/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/requirement/</guid><description>
+&lt;p&gt;完成题目页中的 LRU 缓存实现，你需要在学校内部的 GitLab 平台上托管代码，并在希冀平台上提交仓库地址进行自动评测。&lt;/p&gt;
+&lt;p&gt;提交方式同上次实验。&lt;/p&gt;</description></item></channel></rss>
