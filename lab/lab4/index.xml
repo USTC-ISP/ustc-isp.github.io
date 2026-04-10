@@ -558,12 +558,6 @@ data-copied-label="已复制！"
 &lt;/div&gt;
 &lt;h2&gt;评分标准&lt;span class="hx:absolute hx:-mt-20" id="评分标准"&gt;&lt;/span&gt;
 &lt;a href="#%e8%af%84%e5%88%86%e6%a0%87%e5%87%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;暂定4组测试样例,每组25分.&lt;/p&gt;</description></item><item><title>提交与检查</title><link>https://ustc-isp.github.io/lab/lab4/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/requirement/</guid><description>
-&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-purple-200 hx:bg-purple-100 hx:text-purple-900 hx:dark:border-purple-200/30 hx:dark:bg-purple-900/30 hx:dark:text-purple-200"&gt;
-&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/&gt;&lt;/svg&gt;&lt;/div&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;尚未正式发布！&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;h2&gt;提交方式&lt;span class="hx:absolute hx:-mt-20" id="提交方式"&gt;&lt;/span&gt;
 &lt;a href="#%e6%8f%90%e4%ba%a4%e6%96%b9%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本次实验需要在学校内部的 &lt;strong&gt;GitLab&lt;/strong&gt; 平台上托管代码，并在 &lt;strong&gt;希冀系统&lt;/strong&gt; 上提交仓库地址进行自动评测。&lt;/p&gt;
 &lt;p&gt;提交方式与 &lt;a href="../../lab3/requirement"&gt;实验三&lt;/a&gt; 保持一致。&lt;/p&gt;</description></item></channel></rss>
