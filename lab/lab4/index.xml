@@ -424,93 +424,31 @@ data-copied-label="已复制！"
 &lt;div class="hextra-success-icon hx:hidden hx:group-[.copied]/copybtn:block hx:pointer-events-none hx:h-4 hx:w-4"&gt;&lt;/div&gt;
 &lt;/button&gt;
 &lt;/div&gt;
-&lt;/div&gt;</description></item><item><title>最近最少使用(Least Recently Used)算法</title><link>https://ustc-isp.github.io/lab/lab4/chapter2_lru/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/chapter2_lru/</guid><description>
-&lt;h2&gt;1. 引入&lt;span class="hx:absolute hx:-mt-20" id="1-引入"&gt;&lt;/span&gt;
-&lt;a href="#1-%e5%bc%95%e5%85%a5" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在计算机系统的设计中，&lt;strong&gt;缓存（Cache）&lt;/strong&gt; 是一种用于提高数据访问速度的技术。然而，缓存的物理空间往往是有限的．当缓存存满时，若有新的数据需要存入，就必须从已有的数据中选出一个“牺牲品”将其移出，为新内容腾出位置。&lt;/p&gt;
-&lt;p&gt;这一过程被称为 &lt;strong&gt;缓存淘汰（Cache Replacement）&lt;/strong&gt;。为了使缓存的命中率尽可能高，人们设计了多种调度算法，其中最为经典且应用最广的便是 &lt;strong&gt;LRU (Least Recently Used)&lt;/strong&gt; 算法．&lt;/p&gt;
-&lt;h2&gt;2. LRU 的基本原理&lt;span class="hx:absolute hx:-mt-20" id="2-lru-的基本原理"&gt;&lt;/span&gt;
-&lt;a href="#2-lru-%e7%9a%84%e5%9f%ba%e6%9c%ac%e5%8e%9f%e7%90%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LRU，即“最近最少使用”，其核心思想基于&lt;strong&gt;时间局部性理论&lt;/strong&gt;：&lt;strong&gt;“如果一段数据最近被访问过，那么它在将来被访问的概率也会更高；反之，长期未被访问的数据，在将来被访问的概率较低，应当优先被淘汰．”&lt;/strong&gt;&lt;/p&gt;
-&lt;h3&gt;2.1 算法模型&lt;span class="hx:absolute hx:-mt-20" id="21-算法模型"&gt;&lt;/span&gt;
-&lt;a href="#21-%e7%ae%97%e6%b3%95%e6%a8%a1%e5%9e%8b" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;LRU 通常可以抽象为一个按“访问时间”排序的队列：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;最新鲜的数据&lt;/strong&gt;（最近被访问过）放在队列的头部。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;最陈旧的数据&lt;/strong&gt;（最久没被访问过）放在队列的尾部。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3&gt;2.2 核心操作流程&lt;span class="hx:absolute hx:-mt-20" id="22-核心操作流程"&gt;&lt;/span&gt;
-&lt;a href="#22-%e6%a0%b8%e5%bf%83%e6%93%8d%e4%bd%9c%e6%b5%81%e7%a8%8b" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;假设缓存容量为 &lt;span class="katex"&gt;&lt;span class="katex-mathml"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;k&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class="katex-html" aria-hidden="true"&gt;&lt;span class="base"&gt;&lt;span class="strut" style="height:0.6944em;"&gt;&lt;/span&gt;&lt;span class="mord mathnormal" style="margin-right:0.03148em;"&gt;k&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;访问数据 (Get)&lt;/strong&gt;：
-&lt;ul&gt;
-&lt;li&gt;如果在缓存中找到了对应的 &lt;code&gt;key&lt;/code&gt;，则将该数据挪到队列的最前端，表示它刚被“刷新”过。&lt;/li&gt;
-&lt;li&gt;如果没找到，返回失败标识。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;更新/添加数据 (Put)&lt;/strong&gt;：
-&lt;ul&gt;
-&lt;li&gt;如果数据已存在，更新其 &lt;code&gt;value&lt;/code&gt; 并移动到队列最前端。&lt;/li&gt;
-&lt;li&gt;如果数据不存在：
-&lt;ul&gt;
-&lt;li&gt;若队列已满，则将&lt;strong&gt;队列尾部&lt;/strong&gt;（最陈旧）的数据剔除并释放。&lt;/li&gt;
-&lt;li&gt;将新数据插入到队列&lt;strong&gt;头部&lt;/strong&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;3. 运行示例&lt;span class="hx:absolute hx:-mt-20" id="3-运行示例"&gt;&lt;/span&gt;
-&lt;a href="#3-%e8%bf%90%e8%a1%8c%e7%a4%ba%e4%be%8b" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;假设缓存容量为 &lt;span class="katex"&gt;&lt;span class="katex-mathml"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mn&gt;3&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;3&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;&lt;span class="katex-html" aria-hidden="true"&gt;&lt;span class="base"&gt;&lt;span class="strut" style="height:0.6444em;"&gt;&lt;/span&gt;&lt;span class="mord"&gt;3&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;，访问序列为：&lt;code&gt;put(1,1), put(2,2), put(3,3), get(1), put(4,4)&lt;/code&gt;．&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;put(1,1)&lt;/code&gt;：缓存为 &lt;code&gt;[1]&lt;/code&gt;．&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;put(2,2)&lt;/code&gt;：缓存为 &lt;code&gt;[2, 1]&lt;/code&gt;．（新数据插在头部）&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;put(3,3)&lt;/code&gt;：缓存为 &lt;code&gt;[3, 2, 1]&lt;/code&gt;．&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;get(1)&lt;/code&gt;：命中了 &lt;code&gt;1&lt;/code&gt;，将其移动到头部，缓存变为 &lt;code&gt;[1, 3, 2]&lt;/code&gt;．&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;put(4,4)&lt;/code&gt;：缓存已满，淘汰末尾的 &lt;code&gt;2&lt;/code&gt;，插入 &lt;code&gt;4&lt;/code&gt; 到头部，缓存变为 &lt;code&gt;[4, 1, 3]&lt;/code&gt;．&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;4. LRU 的典型应用&lt;span class="hx:absolute hx:-mt-20" id="4-lru-的典型应用"&gt;&lt;/span&gt;
-&lt;a href="#4-lru-%e7%9a%84%e5%85%b8%e5%9e%8b%e5%ba%94%e7%94%a8" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;LRU 并不是只存在于教科书中的理论，它广泛应用于工业界系统的各个角落：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;操作系统&lt;/strong&gt;：页表置换（Page Replacement），内核会维护一个内存页链表，淘汰长期不活动的物理页到磁盘。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;数据库&lt;/strong&gt;：如 Redis 或 MySQL 的 Buffer Pool，用于决定哪些索引或行数据保留在内存中。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Web 服务器&lt;/strong&gt;：如 Nginx 或 CDN 节点，通过 LRU 决定哪些高频访问的文件存放在内存缓存中以降低响应延迟。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;5. 其他常见的替换算法&lt;span class="hx:absolute hx:-mt-20" id="5-其他常见的替换算法"&gt;&lt;/span&gt;
-&lt;a href="#5-%e5%85%b6%e4%bb%96%e5%b8%b8%e8%a7%81%e7%9a%84%e6%9b%bf%e6%8d%a2%e7%ae%97%e6%b3%95" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;除了 LRU，还有一些针对不同场景设计的算法：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;FIFO (First-In, First-Out)&lt;/strong&gt;：先进先出。最简单的策略，不考虑访问频率，可能导致性能较差（Belady 异常）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;LFU (Least Frequently Used)&lt;/strong&gt;：最不经常使用。记录每个数据被访问的&lt;strong&gt;次数&lt;/strong&gt;，淘汰访问次数最少的。适用于某些长期高频访问的数据，但难以应对“瞬间高频随后冷寂”的情况。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Clock (时钟算法)&lt;/strong&gt;：LRU 的一种近似实现。它像钟表盘一样循环检查数据的使用位（Referenced Bit），硬件开销更小。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;ARC (Adaptive Replacement Cache)&lt;/strong&gt;：自适应缓存。结合了 LRU 和 LFU 的优点，能根据工作负载实时调整策略，是高性能存储系统中常用的算法。&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>LRU题目</title><link>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</guid><description>
+&lt;/div&gt;</description></item><item><title>LRU题目</title><link>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab4/problem1_lru_cache/</guid><description>
 &lt;h2&gt;问题描述&lt;span class="hx:absolute hx:-mt-20" id="问题描述"&gt;&lt;/span&gt;
-&lt;a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请你使用有头节点的链表,实现一个满足LRU(最近最少使用)缓存约束的数据结构及其基础功能.&lt;/p&gt;
-&lt;p&gt;要求链表除头节点之外的内部节点在任意操作进行前和完成后均按上一次被访问(包括get和put)的时刻排序,即缓存中上一次被访问的时刻最近的节点为头节点的后继,缓存中上一次被访问的时刻最远的节点为链表末尾的节点.&lt;/p&gt;
-&lt;p&gt;这个数据结构需要实现以下基础功能:&lt;/p&gt;
+&lt;a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请你实现一个满足 LRU(最近最少使用)缓存约束 的数据结构及其基础功能.&lt;/p&gt;
+&lt;p&gt;具体的来说，你需要建立一个可以容纳 &lt;code&gt;capacity&lt;/code&gt; 个一一对应的 &lt;code&gt;unsigned int&lt;/code&gt; - &lt;code&gt;int&lt;/code&gt; 键值对的数据结构。和电话簿中一个姓名对应一个电话类似，
+这个数据结构一个 &lt;code&gt;unsigned int&lt;/code&gt; 对应一个 &lt;code&gt;int&lt;/code&gt;，并且最多存储 &lt;code&gt;capacity&lt;/code&gt; 个这样的配对。&lt;/p&gt;
+&lt;p&gt;然后你需要支持以下操作：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;LRUCache* LRUCache_create(unsigned int capacity)&lt;/code&gt; 以非负整数作为容量capacity初始化LRU缓存,返回一个指向链表头节点的指针.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;unsigned int LRUCache_get(unsigned int key)&lt;/code&gt; 如果关键字key存在于缓存中,则返回关键字key对应的值value,否则返回-1.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;void LRUCache_put(unsigned int key, unsigned int value)&lt;/code&gt; 如果关键字key已经存在于缓存中,则变更其对应的值为新的value;如果不存在,则将这组key-value插入缓存中;若此次插入会导致缓存内key-value的数量超过容量capacity,则应删去缓存中最久未使用的key-value.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;void LRUCache_reverse(LRUCache* head)&lt;/code&gt; 如果head指针非空,则逆序输出缓存中存储的key-value组,即最先输出缓存中上一次被访问的时刻最远的节点的key-value组,最后输出缓存中上一次被访问的时刻最近的节点的key-value组.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;code&gt;void LRUCache_free(LRUCache* head)&lt;/code&gt; 如果head指针非空,则释放LRU缓存,完成操作后原链表所使用的内存空间被完全释放.&lt;/p&gt;
-&lt;/li&gt;
+&lt;li&gt;插入功能，传入 &lt;code&gt;unsigned int key&lt;/code&gt; 和 &lt;code&gt;int value&lt;/code&gt;，如果数据结构中存在 &lt;code&gt;key&lt;/code&gt; 则更新对应的 &lt;code&gt;value&lt;/code&gt; 为传入值。&lt;/li&gt;
+&lt;li&gt;查找功能，传入 &lt;code&gt;key&lt;/code&gt;，查找并返回对应的 &lt;code&gt;value&lt;/code&gt;，如果找不到则返回 &lt;code&gt;-1&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;另外,请你思考:如何设计函数&lt;code&gt;get()&lt;/code&gt;和&lt;code&gt;put()&lt;/code&gt;使其以O(1)的平均时间复杂度运行?你可以在本次实验中额外实现这一点,不作为强制要求.&lt;/p&gt;
+&lt;p&gt;由于最多存储 &lt;code&gt;capacity&lt;/code&gt; 个键值对，当插入的键值对超过 &lt;code&gt;capacity&lt;/code&gt; 个时，需要选择&lt;strong&gt;最近最少使用&lt;/strong&gt;的一个 &lt;code&gt;key&lt;/code&gt; 删掉（在这里意味着上一次插入或查找该 &lt;code&gt;key&lt;/code&gt; 的时间离现在最远）然后才能插入新的键值对。&lt;/p&gt;
+&lt;p&gt;你还需要支持&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;逆序输出，按照最近最少使用的 key 排前面，最近刚刚使用过的 key 排后面的顺序输出键值对。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;你可以使用一个带头节点链表实现这个功能，每次访问某个 key，就把它从链表中间拿出放到链表最前面（即 &lt;code&gt;head-&amp;gt;next&lt;/code&gt;）。&lt;/p&gt;
+&lt;p&gt;另外,请你思考:如何设计函数&lt;code&gt;get()&lt;/code&gt;和&lt;code&gt;put()&lt;/code&gt;使其以 O(1) 的平均时间复杂度运行?你可以在本次实验中额外实现这一点,不作为强制要求.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;code&gt;capacity&lt;/code&gt;,&lt;code&gt;key&lt;/code&gt;,&lt;code&gt;value&lt;/code&gt;均为&lt;code&gt;unsigned int&lt;/code&gt;型&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;capacity&lt;/code&gt;,&lt;code&gt;key&lt;/code&gt;均为&lt;code&gt;unsigned int&lt;/code&gt;型，&lt;code&gt;value&lt;/code&gt; 为 &lt;code&gt;int&lt;/code&gt; 型&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;输入形式&lt;span class="hx:absolute hx:-mt-20" id="输入形式"&gt;&lt;/span&gt;
 &lt;a href="#%e8%be%93%e5%85%a5%e5%bd%a2%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输入第一行为LRU缓存容量&lt;code&gt;capacity&lt;/code&gt;和等待执行的操作数&lt;code&gt;n&lt;/code&gt;;&lt;/p&gt;
 &lt;p&gt;输入接下来&lt;code&gt;n&lt;/code&gt;行为等待执行的操作,每一行第一部分为3个字符代表操作名称,接下来为操作对应的变量;&lt;/p&gt;
 &lt;h2&gt;输出形式&lt;span class="hx:absolute hx:-mt-20" id="输出形式"&gt;&lt;/span&gt;
-&lt;a href="#%e8%be%93%e5%87%ba%e5%bd%a2%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输出根据不同的操作分为两种类型,&lt;code&gt;get&lt;/code&gt;和&lt;code&gt;rev&lt;/code&gt;,而&lt;code&gt;put&lt;/code&gt;没有输出.&lt;/p&gt;
+&lt;a href="#%e8%be%93%e5%87%ba%e5%bd%a2%e5%bc%8f" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;输出根据不同的操作分为两种类型,&lt;code&gt;get&lt;/code&gt;（读取）和&lt;code&gt;rev&lt;/code&gt;（逆序输出）,而&lt;code&gt;put&lt;/code&gt;（插入）没有输出.&lt;/p&gt;
 &lt;p&gt;连续的&lt;code&gt;get&lt;/code&gt;操作输出在同一行内;而当遇到&lt;code&gt;rev&lt;/code&gt;操作时,先另起一行,然后每一行输出一个节点对应的&lt;code&gt;key-value&lt;/code&gt;组(&lt;code&gt;key&lt;/code&gt;和&lt;code&gt;value&lt;/code&gt;用单个空格分隔),&lt;code&gt;rev&lt;/code&gt;的最后一行输出末尾有换行符.&lt;/p&gt;
 &lt;p&gt;一个抽象的例子(暂时不考虑LRU缓存中的具体情况):&lt;/p&gt;
 &lt;p&gt;假设LRU缓存大小为2,去除put操作后的输入为:&lt;/p&gt;
@@ -539,17 +477,17 @@ data-copied-label="已复制！"
 &lt;/div&gt;
 &lt;p&gt;对应的输出形如:&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
-&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;g_1 g_2
+&lt;div&gt;&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-text" data-lang="text"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get_value1 get_value2
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k1 r_v1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev_key1 rev_value1
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k2 r_v2
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev_key2 rev_value2
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;g_3 g_4
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;get_value3 get_value4
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k3 r_v3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev_key3 rev_value3
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;r_k4 r_v4&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rev_key4 rev_value4&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
 title="复制代码"
