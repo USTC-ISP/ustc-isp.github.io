@@ -1,10 +1,4 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>系统程序设计基础 (USTC ISP) – 实验五：性能优化</title><link>https://ustc-isp.github.io/lab/lab5/</link><description>Recent content in 实验五：性能优化 on 系统程序设计基础 (USTC ISP)</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://ustc-isp.github.io/lab/lab5/index.xml" rel="self" type="application/rss+xml"/><item><title>卷积性能优化</title><link>https://ustc-isp.github.io/lab/lab5/lab5/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab5/lab5/</guid><description>
-&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
-&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;&lt;/div&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;尚未正式发布，内容可能调整，仅供参考。&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;h2&gt;实验框架&lt;span class="hx:absolute hx:-mt-20" id="实验框架"&gt;&lt;/span&gt;
 &lt;a href="#%e5%ae%9e%e9%aa%8c%e6%a1%86%e6%9e%b6" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href="../lab5.zip"&gt;点此下载&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;1. 实验背景&lt;span class="hx:absolute hx:-mt-20" id="1-实验背景"&gt;&lt;/span&gt;
@@ -107,12 +101,6 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description></item><item><title>实验指导：程序性能优化方法</title><link>https://ustc-isp.github.io/lab/lab5/perf/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab5/perf/</guid><description>
-&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
-&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;&lt;/div&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;尚未正式发布，内容可能调整，仅供参考。&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;h2&gt;1. 算法层优化&lt;span class="hx:absolute hx:-mt-20" id="1-算法层优化"&gt;&lt;/span&gt;
 &lt;a href="#1-%e7%ae%97%e6%b3%95%e5%b1%82%e4%bc%98%e5%8c%96" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;在考虑 CPU 指令和缓存细节之前，先选择正确的&lt;strong&gt;数据结构&lt;/strong&gt;和&lt;strong&gt;算法&lt;/strong&gt;。一个好的算法设计往往能带来数倍甚至数十倍的性能提升。&lt;/p&gt;
 &lt;p&gt;更高级的算法会在《数据结构》与《算法基础》课程中系统讲解。在本课程中不作展开。&lt;/p&gt;
@@ -512,12 +500,6 @@ data-copied-label="已复制！"
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;p&gt;在填充后的图像上进行卷积计算时，内层循环不再需要边界检查，消除了所有条件分支（以及由此引起的分支预测失败），提升性能。&lt;/p&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab5/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab5/requirement/</guid><description>
-&lt;div class="hx:overflow-x-auto hx:mt-6 hx:flex hx:rounded-lg hx:border hx:py-2 hx:ltr:pr-4 hx:rtl:pl-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"&gt;
-&lt;div class="hx:ltr:pl-3 hx:ltr:pr-2 hx:rtl:pr-3 hx:rtl:pl-2"&gt;&lt;svg height=1.2em class="hx:inline-block hx:align-middle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true"&gt;&lt;path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/&gt;&lt;/svg&gt;&lt;/div&gt;
-&lt;div class="hx:w-full hx:min-w-0 hx:leading-7"&gt;
-&lt;div class="hx:mt-6 hx:leading-7 hx:first:mt-0"&gt;尚未正式发布，内容可能调整，仅供参考。&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;h2&gt;1. 实验内容&lt;span class="hx:absolute hx:-mt-20" id="1-实验内容"&gt;&lt;/span&gt;
 &lt;a href="#1-%e5%ae%9e%e9%aa%8c%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请根据题目要求，在实验框架中完成相应的代码，并提交实验报告或说明文档，详细描述你的优化思路、关键实现和测试结果。&lt;/p&gt;
 &lt;h2&gt;2. 提交内容&lt;span class="hx:absolute hx:-mt-20" id="2-提交内容"&gt;&lt;/span&gt;
@@ -537,4 +519,4 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;提交至bb平台。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;提交至&lt;strong&gt;希冀&lt;/strong&gt;平台。&lt;/p&gt;</description></item></channel></rss>
