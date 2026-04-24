@@ -522,7 +522,7 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;提交至希冀平台。&lt;/p&gt;
+&lt;p&gt;提交至&lt;strong&gt;希冀&lt;/strong&gt;平台。&lt;/p&gt;
 &lt;h2&gt;2. 评分标准&lt;span class="hx:absolute hx:-mt-20" id="2-评分标准"&gt;&lt;/span&gt;
 &lt;a href="#2-%e8%af%84%e5%88%86%e6%a0%87%e5%87%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本次实验总分10 分，分为程序正确性（6 分）和性能优化（4 分） 两部分，评分细则如下：&lt;/p&gt;
 &lt;h3&gt;2.1 程序正确性（6 分）&lt;span class="hx:absolute hx:-mt-20" id="21-程序正确性6-分"&gt;&lt;/span&gt;
