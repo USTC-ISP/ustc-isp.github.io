@@ -502,11 +502,14 @@ data-copied-label="已复制！"
 &lt;p&gt;在填充后的图像上进行卷积计算时，内层循环不再需要边界检查，消除了所有条件分支（以及由此引起的分支预测失败），提升性能。&lt;/p&gt;</description></item><item><title>实验要求与检查</title><link>https://ustc-isp.github.io/lab/lab5/requirement/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ustc-isp.github.io/lab/lab5/requirement/</guid><description>
 &lt;h2&gt;1. 实验内容&lt;span class="hx:absolute hx:-mt-20" id="1-实验内容"&gt;&lt;/span&gt;
 &lt;a href="#1-%e5%ae%9e%e9%aa%8c%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;请根据题目要求，在实验框架中完成相应的代码，并提交实验报告或说明文档，详细描述你的优化思路、关键实现和测试结果。&lt;/p&gt;
-&lt;h2&gt;2. 提交内容&lt;span class="hx:absolute hx:-mt-20" id="2-提交内容"&gt;&lt;/span&gt;
-&lt;a href="#2-%e6%8f%90%e4%ba%a4%e5%86%85%e5%ae%b9" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;按照以下结构整理你的代码和报告，提交压缩包：&lt;/p&gt;
+&lt;p&gt;建议对优化方法逐个实现并测试效果，按照以下结构整理你的代码和报告，提交压缩包：&lt;/p&gt;
 &lt;div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"&gt;
 &lt;div&gt;&lt;pre&gt;&lt;code&gt;姓名-学号/
-├── convolution.c // 卷积性能优化代码
+├── convolution_v1.c // 卷积性能优化代码版本1
+├── convolution_v2.c // 卷积性能优化代码版本2
+├── convolution_v3.c // 卷积性能优化代码版本3
+├── convolution...
+├── convolution_final.c // 所有优化汇总版本
 └── 姓名-学号.pdf // 实验报告（包含优化思路、实现细节、性能测试结果等）&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="hextra-code-copy-btn-container hx:opacity-0 hx:transition hx:group-hover/code:opacity-100 hx:flex hx:gap-1 hx:absolute hx:m-[11px] hx:right-0 hx:top-0"&gt;
 &lt;button
 class="hextra-code-copy-btn hx:group/copybtn hx:cursor-pointer hx:transition-all hx:active:opacity-50 hx:bg-primary-700/5 hx:border hx:border-black/5 hx:text-gray-600 hx:hover:text-gray-900 hx:rounded-md hx:p-1.5 hx:dark:bg-primary-300/10 hx:dark:border-white/10 hx:dark:text-gray-400 hx:dark:hover:text-gray-50"
@@ -519,4 +522,20 @@ data-copied-label="已复制！"
 &lt;/button&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;p&gt;提交至&lt;strong&gt;希冀&lt;/strong&gt;平台。&lt;/p&gt;</description></item></channel></rss>
+&lt;p&gt;提交至希冀平台。&lt;/p&gt;
+&lt;h2&gt;2. 评分标准&lt;span class="hx:absolute hx:-mt-20" id="2-评分标准"&gt;&lt;/span&gt;
+&lt;a href="#2-%e8%af%84%e5%88%86%e6%a0%87%e5%87%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h2&gt;&lt;p&gt;本次实验总分10 分，分为程序正确性（6 分）和性能优化（4 分） 两部分，评分细则如下：&lt;/p&gt;
+&lt;h3&gt;2.1 程序正确性（6 分）&lt;span class="hx:absolute hx:-mt-20" id="21-程序正确性6-分"&gt;&lt;/span&gt;
+&lt;a href="#21-%e7%a8%8b%e5%ba%8f%e6%ad%a3%e7%a1%ae%e6%80%a76-%e5%88%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;代码可正常编译运行，无编译错误、无运行崩溃；&lt;/li&gt;
+&lt;li&gt;卷积计算结果正确，与基准实现输出一致，无数值错误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;2.2 性能优化（4 分）&lt;span class="hx:absolute hx:-mt-20" id="22-性能优化4-分"&gt;&lt;/span&gt;
+&lt;a href="#22-%e6%80%a7%e8%83%bd%e4%bc%98%e5%8c%964-%e5%88%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;优化项每实现一个有效优化并在报告中说明，得1 分；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现&lt;strong&gt;3&lt;/strong&gt; 个及以上有效优化，优化部分得满分 4 分。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
