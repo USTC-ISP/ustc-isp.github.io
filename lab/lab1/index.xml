@@ -555,9 +555,7 @@ data-copied-label="已复制！"
 &lt;p&gt;实验提交到BB平台上，截止日期为2026年3月13日23:59:59。&lt;/p&gt;
 &lt;h3&gt;第一部分：环境搭建（三选一）&lt;span class="hx:absolute hx:-mt-20" id="第一部分环境搭建三选一"&gt;&lt;/span&gt;
 &lt;a href="#%e7%ac%ac%e4%b8%80%e9%83%a8%e5%88%86%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba%e4%b8%89%e9%80%89%e4%b8%80" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;任务目标：&lt;/strong&gt; 建立一个稳定的 Linux 开发环境。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;可选方案：&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;可选方案：&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;虚拟机方案&lt;/strong&gt;：使用 VMware/VirtualBox 安装 Ubuntu 24.04。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;WSL 2 方案&lt;/strong&gt;：在 Windows 中启用子系统并安装 Ubuntu。&lt;/li&gt;
@@ -583,8 +581,8 @@ data-copied-label="已复制！"
 &lt;p&gt;在之后的学习工作中，其实Linux的图形界面并不常用&lt;del&gt;也并不好用&lt;/del&gt;，学会并习惯使用命令行是必行之路。&lt;/p&gt;
 &lt;/div&gt;
 &lt;/details&gt;
+&lt;p&gt;&lt;strong&gt;提交内容：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;提交内容：&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;终端执行系统信息查询指令（&lt;code&gt;lsb_release -a&lt;/code&gt; 和 &lt;code&gt;whoami&lt;/code&gt;）的输出截图。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr&gt;
@@ -593,7 +591,7 @@ data-copied-label="已复制！"
 &lt;h4&gt;任务 1：工具链部署&lt;span class="hx:absolute hx:-mt-20" id="任务-1工具链部署"&gt;&lt;/span&gt;
 &lt;a href="#%e4%bb%bb%e5%8a%a1-1%e5%b7%a5%e5%85%b7%e9%93%be%e9%83%a8%e7%bd%b2" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;任务：&lt;/strong&gt; 安装并验证 &lt;code&gt;gcc&lt;/code&gt; 编译器及 &lt;code&gt;gdb&lt;/code&gt; 调试器。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;检查点：&lt;/strong&gt; 截图展示这些工具的版本信息，证明已成功安装。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提交内容：&lt;/strong&gt; 截图展示这些工具的版本信息，证明已成功安装。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h4&gt;任务 2：项目目录管理&lt;span class="hx:absolute hx:-mt-20" id="任务-2项目目录管理"&gt;&lt;/span&gt;
 &lt;a href="#%e4%bb%bb%e5%8a%a1-2%e9%a1%b9%e7%9b%ae%e7%9b%ae%e5%bd%95%e7%ae%a1%e7%90%86" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
@@ -617,15 +615,18 @@ data-copied-label="已复制！"
 &lt;p&gt;(不支持中文的话用英文/拼音也可以。)&lt;/p&gt;
 &lt;h4&gt;任务 3：编译与运行&lt;span class="hx:absolute hx:-mt-20" id="任务-3编译与运行"&gt;&lt;/span&gt;
 &lt;a href="#%e4%bb%bb%e5%8a%a1-3%e7%bc%96%e8%af%91%e4%b8%8e%e8%bf%90%e8%a1%8c" class="subheading-anchor" aria-label="此章节的永久链接"&gt;&lt;/a&gt;&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;任务：&lt;/strong&gt; 1. 使用 &lt;code&gt;gcc&lt;/code&gt; 手动编译源码，并指定生成的可执行文件名为 &lt;code&gt;hello&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;任务：&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;ol start="2"&gt;
+&lt;ol&gt;
+&lt;li&gt;使用 &lt;code&gt;gcc&lt;/code&gt; 手动编译源码，并指定生成的可执行文件名为 &lt;code&gt;hello&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;使用 &lt;code&gt;ls -l&lt;/code&gt; 命令展示该目录下的文件结构（应包含源码和可执行文件）。&lt;/li&gt;
 &lt;li&gt;运行程序并查看输出。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;提交内容（核心）：&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;目录结构图&lt;/strong&gt;（由 &lt;code&gt;ls -l&lt;/code&gt; 生成）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提交内容：&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;目录结构截图&lt;/strong&gt;（由 &lt;code&gt;ls -l&lt;/code&gt; 生成）。&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;编译命令截图&lt;/strong&gt;.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;程序运行结果截图&lt;/strong&gt;（需看到包含姓名学号的输出）.&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ol&gt;</description></item></channel></rss>
